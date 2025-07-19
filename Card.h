@@ -1,6 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <memory>
 #include <string>
 
 #include "Ability.h"  // for triggertype
@@ -11,6 +12,8 @@ class Card {
  protected:
   std::string name;
   int cost;
+  std::shared_ptr<const Ability> activatedAbility = nullptr;
+  std::shared_ptr<const Ability> triggeredAbility = nullptr;
 
  public:
   // uses an activated ability
