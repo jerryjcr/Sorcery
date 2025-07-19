@@ -1,1 +1,3 @@
+enum TriggerType;
+
 class Ability {};
