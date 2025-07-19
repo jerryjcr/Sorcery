@@ -1,20 +1,21 @@
-#ifndef RITUALS_H_
-#define RITUALS_H_
+#ifndef RITUAL_H
+#define RITUAL_H
 
-#include "abstractCard.h"
+#include "Card.h"
 
 class Ritual : public Card {
-    int charges, chargeCost;
-    public:
-        Ritual(std::string name, int id, int playingCost, std::string description, int charges, int chargeCost);
+ protected:
+  int charges, chargeCost;
+
+ public:
+  Ritual(const std::string& name, int cost, int charges, int chargeCost,
+         std::shared_ptr<const Ability> triggered);
+  virtual ~Ritual() = 0;
+
+  void useRitual(TriggerType type, Card* target, Player& activePlayer,
+                 Player& inactivePlayer);
+
+  void adjustCharges(int amount);
 };
-
-class DarkRitual : public Ritual {
-    public:
-        DarkRitual(std::string name, int id, int playingCost, std::string description, int charges, int chargeCost);
-        virtual void activeAbility(std::shared_ptr<Card> target, Player &activePlayer, Player &inactivePlayer) override;
-};
-
-
 
 #endif

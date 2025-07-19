@@ -19,7 +19,6 @@ class Minion : public Card {
 
   void attackMinion(Minion& targetMinion);
   void attackPlayer(Player& targetPlayer);
-  void describe() const override;
 
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;
