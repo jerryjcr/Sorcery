@@ -1,30 +1,35 @@
-#ifndef MINIONS_H_
-#define MINIONS_H_
+#ifndef MINION_H
+#define MINION_H
 
-#include "abstractCard.h"
+#include "Card.h"
 
 class Minion : public Card {
-    int defense,attack, abilityCost, actionNumber;
-    bool hasAbility;
-    public:
-        virtual int getDefense() const;
-        virtual int getAttack() const;
-        virtual int getAbilityCost() const;
-        virtual int getActionNumber() const;
-        virtual int getHasAbility() const;
-        Minion(std::string name, int id, int playingCost, std::string description, int defense, int attack, int abilityCost, bool hasAbility);
-        virtual ~Minion()=0;
+ protected:
+  int attack;
+  int defence;
+  int actions;
+
+  bool useAction();
+
+ public:
+  Minion(const std::string& name, int cost, int attack, int defence,
+         std::shared_ptr<const Ability> activated = nullptr,
+         std::shared_ptr<const Ability> triggered = nullptr);
+  virtual ~Minion() = 0;
+
+  void attackMinion(Minion& targetMinion);
+  void attackPlayer(Player& targetPlayer);
+  void describe() const override;
+
+  // enchantments can override these methods or Card's ability methods
+  virtual int getAttack() const;
+  virtual int getDefence() const;
+  virtual int getActions() const;
+
+  void adjustAttack(int amount);
+  void adjustDefence(int amount);
+  // sets actions to 1
+  void resetActions();
 };
-
-class AirElemental : public Minion {
-    public:
-        AirElemental(std::string name, int id, int playingCost, std::string description, int defense, int attack, int abilityCost, bool hasAbility);
-        virtual void play(std::shared_ptr<Card> target, Player &activePlayer, Player &inactivePlayer) override;
-        virtual void activeAbility(std::shared_ptr<Card> target, Player &activePlayer, Player &inactivePlayer) override;
-        virtual void describe() override;
-        virtual void triggerAbility(triggerType trigger, std::shared_ptr<Card> target, Player &activePlayer, Player &inactivePlayer) override;
-};
-
-
 
 #endif
