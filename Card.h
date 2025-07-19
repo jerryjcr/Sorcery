@@ -30,7 +30,7 @@ class Card {
                               Player& activePlayer, Player& inactivePlayer);
   virtual void describe() const = 0;
 
-  const int getCost() const { return cost; }
+  int getCost() const { return cost; }
 };
 
 #endif
