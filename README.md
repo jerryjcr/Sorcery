@@ -1,6 +1,6 @@
 # Sorcery
 ## Phase 1
-The first phase of the project requires us to build the core skeleton of our game, which is identified in the setup as done above.
+The first phase of the project requires us to build the core skeleton of our game, which is identified in our setup and UML.
 
 The tasks of this phase include the following:
 
