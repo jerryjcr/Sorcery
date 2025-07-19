@@ -1,16 +1,14 @@
-#ifndef SPELLS_H_
-#define SPELLS_H_
+#ifndef SPELL_H
+#define SPELL_H
 
-#include "abstractCard.h"
+#include "Card.h"
 
-class Spell : public Card {};
-
-class Banish : public Spell {
-    public:
-        Banish(std::string name, int id, int playingCost, std::string description);
-        virtual void play(std::shared_ptr<Card> target, Player &activePlayer, Player &inactivePlayer) override;
-        virtual void describe() override;
+class Spell : public Card {
+ public:
+  Spell(const std::string& name, int cost,
+        std::shared_ptr<const Ability> activated);
+  void useSpell(Card* target, Player& activePlayer, Player& inactivePlayer);
+  void describe() const override;
 };
-
 
 #endif
