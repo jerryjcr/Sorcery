@@ -30,7 +30,7 @@ class Card {
                               Player& activePlayer, Player& inactivePlayer);
   virtual void describe() const = 0;
 
-  const std::string& getName() const { return name; }
+  const int getCost() const { return cost; }
 };
 
 #endif
