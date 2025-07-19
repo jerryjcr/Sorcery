@@ -16,6 +16,10 @@ class Card {
   std::shared_ptr<const Ability> triggeredAbility = nullptr;
 
  public:
+  Card(const std::string& name, int cost,
+       std::shared_ptr<const Ability> activated = nullptr,
+       std::shared_ptr<const Ability> triggered = nullptr);
+
   // uses an activated ability
   // target = nullptr if no target
   virtual void activateAbility(Card* target, Player& activePlayer,
