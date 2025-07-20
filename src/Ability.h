@@ -13,8 +13,6 @@ enum class TriggerType {
 };
 
 class Ability {
-  int abilityCost;
-
  public:
   virtual void useAbility(TriggerType type, Card* target, Player& activePlayer,
                           Player& inactivePlayer) = 0;
