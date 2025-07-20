@@ -23,11 +23,9 @@ class Card {
 
   // uses an activated ability
   // target = nullptr if no target
-  virtual void activateAbility(Card* target, Player& activePlayer,
-                               Player& inactivePlayer);
+  virtual void activateAbility(Player& targetPlayer,int boardIndex);
   // uses a trigger ability (ability compares trigger type)
-  virtual void triggerAbility(TriggerType type, Card* target,
-                              Player& activePlayer, Player& inactivePlayer);
+  virtual void triggerAbility(TriggerType type, Player& targetPlayer,int boardIndex);
   virtual void describe() const = 0;
 
   int getCost() const;
