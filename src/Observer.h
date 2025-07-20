@@ -4,7 +4,7 @@
 class Subject;
 
 class Observer {
-  Subject* s;
+  Subject* subject;
 
   public:
     virtual ~Observer() = default;
