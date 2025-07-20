@@ -1,12 +1,10 @@
-#ifndef DISPLAY_H_
-#define DISPLAY_H_
+#ifndef GRAPHICALDISPLAY_H_
+#define GRAPHICALDISPLAY_H_
 
 #include <vector>
 
 #include "Observer.h"
 
-class Display : public observer {
-
-};
+class GraphicalDisplay : public Observer {};
 
 #endif
