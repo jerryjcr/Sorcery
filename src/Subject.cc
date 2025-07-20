@@ -1,20 +1,21 @@
 #include "Subject.h"
 
-void Subject::attach(Observer* o) {
-    observers.emplace_back(o);
-}
+#include "Observer.h"
+
+void Subject::attach(Observer* o) { observers.emplace_back(o); }
 
 void Subject::detach(Observer* o) {
-    for (int i = 0; i < observers.size(); i++) {
-        if (observers[i] == o) {
-            observers.erase(i);
-            break;
-        }
+  for (auto it = observers.begin(); it != observers.end();) {
+    if (*it == o) {
+      it = observers.erase(it);
+    } else {
+      ++it;
     }
+  }
 }
 
 void Subject::notifyObservers() {
-    for (auto it : observers) {
-        it->notify(this);
-    }
+  for (auto it : observers) {
+    it->notify(this);
+  }
 }
