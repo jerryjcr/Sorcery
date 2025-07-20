@@ -1,5 +1,5 @@
-#ifndef ABILITY_H
-#define ABILITY_H
+#ifndef ABILITY_H_
+#define ABILITY_H_
 
 #include "Card.h"
 #include "Player.h"

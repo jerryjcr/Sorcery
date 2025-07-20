@@ -1,5 +1,5 @@
-#ifndef OBJECT_H
-#define OBJECT_H
+#ifndef OBJECT_H_
+#define OBJECT_H_
 
 class Subject;
 

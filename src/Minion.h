@@ -1,5 +1,5 @@
-#ifndef MINION_H
-#define MINION_H
+#ifndef MINION_H_
+#define MINION_H_
 
 #include "Card.h"
 

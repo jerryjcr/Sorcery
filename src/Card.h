@@ -1,5 +1,5 @@
-#ifndef CARD_H
-#define CARD_H
+#ifndef CARD_H_
+#define CARD_H_
 
 #include <memory>
 #include <string>

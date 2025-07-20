@@ -1,5 +1,5 @@
-#ifndef SPELL_H
-#define SPELL_H
+#ifndef SPELL_H_
+#define SPELL_H_
 
 #include "Card.h"
 

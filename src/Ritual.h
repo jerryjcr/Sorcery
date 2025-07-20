@@ -1,5 +1,5 @@
-#ifndef RITUAL_H
-#define RITUAL_H
+#ifndef RITUAL_H_
+#define RITUAL_H_
 
 #include "Card.h"
 

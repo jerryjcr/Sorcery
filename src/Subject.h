@@ -1,5 +1,5 @@
-#ifndef SUBJECT_H
-#define SUBJECT_H
+#ifndef SUBJECT_H_
+#define SUBJECT_H_
 
 #include <vector>
 
