@@ -6,10 +6,10 @@ class Subject;
 class Observer {
   Subject* subject;
 
-  public:
-    virtual ~Observer() = default;
+ public:
+  virtual ~Observer() = default;
 
-    void notify(Subject* whoFrom);
+  void notify(Subject* whoFrom);
 };
 
 #endif

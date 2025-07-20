@@ -9,7 +9,7 @@ class Spell : public Card {
         std::shared_ptr<const Ability> activated);
   virtual ~Spell() = 0;
 
-  void useSpell(Player& targetPlayer,int boardIndex);
+  void useSpell(Player& targetPlayer, int boardIndex);
 };
 
 #endif

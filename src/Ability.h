@@ -14,7 +14,8 @@ enum class TriggerType {
 
 class Ability {
  public:
-  virtual void useAbility(TriggerType type, Player& targetPlayer,int boardIndex) = 0;
+  virtual void useAbility(TriggerType type, Player& targetPlayer,
+                          int boardIndex) = 0;
 };
 
 #endif

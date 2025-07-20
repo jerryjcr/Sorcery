@@ -12,7 +12,7 @@ class Ritual : public Card {
          std::shared_ptr<const Ability> triggered);
   virtual ~Ritual() = 0;
 
-  void useRitual(TriggerType type, Player& targetPlayer,int boardIndex);
+  void useRitual(TriggerType type, Player& targetPlayer, int boardIndex);
 
   void adjustCharges(int amount);
 };
