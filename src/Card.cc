@@ -8,6 +8,8 @@ Card::Card(const std::string& name, int cost,
       activatedAbility{activated},
       triggeredAbility{triggered} {}
 
+Card::~Card() {}
+
 void Card::activateAbility(Card* target, Player& activePlayer,
                            Player& inactivePlayer) {
   // figure this out later
