@@ -44,7 +44,7 @@ class Player : public Subject {
 
   void moveCard(std::vector<std::unique_ptr<Card>>& oldDeck,
                 std::vector<std::unique_ptr<Card>>& newDeck,
-                int index);  // moves oldDeck[index1] to newDeck
+                int index);  // moves oldDeck[index] to newDeck
 };
 
 #endif
