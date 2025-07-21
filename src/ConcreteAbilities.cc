@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Minion.h"
 #include "Ritual.h"
+#include "Enchantment.h"
 
 void BanishAbility::useAbility(TriggerType type, Player& targetPlayer,
                                int boardIndex) {
@@ -30,7 +31,7 @@ void RechargeAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
-/*
+
 void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -40,5 +41,5 @@ void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
     }
   }
 }
-*/
+
 
