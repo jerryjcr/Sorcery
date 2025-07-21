@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "Ability.h"  // for triggertype
+#include "Ability.h"
 
 class Player;
 

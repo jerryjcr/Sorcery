@@ -1,7 +1,13 @@
 #ifndef MINION_H_
 #define MINION_H_
 
+#include <memory>
+#include <string>
+
 #include "Card.h"
+
+class Ability;
+class Player;
 
 class Minion : public Card {
  protected:

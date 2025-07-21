@@ -1,5 +1,11 @@
 #include "Card.h"
 
+#include <memory>
+#include <string>
+
+#include "Ability.h"
+#include "Player.h"
+
 Card::Card(const std::string& name, int cost,
            std::shared_ptr<const Ability> activated,
            std::shared_ptr<const Ability> triggered)

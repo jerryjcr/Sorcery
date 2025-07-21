@@ -1,5 +1,8 @@
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "Card.h"
 #include "Database.h"
@@ -75,7 +78,8 @@ int main(int argc, char* argv[]) {
                  chargeCost);
       // todo: then dynamically allocate a new card
       // todo: then add it to a deck
-    } else {  // some sort of blank card is given, or everything crashes and burns, perhaps
+    } else {  // some sort of blank card is given, or everything crashes and
+              // burns, perhaps
     }
   }
 

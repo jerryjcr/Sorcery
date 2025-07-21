@@ -1,6 +1,10 @@
 #include "ConcreteAbilities.h"
 
+#include <memory>
+
+#include "Ability.h"
 #include "Card.h"
+#include "Player.h"
 
 void BanishAbility::useAbility(TriggerType type, Player& targetPlayer,
                                int boardIndex) {

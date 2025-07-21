@@ -3,6 +3,8 @@
 
 #include "Ability.h"
 
+class Player;
+
 class BanishAbility : public Ability {
   virtual void useAbility(TriggerType type, Player& targetPlayer,
                           int boardIndex) override;

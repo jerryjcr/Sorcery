@@ -1,7 +1,12 @@
 #ifndef RITUAL_H_
 #define RITUAL_H_
 
+#include <memory>
+#include <string>
+
+#include "Ability.h"
 #include "Card.h"
+#include "Player.h"
 
 class Ritual : public Card {
  protected:

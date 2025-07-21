@@ -1,7 +1,7 @@
 #ifndef ABILITY_H_
 #define ABILITY_H_
 
-#include "Player.h"
+class Player;
 
 enum class TriggerType {
   None,

@@ -1,5 +1,10 @@
 #include "Minion.h"
 
+#include <memory>
+#include <string>
+
+#include "Player.h"
+
 Minion::Minion(const std::string& name, int cost, int attack, int defence,
                std::shared_ptr<const Ability> activated,
                std::shared_ptr<const Ability> triggered)
@@ -7,6 +12,8 @@ Minion::Minion(const std::string& name, int cost, int attack, int defence,
       attack{attack},
       defence{defence},
       actions{0} {}
+
+Minion::~Minion() {}
 
 void Minion::attackMinion(Minion& targetMinion) {
   // fill in later

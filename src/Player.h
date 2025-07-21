@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Subject.h"
 
@@ -19,7 +20,7 @@ class Player : public Subject {
   std::vector<std::unique_ptr<Card>> deck;
   std::vector<std::unique_ptr<Card>> hand;
   std::vector<std::unique_ptr<Minion>> board;
-  std::vector<std::unique_ptr<Ritual>> ritual;
+  std::unique_ptr<Ritual> ritual;
   std::vector<std::unique_ptr<Minion>> graveyard;
 
   int life;

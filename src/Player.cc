@@ -1,5 +1,9 @@
 #include "Player.h"
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Card.h"
 #include "Minion.h"
 #include "Ritual.h"
