@@ -1,8 +1,8 @@
 #include "Player.h"
 
-Player::Player(std::string name, int life, int magic,
-               std::vector<std::unique_ptr<Card>> deck)
-    : playerName{name}, life{life}, magic{magic}, deck{std::move(deck)} {}
+Player::Player(std::string name, std::vector<std::unique_ptr<Card>> deck,
+               int life, int magic)
+    : playerName{name}, deck{std::move(deck)}, life{life}, magic{magic} {}
 
 void Player::playCard(int handIndex) {
   // todo
