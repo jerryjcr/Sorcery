@@ -41,8 +41,8 @@ class Player : public Subject {
   int getLife() const;
   int getMagic() const;
 
-  int adjustLife(int amount);
-  int adjustMagic(int amount);
+  void adjustLife(int amount);
+  void adjustMagic(int amount);
 
   void setBoard(int index, std::unique_ptr<Card> card);
 

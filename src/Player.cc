@@ -41,9 +41,9 @@ int Player::getLife() const { return life; }
 
 int Player::getMagic() const { return magic; }
 
-int Player::adjustLife(int amount) { life += amount; }
+void Player::adjustLife(int amount) { life += amount; }
 
-int Player::adjustMagic(int amount) { magic += amount; }
+void Player::adjustMagic(int amount) { magic += amount; }
 
 void Player::setBoard(int index, std::unique_ptr<Card> card) {
   // todo
