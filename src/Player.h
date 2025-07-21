@@ -31,10 +31,12 @@ class Player : public Subject {
          int life = kInitialLife, int magic = kInitialMagic);
 
   void playCard(int handIndex);
+  // target index is 0 for ritual, 1-5 for minions
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
   void drawCard();
   void discard(int handIndex);
   void attackMinion(int boardIndex, Player& targetPlayer, int targetIndex);
+  void attackPlayer(int boardIndex, Player& targetPlayer);
   void use(int boardIndex);
   void describeHand() const;
   void describeBoard() const;

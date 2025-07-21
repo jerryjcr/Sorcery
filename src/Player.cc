@@ -1,5 +1,6 @@
 #include "Player.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -7,13 +8,48 @@
 #include "Card.h"
 #include "Minion.h"
 #include "Ritual.h"
+#include "Spell.h"
 
 Player::Player(std::string name, std::vector<std::unique_ptr<Card>> deck,
                int life, int magic)
     : playerName{name}, deck{std::move(deck)}, life{life}, magic{magic} {}
 
 void Player::playCard(int handIndex) {
-  // todo
+  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) return;
+
+  std::unique_ptr<Card>& card = hand[handIndex];
+  int cost = card->getCost();
+  if (magic < cost) {
+    std::cerr << "Not enough magic to play this card." << std::endl;
+    return;
+  }
+  if (Minion* minionRawPtr = dynamic_cast<Minion*>(card.get())) {
+    if (board.size() >= 5) {
+      std::cerr << "Board is full." << std::endl;
+      return;
+    }
+
+    magic -= cost;
+
+    std::unique_ptr<Minion> minion(dynamic_cast<Minion*>(card.release()));
+    board.push_back(std::move(minion));
+    hand.erase(hand.begin() + handIndex);
+  } else if (Ritual* ritualRawPtr = dynamic_cast<Ritual*>(card.get())) {
+    magic -= cost;
+
+    std::unique_ptr<Ritual> newRitual(dynamic_cast<Ritual*>(card.release()));
+    ritual = std::move(newRitual);
+  } else if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
+             spellRawPtr && !spellRawPtr->requiresTarget()) {
+    magic -= cost;
+
+    std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
+    spell->useSpell();  // call the version of the method with no target
+    hand.erase(hand.begin() + handIndex);
+  } else {
+    std::cerr << "Must specify target player and index to play this card."
+              << std::endl;
+  }
 }
 
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
@@ -30,6 +66,10 @@ void Player::discard(int handIndex) {
 
 void Player::attackMinion(int boardIndex, Player& targetPlayer,
                           int targetIndex) {
+  // todo
+}
+
+void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
   // todo
 }
 

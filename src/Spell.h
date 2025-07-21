@@ -12,6 +12,9 @@ class Spell : public Card {
         std::shared_ptr<const Ability> activated);
   virtual ~Spell() = 0;
 
+  virtual bool requiresTarget() const;
+
+  void useSpell();
   void useSpell(Player& targetPlayer, int boardIndex);
 };
 
