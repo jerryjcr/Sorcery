@@ -63,8 +63,8 @@ int main(int argc, char* argv[]) {
   std::cin >> name1;
   std::cin >> name2;
 
-  Player p1{name1, deck1};
-  Player p2{name2, deck2};
+  Player p1{name1, std::move(deck1)};
+  Player p2{name2, std::move(deck2)};
 
   // main loop
   while (true) {
