@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "Minion.h"
 #include "Ritual.h"
-#include "Enchantment.h"
 
 void BanishAbility::useAbility(TriggerType type, Player& targetPlayer,
                                int boardIndex) {

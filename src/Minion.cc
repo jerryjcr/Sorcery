@@ -7,11 +7,12 @@
 
 Minion::Minion(const std::string& name, int cost, int attack, int defence,
                std::shared_ptr<const Ability> activated,
-               std::shared_ptr<const Ability> triggered)
+               std::shared_ptr<const Ability> triggered, bool isEnchanted)
     : Card{name, cost, activated, triggered},
       attack{attack},
       defence{defence},
-      actions{0} {}
+      actions{0},
+      isEnchanted{isEnchanted} {}
 
 Minion::~Minion() {}
 
