@@ -6,7 +6,7 @@ Minion::Minion(const std::string& name, int cost, int attack, int defence,
     : Card{name, cost, activated, triggered},
       attack{attack},
       defence{defence},
-      actions{1} {}
+      actions{0} {}
 
 void Minion::attackMinion(Minion& targetMinion) {
   // fill in later
