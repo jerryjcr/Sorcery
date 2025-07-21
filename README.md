@@ -19,3 +19,18 @@ The tasks of this phase include the following:
   - Ownership of subdecks: deck, hand, graveyard, etc.
 - Define basic GraphicalDisplay class that observes the Players
 - Build a basic game loop to test functionality of two Players with empty boards (no concrete classes exist as of yet).
+
+## Phase 2
+In the second phase of the project, we focus on extending the game loop and adding more player actions. This includes:
+
+- Implement the actual game loop:
+  - Start and end turn behaviour
+- Basic player commands
+  - draw
+  - discard
+  - play
+  - use
+  - attack
+  - describe
+  - etc.
+- Parse command input
