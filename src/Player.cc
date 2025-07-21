@@ -14,9 +14,9 @@ int Player::getLife() const { return life; }
 
 int Player::getMagic() const { return magic; }
 
-int Player::adjustLife(int amount) { life = life + amount; }
+int Player::adjustLife(int amount) { life += amount; }
 
-int Player::adjustMagic(int amount) { magic = magic + amount; }
+int Player::adjustMagic(int amount) { magic += amount; }
 
 void Player::playCard(int handIndex) {
   // todo

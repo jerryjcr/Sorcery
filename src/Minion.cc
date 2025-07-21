@@ -23,8 +23,8 @@ int Minion::getDefence() const { return defence; }
 
 int Minion::getActions() const { return actions; }
 
-void Minion::adjustAttack(int amount) { attack = attack + amount; }
+void Minion::adjustAttack(int amount) { attack += amount; }
 
-void Minion::adjustDefence(int amount) { defence = defence + amount; }
+void Minion::adjustDefence(int amount) { defence += amount; }
 
 void Minion::resetActions() { actions = 1; }
