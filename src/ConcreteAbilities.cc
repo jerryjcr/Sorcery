@@ -34,7 +34,8 @@ void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
     if (targetPlayer.getBoard(boardIndex)->getIsEnchanted()){
-      targetPlayer.getBoard(boardIndex); //not done
+      std::unique_ptr<Enchantment> tmp(static_cast<Enchantment*>(targetPlayer.getBoard(boardIndex).release()));
+      targetPlayer.setBoard(boardIndex,std::move(tmp->getParent()));
     }
   }
 }
