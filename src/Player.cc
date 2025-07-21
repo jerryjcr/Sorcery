@@ -1,5 +1,9 @@
 #include "Player.h"
 
+#include "Card.h"
+#include "Minion.h"
+#include "Ritual.h"
+
 Player::Player(std::string name, std::vector<std::unique_ptr<Card>> deck,
                int life, int magic)
     : playerName{name}, deck{std::move(deck)}, life{life}, magic{magic} {}

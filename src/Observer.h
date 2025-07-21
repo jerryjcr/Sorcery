@@ -9,7 +9,7 @@ class Observer {
  public:
   virtual ~Observer() = default;
 
-  void notify(Subject* whoFrom);
+  virtual void notify(Subject* whoFrom) = 0;
 };
 
 #endif
