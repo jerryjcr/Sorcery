@@ -1,7 +1,6 @@
 #ifndef ABILITY_H_
 #define ABILITY_H_
 
-#include "Card.h"
 #include "Player.h"
 
 enum class TriggerType {
