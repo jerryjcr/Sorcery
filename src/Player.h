@@ -34,6 +34,7 @@ class Player : public Subject {
   int getLife() const;
   int getMagic() const;
 
+  // to reduce give a negative #, to increase give a positive #
   int adjustLife(int amount);
   int adjustMagic(int amount);
 
