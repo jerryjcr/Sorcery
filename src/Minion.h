@@ -14,13 +14,14 @@ class Minion : public Card {
   int attack;
   int defence;
   int actions;
+  bool isEnchanted;
 
   bool useAction();
 
  public:
   Minion(const std::string& name, int cost, int attack, int defence,
          std::shared_ptr<const Ability> activated = nullptr,
-         std::shared_ptr<const Ability> triggered = nullptr);
+         std::shared_ptr<const Ability> triggered = nullptr, bool isEnchanted = false);
   virtual ~Minion() = 0;
 
   void attackMinion(Minion& targetMinion);
@@ -35,6 +36,7 @@ class Minion : public Card {
   void adjustDefence(int amount);
   // sets actions to 1
   void resetActions();
+  bool getIsEnchanted() const;
 };
 
 #endif

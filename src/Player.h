@@ -47,6 +47,9 @@ class Player : public Subject {
 
   void setBoard(int index, std::unique_ptr<Card> card);
 
+  std::unique_ptr<Ritual>& getRitual() const;
+  std::unique_ptr<Minion>& getBoard(int index) const; //goes from 1-5
+
   void moveCard(std::vector<std::unique_ptr<Card>>& oldDeck,
                 std::vector<std::unique_ptr<Card>>& newDeck,
                 int index);  // moves oldDeck[index] to newDeck
