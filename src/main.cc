@@ -3,7 +3,8 @@
 
 #include "Card.h"
 #include "Player.h"
-// include more things as needed
+#include "Minion.h"
+#include "Ritual.h"
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -64,4 +65,3 @@ int main(int argc, char* argv[]) {
     // due later do later
   }
 }
-
