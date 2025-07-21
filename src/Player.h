@@ -15,14 +15,15 @@ const int kInitialMagic = 3;
 
 class Player : public Subject {
   std::string playerName;
-  int life;
-  int magic;
 
   std::vector<std::unique_ptr<Card>> deck;
   std::vector<std::unique_ptr<Card>> hand;
   std::vector<std::unique_ptr<Minion>> board;
   std::vector<std::unique_ptr<Ritual>> ritual;
   std::vector<std::unique_ptr<Minion>> graveyard;
+
+  int life;
+  int magic;
 
  public:
   Player(std::string name, std::vector<std::unique_ptr<Card>> deck,

@@ -1,5 +1,7 @@
 #include "ConcreteAbilities.h"
 
+#include "Card.h"
+
 void BanishAbility::useAbility(TriggerType type, Player& targetPlayer,
                                int boardIndex) {
   if (type == TriggerType::None) {
