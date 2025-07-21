@@ -12,4 +12,10 @@ class DefaultMinion : public Minion {
   void describe() const;
 };
 
+class AirElemental : public Minion {
+  public:
+    AirElemental();
+    void describe() const override;
+};
+
 #endif
