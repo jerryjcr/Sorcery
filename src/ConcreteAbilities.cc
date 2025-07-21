@@ -30,6 +30,7 @@ void RechargeAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+/*
 void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -39,4 +40,5 @@ void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
     }
   }
 }
+*/
 
