@@ -14,18 +14,21 @@ class Minion : public Card {
   int attack;
   int defence;
   int actions;
-  bool isEnchanted;
 
   bool useAction();
 
  public:
   Minion(const std::string& name, int cost, int attack, int defence,
          std::shared_ptr<const Ability> activated = nullptr,
-         std::shared_ptr<const Ability> triggered = nullptr, bool isEnchanted = false);
+         std::shared_ptr<const Ability> triggered = nullptr);
   virtual ~Minion() = 0;
 
   void attackMinion(Minion& targetMinion);
   void attackPlayer(Player& targetPlayer);
+
+  virtual void activateAbility(Player& targetPlayer, int boardIndex) override;
+  virtual void triggerAbility(TriggerType type, Player& targetPlayer,
+                              int boardIndex) override;
 
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;

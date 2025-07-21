@@ -22,7 +22,6 @@ class Card {
   virtual ~Card() = default;
 
   // uses an activated ability
-  // target = nullptr if no target
   virtual void activateAbility(Player& targetPlayer, int boardIndex);
   // uses a trigger ability (ability compares trigger type)
   virtual void triggerAbility(TriggerType type, Player& targetPlayer,
