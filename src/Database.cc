@@ -1,45 +1,15 @@
-#include "Database.h"
+#include "Card.h"
+#include "ConcreteMinions.h"
+#include "Minion.h"
+#include "Ritual.h"
+#include "Spell.h"
 
-void findMinion(const std::string& code, std::string& name, int& cost,
-                std::shared_ptr<const Ability>& activated,
-                std::shared_ptr<const Ability>& triggered, int& attack,
-                int& defence) {
-  if (code == "Mplaceholder") {
-  } else {  // default minion
-    name = "Minion Default";
-    cost = 1;
-    activated = nullptr;
-    triggered = nullptr;
-    attack = 1;
-    defence = 1;
-  }
-}
-
-void findSpell(const std::string& code, std::string& name, int& cost,
-               std::shared_ptr<const Ability>& activated) {
-  if (code == "placeholder") {
-  } else {  // default spell
-    name = "Spell Default";
-    cost = 1;
-    activated = nullptr;
-  }
-}
-
-void findEnchantment(const std::string& code, std::string& name, int& cost,
-                     std::shared_ptr<const Ability>& activated,
-                     std::shared_ptr<const Ability>& triggered) {
-  if (code == "Mplaceholder") {
-  } else {  // default enchantment
-    // we didn't come up with a class definition yet however we will eventually
-  }
-}
-
-void findRitual(const std::string& code, std::string& name, int& cost,
-                std::shared_ptr<const Ability>& activated,
-                std::shared_ptr<const Ability>& triggered, int& charges,
-                int& chargeCost) {
-  if (code == "Mplaceholder") {
-  } else {  // default ritual
-    // not sure what this would look right rn
+std::unique_ptr<Card> findCard(const std::string& code) {
+  if (code == "Placeholder") {
+    // for now this returns the default so that this always returns a value
+    // in the future this will be a real card
+    return std::unique_ptr<Card>(new DefaultMinion);
+  } else {  // default card which is a basic minion
+    return std::unique_ptr<Card>(new DefaultMinion);
   }
 }

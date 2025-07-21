@@ -49,50 +49,22 @@ int main(int argc, char* argv[]) {
   std::string currCard;
 
   while (deckfile1 >> currCard) {
-    // in this for loop we would convert from the code used in the input file
-    // to a card, and then that card is added to the respective deck
-    std::string name;
-    int cost;
-    std::shared_ptr<const Ability> activated;
-    std::shared_ptr<const Ability> triggered;
-
-    // card codes start with a captial letter associated with their type
-    if (currCard.at(0) == 'M') {
-      int attack;
-      int defence;
-      findMinion(currCard, name, cost, activated, triggered, attack, defence);
-      // todo: then dynamically allocate a new card
-      // todo: then add it to a deck
-    } else if (currCard.at(0) == 'S') {
-      findSpell(currCard, name, cost, activated);
-      // todo: then dynamically allocate a new card
-      // todo: then add it to a deck
-    } else if (currCard.at(0) == 'E') {
-      findEnchantment(currCard, name, cost, activated, triggered);
-      // todo: then dynamically allocate a new card
-      // todo: then add it to a deck
-    } else if (currCard.at(0) == 'R') {
-      int charges;
-      int chargeCost;
-      findRitual(currCard, name, cost, activated, triggered, charges,
-                 chargeCost);
-      // todo: then dynamically allocate a new card
-      // todo: then add it to a deck
-    } else {  // some sort of blank card is given, or everything crashes and
-              // burns, perhaps
-    }
+    std::unique_ptr<Card> newCard(findCard(currCard));
+    deck1.emplace_back(std::move(newCard));
   }
 
   while (deckfile2 >> currCard) {
-    // same thing
+    std::unique_ptr<Card> newCard(findCard(currCard));
+    deck2.emplace_back(std::move(newCard));
   }
 
+  // when we add -init, this will have to change, amoung other things
   std::string name1, name2;
   std::cin >> name1;
   std::cin >> name2;
 
   Player p1{name1, deck1};
-  Player p2{name2, deck1};
+  Player p2{name2, deck2};
 
   // main loop
   while (true) {

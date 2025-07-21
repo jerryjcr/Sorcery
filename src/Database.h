@@ -2,24 +2,12 @@
 #define DATABASE_H_
 
 #include "Card.h"
+#include "Minion.h"
+#include "Ritual.h"
+#include "Spell.h"
 
 // assigns values to the given parameters based on the code given
 // if the code is invalid will assign a default minion
-void findMinion(const std::string& code, std::string& name, int& cost,
-                std::shared_ptr<const Ability>& activated,
-                std::shared_ptr<const Ability>& triggered, int& attack,
-                int& defence);
-
-void findSpell(const std::string& code, std::string& name, int& cost,
-              std::shared_ptr<const Ability>& activated);
-
-void findEnchantment(const std::string& code, std::string& name, int& cost,
-              std::shared_ptr<const Ability>& activated,
-              std::shared_ptr<const Ability>& triggered);
-
-void findRitual(const std::string& code, std::string& name, int& cost,
-              std::shared_ptr<const Ability>& activated,
-              std::shared_ptr<const Ability>& triggered, int& charges,
-              int& chargeCost);
+std::unique_ptr<Card> findCard(const std::string& code);
 
 #endif
