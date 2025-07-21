@@ -2,8 +2,9 @@
 #include <iostream>
 
 #include "Card.h"
-#include "Player.h"
+#include "Database.h"
 #include "Minion.h"
+#include "Player.h"
 #include "Ritual.h"
 
 int main(int argc, char* argv[]) {
@@ -47,6 +48,35 @@ int main(int argc, char* argv[]) {
   while (deckfile1 >> currCard) {
     // in this for loop we would convert from the code used in the input file
     // to a card, and then that card is added to the respective deck
+    std::string name;
+    int cost;
+    std::shared_ptr<const Ability> activated;
+    std::shared_ptr<const Ability> triggered;
+
+    // card codes start with a captial letter associated with their type
+    if (currCard.at(0) == 'M') {
+      int attack;
+      int defence;
+      findMinion(currCard, name, cost, activated, triggered, attack, defence);
+      // todo: then dynamically allocate a new card
+      // todo: then add it to a deck
+    } else if (currCard.at(0) == 'S') {
+      findSpell(currCard, name, cost, activated);
+      // todo: then dynamically allocate a new card
+      // todo: then add it to a deck
+    } else if (currCard.at(0) == 'E') {
+      findEnchantment(currCard, name, cost, activated, triggered);
+      // todo: then dynamically allocate a new card
+      // todo: then add it to a deck
+    } else if (currCard.at(0) == 'R') {
+      int charges;
+      int chargeCost;
+      findRitual(currCard, name, cost, activated, triggered, charges,
+                 chargeCost);
+      // todo: then dynamically allocate a new card
+      // todo: then add it to a deck
+    } else {  // some sort of blank card is given, or everything crashes and burns, perhaps
+    }
   }
 
   while (deckfile2 >> currCard) {
@@ -59,9 +89,9 @@ int main(int argc, char* argv[]) {
 
   Player p1{name1, deck1};
   Player p2{name2, deck1};
-  
+
   // main loop
-  while(true) {
+  while (true) {
     // due later do later
   }
 }
