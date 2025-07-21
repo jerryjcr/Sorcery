@@ -10,6 +10,9 @@ class Card;
 class Minion;
 class Ritual;
 
+const int STARTING_LIFE = 20;
+const int STARTING_MAGIC = 3;
+
 class Player : public Subject {
   std::string playerName;
   int life;
@@ -22,6 +25,10 @@ class Player : public Subject {
   std::vector<std::unique_ptr<Minion>> graveyard;
 
  public:
+  // constructor does not give starting hand of 5
+  Player(std::string name, int life = STARTING_LIFE, int magic = STARTING_MAGIC,
+         std::vector<std::unique_ptr<Card>> deck);
+
   void playCard(int handIndex);
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
   void drawCard();
