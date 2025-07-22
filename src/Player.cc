@@ -28,33 +28,30 @@ void Player::playCard(int handIndex) {
     std::cerr << "Not enough magic to play this card." << std::endl;
     return;
   }
+
+  // detect the type of card by casting to the appropriate pointer
   if (Minion* minionRawPtr = dynamic_cast<Minion*>(card.get())) {
     if (board.size() >= 5) {
       std::cerr << "Board is full." << std::endl;
       return;
     }
-
-    magic -= cost;
-
-    std::unique_ptr<Minion> minion(dynamic_cast<Minion*>(card.release()));
+    std::unique_ptr<Minion> minion(static_cast<Minion*>(card.release()));
     board.push_back(std::move(minion));
-    hand.erase(hand.begin() + handIndex);
   } else if (Ritual* ritualRawPtr = dynamic_cast<Ritual*>(card.get())) {
-    magic -= cost;
-
-    std::unique_ptr<Ritual> newRitual(dynamic_cast<Ritual*>(card.release()));
+    std::unique_ptr<Ritual> newRitual(static_cast<Ritual*>(card.release()));
     ritual = std::move(newRitual);
   } else if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
              spellRawPtr && !spellRawPtr->requiresTarget()) {
-    magic -= cost;
-
-    std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
+    std::unique_ptr<Spell> spell(static_cast<Spell*>(card.release()));
     spell->useSpell();  // call the version of the method with no target
-    hand.erase(hand.begin() + handIndex);
   } else {
     std::cerr << "Must specify target player and index to play this card."
               << std::endl;
+    return;
   }
+
+  magic -= cost;
+  hand.erase(hand.begin() + handIndex);
 }
 
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
