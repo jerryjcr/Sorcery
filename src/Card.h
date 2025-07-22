@@ -12,22 +12,20 @@ class Card {
  protected:
   std::string name;
   int cost;
-  std::shared_ptr<const Ability> activatedAbility = nullptr;
-  std::shared_ptr<const Ability> triggeredAbility = nullptr;
+  std::unique_ptr<const Ability> ability;
 
  public:
   Card(const std::string& name, int cost,
-       std::shared_ptr<const Ability> activated = nullptr,
-       std::shared_ptr<const Ability> triggered = nullptr);
+       std::unique_ptr<const Ability> ability = nullptr);
   virtual ~Card() = 0;
 
-  // uses an activated ability without a target
-  virtual void activateAbility();
-  // uses an activated ability with a target
-  virtual void activateAbility(Player& targetPlayer, int targetIndex);
-  // uses a trigger ability (ability compares trigger type)
-  virtual void triggerAbility(TriggerType type, Player& targetPlayer,
-                              int targetIndex);
+  // uses an ability without a target
+  virtual void useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                              TriggerType type = TriggerType::None);
+  // uses an ability with a target
+  virtual void useCardAbility(Player& targetPlayer,
+                              std::unique_ptr<Card>& targetCard,
+                              TriggerType type = TriggerType::None);
 
   int getCost() const;
 };

@@ -7,26 +7,16 @@
 #include "Player.h"
 
 Card::Card(const std::string& name, int cost,
-           std::shared_ptr<const Ability> activated,
-           std::shared_ptr<const Ability> triggered)
-    : name{name},
-      cost{cost},
-      activatedAbility{activated},
-      triggeredAbility{triggered} {}
+           std::unique_ptr<const Ability> ability)
+    : name{name}, cost{cost}, ability{std::move(ability)} {}
 
 Card::~Card() {}
 
-void Card::activateAbility() {
-  // figure this out later
-}
+void useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                    TriggerType type = TriggerType::None);
 
-void Card::activateAbility(Player& targetPlayer, int targetIndex) {
-  // figure this out later
-}
-
-void Card::triggerAbility(TriggerType type, Player& targetPlayer,
-                          int targetIndex) {
-  // figure this out later
-}
+void useCardAbility(Player& targetPlayer, Player& otherPlayer,
+                    std::unique_ptr<Card>& targetCard,
+                    TriggerType type = TriggerType::None);
 
 int Card::getCost() const { return cost; }
