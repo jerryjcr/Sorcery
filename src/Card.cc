@@ -6,7 +6,7 @@
 #include "Ability.h"
 #include "Player.h"
 
-Card::Card(const std::string& name, int cost,
+Card::Card(const std::string& name, int cost, CardType type,
            std::unique_ptr<const Ability> ability)
     : name{name}, cost{cost}, ability{std::move(ability)} {}
 
