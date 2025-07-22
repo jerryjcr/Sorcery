@@ -41,7 +41,6 @@ class RaiseDeadAbility : public Ability {
                               TriggerType type = TriggerType::None) override;
 };
 
-//only effects the targetted player, so it must be called twice for the intended effect
 class BlizzardAbility : public Ability {
   public:
     BlizzardAbility(int cost);
@@ -50,6 +49,7 @@ class BlizzardAbility : public Ability {
 };
 
 //adds 1/1 to target minion on minion leave
+//special case, target here is always itself instead of the leaving minion
 class BoneGolemAbility : public Ability {
   public:
     BoneGolemAbility(int cost);

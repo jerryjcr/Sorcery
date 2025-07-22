@@ -9,14 +9,13 @@ class DefaultMinion : public Minion {
   public:
     DefaultMinion();
     ~DefaultMinion() = default;
-    virtual void describe() const override;
 };
 
 class AirElemental : public Minion {
   public:
     AirElemental();
     ~AirElemental() = default;
-    virtual void describe() const override;
+    virtual const std::vector<std::string>& getDescription() const override;
 };
 
 class EarthElemental : public Minion {
