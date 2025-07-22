@@ -55,16 +55,17 @@ void Player::playCard(int handIndex) {
   hand.erase(hand.begin() + handIndex);
 }
 
-void Player::playCard(int handIndex, Player& targetPlayer, int boardIndex) {
+void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
   if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) {
     std::cerr << "Hand index out of bounds." << std::endl;
     return;
   }
-  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size() + 1)) {
-    std::cerr << "Board index out of bounds." << std::endl;
+  if (targetIndex < 0 ||
+      targetIndex >= static_cast<int>(targetPlayer.board.size() + 1)) {
+    std::cerr << "Target index out of bounds." << std::endl;
     return;
   }
-  if (boardIndex == 0 && !targetPlayer.ritual) {
+  if (targetIndex == 0 && !targetPlayer.ritual) {
     std::cerr << "Target ritual does not exist." << std::endl;
     return;
   }
@@ -80,21 +81,20 @@ void Player::playCard(int handIndex, Player& targetPlayer, int boardIndex) {
   if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
       spellRawPtr && spellRawPtr->requiresTarget()) {
     TargetType targetType;
-    if (boardIndex == 0) {
+    if (targetIndex == 0) {
       targetType = TargetType::Ritual;
     } else {
       targetType = TargetType::Minion;
     }
     if (spellRawPtr->canTarget(targetType)) {
       std::unique_ptr<Spell> spell(static_cast<Spell*>(card.release()));
-      spell->useSpell(targetPlayer, boardIndex);
+      spell->useSpell(targetPlayer, targetIndex);
     } else {
       std::cerr << "This spell cannot target a "
                 << (targetType == TargetType::Minion ? "minion." : "ritual.")
                 << std::endl;
       return;
     }
-
   } else {
     std::cerr << "This card does not require a target." << std::endl;
     return;
@@ -133,8 +133,8 @@ void Player::attackMinion(int boardIndex, Player& targetPlayer,
     std::cerr << "Board index out of bounds." << std::endl;
     return;
   }
-  if (targetIndex < 0 ||
-      targetIndex >= static_cast<int>(targetPlayer.board.size())) {
+  if (targetIndex <= 0 ||
+      targetIndex >= static_cast<int>(targetPlayer.board.size() + 1)) {
     std::cerr << "Target index out of bounds." << std::endl;
     return;
   }
@@ -163,6 +163,37 @@ void Player::use(int boardIndex) {
   }
 
   board[boardIndex]->activateAbility();
+}
+
+void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
+  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+    std::cerr << "Board index out of bounds." << std::endl;
+    return;
+  }
+  if (targetIndex < 0 ||
+      targetIndex >= static_cast<int>(targetPlayer.board.size() + 1)) {
+    std::cerr << "Target index out of bounds." << std::endl;
+    return;
+  }
+  if (targetIndex == 0 && !targetPlayer.ritual) {
+    std::cerr << "Target ritual does not exist." << std::endl;
+    return;
+  }
+
+  TargetType targetType;
+  if (targetIndex == 0) {
+    targetType = TargetType::Ritual;
+  } else {
+    targetType = TargetType::Minion;
+  }
+  if (board[boardIndex]->canTarget(targetType)) {
+    board[boardIndex]->activateAbility(targetPlayer, targetIndex);
+  } else {
+    std::cerr << "This ability cannot target a "
+              << (targetType == TargetType::Minion ? "minion." : "ritual.")
+              << std::endl;
+    return;
+  }
 }
 
 void Player::describeHand() const {

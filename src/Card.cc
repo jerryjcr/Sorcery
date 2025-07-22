@@ -18,12 +18,12 @@ void Card::activateAbility() {
   // figure this out later
 }
 
-void Card::activateAbility(Player& targetPlayer, int boardIndex) {
+void Card::activateAbility(Player& targetPlayer, int targetIndex) {
   // figure this out later
 }
 
 void Card::triggerAbility(TriggerType type, Player& targetPlayer,
-                          int boardIndex) {
+                          int targetIndex) {
   // figure this out later
 }
 

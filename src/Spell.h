@@ -16,7 +16,7 @@ class Spell : public Card {
   virtual ~Spell() = 0;
 
   void useSpell();
-  void useSpell(Player& targetPlayer, int boardIndex);
+  void useSpell(Player& targetPlayer, int targetIndex);
 
   bool requiresTarget() const;
   bool canTarget(TargetType targetType) const;

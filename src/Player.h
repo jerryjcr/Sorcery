@@ -33,6 +33,7 @@ class Player : public Subject {
   void attackMinion(int boardIndex, Player& targetPlayer, int targetIndex);
   void attackPlayer(int boardIndex, Player& targetPlayer);
   void use(int boardIndex);
+  void use(int boardIndex, Player& targetPlayer, int targetIndex);
   void describeHand() const;
   void describeBoard() const;
 
