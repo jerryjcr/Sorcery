@@ -14,6 +14,10 @@ Card::Card(const std::string& name, int cost,
       activatedAbility{activated},
       triggeredAbility{triggered} {}
 
+void Card::activateAbility() {
+  // figure this out later
+}
+
 void Card::activateAbility(Player& targetPlayer, int boardIndex) {
   // figure this out later
 }

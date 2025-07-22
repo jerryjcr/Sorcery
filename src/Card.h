@@ -21,7 +21,9 @@ class Card {
        std::shared_ptr<const Ability> triggered = nullptr);
   virtual ~Card() = default;
 
-  // uses an activated ability
+  // uses an activated ability without a target
+  virtual void activateAbility();
+  // uses an activated ability with a target
   virtual void activateAbility(Player& targetPlayer, int boardIndex);
   // uses a trigger ability (ability compares trigger type)
   virtual void triggerAbility(TriggerType type, Player& targetPlayer,

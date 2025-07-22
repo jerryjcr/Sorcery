@@ -26,12 +26,9 @@ class Minion : public Card {
   void attackMinion(Minion& targetMinion);
   void attackPlayer(Player& targetPlayer);
 
-  virtual void activateAbility(Player& targetPlayer, int boardIndex) override;
-  virtual void triggerAbility(TriggerType type, Player& targetPlayer,
-                              int boardIndex) override;
-
   bool requiresTarget() const;
   bool canTarget(TargetType targetType) const;
+
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;
   virtual int getDefence() const;

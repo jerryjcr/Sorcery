@@ -24,6 +24,13 @@ void Minion::attackPlayer(Player& targetPlayer) {
   // maybe you want to check if this attack wins the game or not
 }
 
+bool Minion::requiresTarget() const {
+  return activatedAbility->requiresTarget();
+};
+bool Minion::canTarget(TargetType targetType) const {
+  return activatedAbility->canTarget(targetType);
+}
+
 int Minion::getAttack() const { return attack; }
 
 int Minion::getDefence() const { return defence; }
