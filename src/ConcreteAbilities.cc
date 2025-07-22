@@ -43,13 +43,6 @@ void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
-void RaiseDeadAbility::useAbility(TriggerType type, Player& targetPlayer,
-                                 int boardIndex) {
-  if (type == TriggerType::None) {
-    //not done
-  }
-}
-
 void BlizzardAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {

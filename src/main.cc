@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
   bool graphicsMode = false;
+  // default.txt still needs to be made
   std::string decklist1 = "default.txt";
   std::string decklist2 = "default.txt";
 
@@ -24,13 +25,25 @@ int main(int argc, char* argv[]) {
     std::string cmd = argv[i];
 
     if (cmd == "-deck1") {
-      // should check for invalid input here (no file given)
-      i++;
-      decklist1 = argv[i];
+      if (i + 1 >= argc) {
+        std::cerr
+            << "Error, no filename given for deck 1. Using default instead"
+            << std::endl;
+        decklist1 = "default.txt";
+      } else {
+        i++;
+        decklist1 = argv[i];
+      }
     } else if (cmd == "-deck2") {
-      // should check for invalid input here (no file given)
-      i++;
-      decklist2 = argv[i];
+      if (i + 1 >= argc) {
+        std::cerr
+            << "Error, no filename given for deck 2. Using default instead"
+            << std::endl;
+            decklist2 = "default.txt";
+      } else {
+        i++;
+        decklist2 = argv[i];
+      }
     } else if (cmd == "-init") {
       //... do this later
     } else if (cmd == "-testing") {
@@ -40,17 +53,13 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  // here we would create the decks
-
-  // the idea is that we read some sort of id from the file
-  // then match that so some sort of database and get the right values for that
-  // specifc card
   std::ifstream deckfile1{decklist1};
   std::ifstream deckfile2{decklist2};
   std::vector<std::unique_ptr<Card>> deck1;
   std::vector<std::unique_ptr<Card>> deck2;
   std::string currCard;
 
+  // reading from the deck file,
   while (deckfile1 >> currCard) {
     std::unique_ptr<Card> newCard(findCard(currCard));
     deck1.emplace_back(std::move(newCard));
@@ -122,7 +131,7 @@ int main(int argc, char* argv[]) {
             // attacking the other player
             activePlayer.attackPlayer(myMinion, opponentPlayer);
           } else {
-            std::cerr << "Invalid input, expected an integer to target"
+            std::cerr << "Error Invalid input, expected an integer to target"
                       << std::endl;
           }
         } else {
@@ -139,9 +148,10 @@ int main(int argc, char* argv[]) {
               if ((targetPlayer != 1 && targetPlayer != 2) ||
                   (targetCard != 'r' &&
                    (targetCard < '1' || targetCard > '5'))) {
-                std::cerr << "Invalid input, player and or card targets are "
-                             "out of range"
-                          << std::endl;
+                std::cerr
+                    << "Error Invalid input, player and or card targets are "
+                       "out of range"
+                    << std::endl;
               } else {
                 int targetInd;
                 // we all agree that 0 is how you target a ritual
@@ -157,15 +167,17 @@ int main(int argc, char* argv[]) {
                 }
               }
             } else {
-              std::cerr << "Invalid input, expected an integer" << std::endl;
+              std::cerr << "Error Invalid input, expected an integer"
+                        << std::endl;
             }
           } else if (currline.eof()) {
             activePlayer.playCard(myCard);
           } else {
-            std::cerr << "Invalid input, expected an integer" << std::endl;
+            std::cerr << "Error Invalid input, expected an integer"
+                      << std::endl;
           }
         } else {
-          std::cerr << "error, no card index give" << std::endl;
+          std::cerr << "Error, no card index give" << std::endl;
         }
 
       } else if (cmd == "use") {
@@ -176,6 +188,8 @@ int main(int argc, char* argv[]) {
         // do later
       } else if (cmd == "board") {
         // do later
+      } else {
+        std::cerr << "Error: Command not recognized" << std::endl;
       }
     }
 
