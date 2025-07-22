@@ -63,7 +63,7 @@ void Player::playCard(int handIndex) {
     return;
   }
 
-  magic -= cost;
+  magic -= card->getCost();
   hand.erase(hand.begin() + handIndex);
 }
 

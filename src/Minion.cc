@@ -24,12 +24,12 @@ Minion::Minion(const std::string& name, int cost, int attack, int defence,
 Minion::~Minion() {}
 
 void Minion::attackMinion(Minion& targetMinion) {
-  targetMinion.adjustDefence(-getAttack());
-  adjustDefence(-targetMinion.getAttack());
+  targetMinion.adjustDefence(-attack);
+  adjustDefence(-targetMinion.attack);
 }
 
 void Minion::attackPlayer(Player& targetPlayer) {
-  targetPlayer.adjustLife(-getAttack());
+  targetPlayer.adjustLife(-attack);
 }
 
 bool Minion::requiresTarget() const {
