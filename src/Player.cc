@@ -61,7 +61,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
     return;
   }
   if (targetIndex < 0 ||
-      targetIndex >= static_cast<int>(targetPlayer.board.size() + 1)) {
+      targetIndex > static_cast<int>(targetPlayer.board.size())) {
     std::cerr << "Target index out of bounds." << std::endl;
     return;
   }
@@ -129,12 +129,12 @@ void Player::discard(int handIndex) {
 
 void Player::attackMinion(int boardIndex, Player& targetPlayer,
                           int targetIndex) {
-  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+  if (boardIndex < 1 || boardIndex > static_cast<int>(board.size())) {
     std::cerr << "Board index out of bounds." << std::endl;
     return;
   }
-  if (targetIndex <= 0 ||
-      targetIndex >= static_cast<int>(targetPlayer.board.size() + 1)) {
+  if (targetIndex < 1 ||
+      targetIndex > static_cast<int>(targetPlayer.board.size())) {
     std::cerr << "Target index out of bounds." << std::endl;
     return;
   }
@@ -143,7 +143,7 @@ void Player::attackMinion(int boardIndex, Player& targetPlayer,
 }
 
 void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
-  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+  if (boardIndex < 1 || boardIndex > static_cast<int>(board.size())) {
     std::cerr << "Board index out of bounds." << std::endl;
     return;
   }
@@ -152,7 +152,7 @@ void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
 }
 
 void Player::use(int boardIndex) {
-  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+  if (boardIndex < 1 || boardIndex > static_cast<int>(board.size())) {
     std::cerr << "Board index out of bounds." << std::endl;
     return;
   }
@@ -166,12 +166,12 @@ void Player::use(int boardIndex) {
 }
 
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
-  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+  if (boardIndex < 1 || boardIndex > static_cast<int>(board.size())) {
     std::cerr << "Board index out of bounds." << std::endl;
     return;
   }
   if (targetIndex < 0 ||
-      targetIndex >= static_cast<int>(targetPlayer.board.size() + 1)) {
+      targetIndex > static_cast<int>(targetPlayer.board.size())) {
     std::cerr << "Target index out of bounds." << std::endl;
     return;
   }
