@@ -20,7 +20,7 @@ The tasks of this phase include the following:
 - Define basic GraphicalDisplay class that observes the Players
 - Build a basic game loop to test functionality of two Players with empty boards (no concrete classes exist as of yet).
 
-## Phase 2
+## Phase 2 ✅
 In the second phase of the project, we focus on extending the game loop and adding more player actions. This includes:
 
 - Implement the actual game loop:
