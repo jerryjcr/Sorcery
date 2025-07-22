@@ -11,6 +11,12 @@ Spell::Spell(const std::string& name, int cost,
              std::shared_ptr<const Ability> activated)
     : Card{name, cost, activated} {}
 
+void Spell::useSpell() { activateAbility(); }
+
+void Spell::useSpell(Player& targetPlayer, int targetIndex) {
+  activateAbility(targetPlayer, targetIndex);
+}
+
 bool Spell::requiresTarget() const {
   return activatedAbility->requiresTarget();
 }
