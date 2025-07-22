@@ -107,6 +107,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int boardIndex) {
 void Player::drawCard() {
   if (deck.empty()) {
     std::cerr << "Deck is empty. Cannot draw a card." << std::endl;
+    return;
   }
   if (hand.size() >= kMaxHandSize) {
     std::cerr << "Hand is full. Cannot draw a card." << std::endl;
