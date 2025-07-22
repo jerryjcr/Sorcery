@@ -7,9 +7,13 @@
 #include "Card.h"
 
 Ritual::Ritual(const std::string& name, int cost, int charges, int chargeCost,
-               std::shared_ptr<const Ability> triggered)
-    : Card{name, cost, nullptr, triggered},
+               std::unique_ptr<const Ability> ability)
+    : Card{name, cost, CardType::Ritual, std::move(ability)},
       charges{charges},
       chargeCost{chargeCost} {}
 
 Ritual::~Ritual() {}
+
+int Ritual::getCharges() {
+  return charges;
+}
