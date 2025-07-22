@@ -16,9 +16,9 @@ const int kMaxHandSize = 5;
 
 Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
     : playerName{name},
-      deck{std::move(deck)},
       life{kInitialLife},
-      magic{kInitialMagic} {}
+      magic{kInitialMagic},
+      deck{std::move(deck)} {}
 
 void Player::playCard(int handIndex) {
   if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) return;
