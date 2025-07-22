@@ -185,7 +185,10 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "describe") {
         // todo
       } else if (cmd == "hand") {
-        // do later
+        // replace later
+        for (int i = 0; i < 5; i++) {
+          std::cin << activePlayer.getCost(i) << std::endl;
+        }
       } else if (cmd == "board") {
         // do later
       } else {
