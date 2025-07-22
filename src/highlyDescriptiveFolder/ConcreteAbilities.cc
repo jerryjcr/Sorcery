@@ -10,14 +10,16 @@
 #include "Enchantment.h"
 #include "ConcreteMinions.h"
 
+BanishAbility::BanishAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion,TargetType::Ritual}}{}
 void BanishAbility::useAbility(TriggerType type, Player& targetPlayer,
-                               int boardIndex) {
+                          Player& nontargetPlayer, std::unique_ptr<Card> target) {
   if (type == TriggerType::None) {
     std::unique_ptr<Card> p = nullptr;
     targetPlayer.setBoard(boardIndex, std::move(p));
   }
 }
 
+UnsummonAbility::UnsummonAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion}}{}
 void UnsummonAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -25,6 +27,7 @@ void UnsummonAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+RechargeAbility::RechargeAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Ritual}}{}
 void RechargeAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -32,7 +35,7 @@ void RechargeAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
-
+DisenchantAbility::DisenchantAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion}}{}
 void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -43,6 +46,7 @@ void DisenchantAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+BlizzardAbility::BlizzardAbility(int cost):Ability{cost,std::vector<TargetType>{}}{}
 void BlizzardAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -52,6 +56,15 @@ void BlizzardAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+RaiseDeadAbility::RaiseDeadAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion,TargetType::Ritual}}{}
+void RaiseDeadAbility::useAbility(TriggerType type, Player& targetPlayer,
+                                 int boardIndex) {
+  if (type == TriggerType::MinionEnters) {
+    targetPlayer.getBoard(boardIndex)->adjustDefence(-1);
+  }
+}
+
+BoneGolemAbility::BoneGolemAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion}}{}
 void BoneGolemAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::MinionLeaves) {
@@ -60,13 +73,7 @@ void BoneGolemAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
-void RaiseDeadAbility::useAbility(TriggerType type, Player& targetPlayer,
-                                 int boardIndex) {
-  if (type == TriggerType::MinionEnters) {
-    targetPlayer.getBoard(boardIndex)->adjustDefence(-1);
-  }
-}
-
+PotionSellerAbility::PotionSellerAbility(int cost):Ability{cost,std::vector<TargetType>{}}{}
 void PotionSellerAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::EndOfTurn) {
@@ -76,6 +83,7 @@ void PotionSellerAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+NovicePyromancerAbility::NovicePyromancerAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion}}{}
 void NovicePyromancerAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -83,6 +91,7 @@ void NovicePyromancerAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+ApprenticeSummonerAbility::ApprenticeSummonerAbility(int cost):Ability{cost,std::vector<TargetType>{}}{}
 void ApprenticeSummonerAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -100,6 +109,7 @@ void ApprenticeSummonerAbility::useAbility(TriggerType type, Player& targetPlaye
   }
 }
 
+MasterSummonerAbility::MasterSummonerAbility(int cost):Ability{cost,std::vector<TargetType>{}}{}
 void MasterSummonerAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::None) {
@@ -117,6 +127,7 @@ void MasterSummonerAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+DarkRitualAbility::DarkRitualAbility(int cost):Ability{cost,std::vector<TargetType>{}}{}
 void DarkRitualAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::StartOfTurn) {
@@ -124,6 +135,7 @@ void DarkRitualAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+AuraOfPowerAbility::AuraOfPowerAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion}}{}
 void AuraOfPowerAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::MinionEnters) {
@@ -132,6 +144,7 @@ void AuraOfPowerAbility::useAbility(TriggerType type, Player& targetPlayer,
   }
 }
 
+StandstillAbility::StandstillAbility(int cost):Ability{cost,std::vector<TargetType>{TargetType::Minion}}{}
 void StandstillAbility::useAbility(TriggerType type, Player& targetPlayer,
                                  int boardIndex) {
   if (type == TriggerType::MinionEnters) {

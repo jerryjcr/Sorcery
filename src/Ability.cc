@@ -4,13 +4,17 @@
 #include <string>
 #include <vector>
 
-Ability::Ability(const std::string& name, int cost,
+Ability::Ability(int cost,
                  std::vector<TargetType> validTargets)
-    : name{name}, cost{cost}, validTargets{std::move(validTargets)} {}
+    : cost{cost}, validTargets{std::move(validTargets)} {}
 
 bool Ability::requiresTarget() const { return !validTargets.empty(); }
 
 bool Ability::canTarget(TargetType targetType) const {
   return std::find(validTargets.begin(), validTargets.end(), targetType) !=
          validTargets.end();
+}
+
+int Ability::getAbilityCost() const {
+  return cost;
 }
