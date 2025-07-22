@@ -152,7 +152,17 @@ void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
 }
 
 void Player::use(int boardIndex) {
-  // todo
+  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+    std::cerr << "Board index out of bounds." << std::endl;
+    return;
+  }
+
+  if (board[boardIndex]->requiresTarget()) {
+    std::cerr << "This ability does not require a target." << std::endl;
+    return;
+  }
+
+  board[boardIndex]->activateAbility();
 }
 
 void Player::describeHand() const {
