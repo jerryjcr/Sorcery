@@ -2,7 +2,6 @@
 #define CONCRETEMINIONS_H_
 
 #include "Card.h"
-#include "ConcreteAbilities.h"
 #include "Minion.h"
 
 // for testing
