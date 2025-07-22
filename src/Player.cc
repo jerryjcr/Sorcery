@@ -15,7 +15,7 @@ const int kInitialMagic = 3;
 const int kMaxHandSize = 5;
 
 Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
-    : playerName{name},
+    : name{name},
       life{kInitialLife},
       magic{kInitialMagic},
       deck{std::move(deck)} {}
@@ -211,6 +211,8 @@ int Player::boardCost(int boardIndex) const {
   }
   return board[boardIndex]->getCost();
 }
+
+const std::string& Player::getName() const { return name; }
 
 int Player::getLife() const { return life; }
 

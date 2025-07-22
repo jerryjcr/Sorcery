@@ -12,7 +12,7 @@ class Minion;
 class Ritual;
 
 class Player : public Subject {
-  std::string playerName;
+  std::string name;
   int life;
   int magic;
 
@@ -38,6 +38,7 @@ class Player : public Subject {
   int getCost(int handIndex) const;
   int boardCost(int boardIndex) const;
 
+  const std::string& getName() const;
   int getLife() const;
   int getMagic() const;
 
