@@ -78,19 +78,20 @@ int main(int argc, char* argv[]) {
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
 
-  Player& activePlayer = p1;
-  Player& opponentPlayer = p2;
+  Player* activePlayer = &p1;
+  Player* opponentPlayer = &p2;
   bool p1Turn = true;
   while (true) {
     // start of turn
     std::cout << "Player ";
-    p1Turn ? std::cout << "1 : " << name1 : std::cout << "2 : " << name2;
-    std::cout << "'s turn." << std::endl;
+    p1Turn ? std::cout << "1 : "
+           : std::cout << "2 : ";
+    std::cout << activePlayer->getName() << "'s turn." << std::endl;
 
     // gain 1 magic
-    activePlayer.adjustMagic(kStartOfTurnMagic);
+    activePlayer->adjustMagic(kStartOfTurnMagic);
     // draw a card
-    activePlayer.drawCard();
+    activePlayer->drawCard();
 
     // start of turn effects trigger
     // do this later
@@ -114,12 +115,12 @@ int main(int argc, char* argv[]) {
         return 0;
 
       } else if (cmd == "draw" && testingMode) {
-        activePlayer.drawCard();
+        activePlayer->drawCard();
 
       } else if (cmd == "discard" && testingMode) {
         int handInd;
         if (currline >> handInd) {
-          activePlayer.discard(handInd);
+          activePlayer->discard(handInd);
         } else {
           std::cerr << "Error, no hand index given" << std::endl;
         }
@@ -130,10 +131,10 @@ int main(int argc, char* argv[]) {
         if (currline >> myMinion) {
           // player checks if myMinion is out of range
           if (currline >> target && currline.peek() == EOF) {
-            activePlayer.attackMinion(myMinion, opponentPlayer, target);
+            activePlayer->attackMinion(myMinion, *opponentPlayer, target);
           } else if (currline.eof()) {
             // attacking the other player
-            activePlayer.attackPlayer(myMinion, opponentPlayer);
+            activePlayer->attackPlayer(myMinion, *opponentPlayer);
           } else {
             std::cerr << "Error Invalid input, expected an integer to target"
                       << std::endl;
@@ -165,9 +166,9 @@ int main(int argc, char* argv[]) {
                 // this is weird since the players may forget who player 1 and 2
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
-                  activePlayer.playCard(myCard, p1, targetInd);
+                  activePlayer->playCard(myCard, p1, targetInd);
                 } else {  // must be targeting player 2
-                  activePlayer.playCard(myCard, p2, targetInd);
+                  activePlayer->playCard(myCard, p2, targetInd);
                 }
               }
             } else {
@@ -175,7 +176,7 @@ int main(int argc, char* argv[]) {
                         << std::endl;
             }
           } else if (currline.eof()) {
-            activePlayer.playCard(myCard);
+            activePlayer->playCard(myCard);
           } else {
             std::cerr << "Error Invalid input, expected an integer"
                       << std::endl;
@@ -191,13 +192,13 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "hand") {
         // replace later
         for (int i = 0; i < 5; i++) {
-          std::cout << activePlayer.getCost(i) << std::endl;
+          std::cout << activePlayer->getCost(i) << std::endl;
         }
       } else if (cmd == "board") {
         // replace later
         // replace later
         for (int i = 0; i < 5; i++) {
-          std::cout << activePlayer.boardCost(i) << std::endl;
+          std::cout << activePlayer->boardCost(i) << std::endl;
         }
       } else {
         std::cerr << "Error: Command not recognized" << std::endl;
