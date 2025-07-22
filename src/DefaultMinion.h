@@ -9,6 +9,7 @@ class DefaultMinion : public Minion {
  public:
   DefaultMinion();
   ~DefaultMinion() = default;
+  const std::vector<const std::string>& getDescription() const override;
 };
 
 #endif

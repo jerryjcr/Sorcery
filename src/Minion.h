@@ -32,6 +32,7 @@ class Minion : public Card {
   virtual int getAttack() const;
   virtual int getDefence() const;
   virtual int getActions() const;
+  const std::vector<const std::string>& getDescription() const override = 0;
 
   void adjustAttack(int amount);
   void adjustDefence(int amount);

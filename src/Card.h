@@ -33,6 +33,7 @@ class Card {
   const std::string& getName() const;
   int getCost() const;
   CardType getType() const;
+  virtual const std::vector<const std::string>& getDescription() const;
 };
 
 #endif
