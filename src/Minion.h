@@ -32,6 +32,7 @@ class Minion : public Card {
 
   bool requiresTarget() const;
   bool canTarget(TargetType targetType) const;
+
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;
   virtual int getDefence() const;
