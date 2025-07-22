@@ -1,6 +1,5 @@
 #include "Spell.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
@@ -9,13 +8,13 @@
 #include "Card.h"
 
 Spell::Spell(const std::string& name, int cost,
-             std::shared_ptr<const Ability> activated,
-             std::vector<TargetType> targets)
-    : Card{name, cost, activated}, validTargets{std::move(targets)} {}
+             std::shared_ptr<const Ability> activated)
+    : Card{name, cost, activated} {}
 
-bool Spell::requiresTarget() const { return !validTargets.empty(); }
+bool Spell::requiresTarget() const {
+  return activatedAbility->requiresTarget();
+}
 
 bool Spell::canTarget(TargetType targetType) const {
-  return std::find(validTargets.begin(), validTargets.end(), targetType) !=
-         validTargets.end();
+  return activatedAbility->canTarget(targetType);
 }
