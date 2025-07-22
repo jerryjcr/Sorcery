@@ -154,32 +154,11 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
     return;
   }
 
-  board[boardIndex]->useCardAbility()
+  Card& targetCard = *targetPlayer.board[targetIndex];
 
-  if (board[boardIndex]->canTarget(targetType)) {
-    board[boardIndex]->activateAbility(targetPlayer, targetIndex);
-  } else {
-    std::cerr << "This ability cannot target a "
-              << (targetType == TargetType::Minion ? "minion." : "ritual.")
-              << std::endl;
-    return;
+  if (board[boardIndex]->useCardAbility(targetPlayer, targetCard)) {
+    magic -= board[boardIndex]->getAbilityCost();
   }
-}
-
-int Player::getCost(int handIndex) const {
-  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) {
-    std::cerr << "Hand index out of bounds." << std::endl;
-    return -1;
-  }
-  return hand[handIndex]->getCost();
-}
-
-int Player::boardCost(int boardIndex) const {
-  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
-    std::cerr << "Board index out of bounds." << std::endl;
-    return -1;
-  }
-  return board[boardIndex]->getCost();
 }
 
 const std::string& Player::getName() const { return name; }
@@ -192,6 +171,6 @@ void Player::adjustLife(int amount) { life += amount; }
 
 void Player::adjustMagic(int amount) { magic += amount; }
 
-void Player::setBoard(int index, std::unique_ptr<Card> card) {
-  // todo
-}
+std::vector<std::unique_ptr<Card>>& getHand();
+std::vector<std::unique_ptr<Minion>>& getBoard();  // goes from 1-5
+std::unique_ptr<Ritual>& getRitual();

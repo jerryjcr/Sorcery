@@ -36,8 +36,7 @@ bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
   }
 }
 
-bool Minion::useCardAbility(Player& targetPlayer,
-                            std::unique_ptr<Card>& targetCard,
+bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
                             TriggerType type = TriggerType::None) {
   if (actions != 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
@@ -62,6 +61,8 @@ int Minion::getAttack() const { return attack; }
 int Minion::getDefence() const { return defence; }
 
 int Minion::getActions() const { return actions; }
+
+int Minion::getAbilityCost() const { return ability->getAbilityCost(); }
 
 void Minion::adjustAttack(int amount) { attack += amount; }
 

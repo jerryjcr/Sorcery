@@ -40,9 +40,6 @@ class Player : public Subject {
   void use(int boardIndex, Player& inactivePlayer);
   void use(int boardIndex, Player& targetPlayer, int targetIndex);
 
-  int getCost(int handIndex) const;
-  int boardCost(int boardIndex) const;
-
   const std::string& getName() const;
   int getLife() const;
   int getMagic() const;
@@ -50,11 +47,9 @@ class Player : public Subject {
   void adjustLife(int amount);
   void adjustMagic(int amount);
 
-  void setBoard(int index, std::unique_ptr<Card> card);
-
-  std::vector<std::unique_ptr<Minion>>& getHand() const;
-  std::vector<std::unique_ptr<Minion>>& getBoard() const;  // goes from 1-5
-  std::unique_ptr<Ritual>& getRitual() const;
+  std::vector<std::unique_ptr<Card>>& getHand();
+  std::vector<std::unique_ptr<Minion>>& getBoard();  // goes from 1-5
+  std::unique_ptr<Ritual>& getRitual();
 };
 
 #endif

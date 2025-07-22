@@ -15,7 +15,7 @@ Card::~Card() {}
 bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                     TriggerType type = TriggerType::None);
 
-bool useCardAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard,
+bool useCardAbility(Player& targetPlayer, Card& targetCard,
                     TriggerType type = TriggerType::None);
 
 const std::string& Card::getName() const { return name; }

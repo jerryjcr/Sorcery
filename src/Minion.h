@@ -25,8 +25,7 @@ class Minion : public Card {
 
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
-  virtual bool useCardAbility(Player& targetPlayer,
-                              std::unique_ptr<Card>& targetCard,
+  virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
                               TriggerType type = TriggerType::None) override;
 
   bool requiresTarget() const;
@@ -36,6 +35,7 @@ class Minion : public Card {
   virtual int getAttack() const;
   virtual int getDefence() const;
   virtual int getActions() const;
+  virtual int getAbilityCost() const;
   virtual const std::vector<std::string>& getDescription() const override = 0;
 
   void adjustAttack(int amount);
