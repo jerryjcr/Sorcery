@@ -14,12 +14,13 @@ class Ritual : public Card {
 
  public:
   Ritual(const std::string& name, int cost, int charges, int chargeCost,
-         std::shared_ptr<const Ability> triggered);
+         std::unique_ptr<const Ability> ability);
   virtual ~Ritual() = 0;
 
   void useRitual(TriggerType type, Player& targetPlayer, int boardIndex);
 
   void adjustCharges(int amount);
+  int getCharges();
 };
 
 #endif
