@@ -20,7 +20,7 @@ class Ritual : public Card {
   void useRitual(TriggerType type, Player& targetPlayer, int boardIndex);
 
   void adjustCharges(int amount);
-  int getCharges();
+  int getCharges() const;
 };
 
 #endif

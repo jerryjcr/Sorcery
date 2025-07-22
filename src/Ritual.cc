@@ -14,6 +14,6 @@ Ritual::Ritual(const std::string& name, int cost, int charges, int chargeCost,
 
 Ritual::~Ritual() {}
 
-int Ritual::getCharges() {
+int Ritual::getCharges() const{
   return charges;
 }
