@@ -5,6 +5,14 @@
 #include "ConcreteAbilities.h"
 #include "Minion.h"
 
+// for testing
+class DefaultMinion : public Minion {
+  public:
+    DefaultMinion();
+    ~DefaultMinion() = default;
+    virtual void describe() const override;
+};
+
 class AirElemental : public Minion {
   public:
     AirElemental();

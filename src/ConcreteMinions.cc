@@ -4,5 +4,7 @@
 #include "ConcreteAbilities.h"
 #include "Minion.h"
 
+DefaultMinion::DefaultMinion() : Minion{"Default", 1, 1, 1} {}
+
 AirElemental::AirElemental() : Minion{"Air Elemental", 0, 1, 1} {}
 
