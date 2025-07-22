@@ -1,6 +1,8 @@
 #include "TextUI.h"
 
 const int kWidth = 33;
+const int kHeight = 11;
+const int kHandSize = 5;
 
 const std::string kHorizontalBar = "|-------------------------------|";
 const std::string kEmpty = "|                               |";
@@ -89,7 +91,7 @@ std::vector<std::string> visualizePlayer(Player& p, bool isActive) {
   return block;
 }
 
-std::vector<std::string> visualizeCard(Card& c) {
+std::vector<std::string> visualizeCard(const Card& c) {
   std::vector<std::string> block;
 
   CardType type = c.getType();
@@ -143,23 +145,23 @@ std::vector<std::string> visualizeCard(Card& c) {
     block.emplace_back("|------                   ------|");
     // line 9
     block.emplace_back("| ");
-    block[9] += std::to_string(static_cast<Minion&>(c).getAttack());
+    block[9] += std::to_string(static_cast<const Minion&>(c).getAttack());
     block[9].resize(std::string("|   ").length(), ' ');
     block[9] += "|";
     block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
-    block[9] += "| " + std::to_string(static_cast<Minion&>(c).getDefence());
+    block[9] += "| " + std::to_string(static_cast<const Minion&>(c).getDefence());
     block[9].resize(kWidth - 1, ' ');
     block[9] += "|";
   } else if (type == CardType::Enchantment) {
     // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
 
     block.emplace_back("| ");
-    block[8] += static_cast<Enchantment&>(c).getDescription()[3];
+    block[8] += static_cast<const Enchantment&>(c).getDescription()[3];
     block[8].resize(kWidth - 1, ' ');
     block[8] += "|";
     // line 9
     block.emplace_back("| ");
-    block[9] += static_cast<Enchantment&>(c).getDescription()[4];
+    block[9] += static_cast<const Enchantment&>(c).getDescription()[4];
     block[9].resize(kWidth - 1, ' ');
     block[9] += "|";
   } else if (type == CardType::Ritual) {
@@ -167,7 +169,7 @@ std::vector<std::string> visualizeCard(Card& c) {
     // line 9
     block.emplace_back("| ");
     block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
-    block[9] += "| " + std::to_string(static_cast<Ritual&>(c).getCharges());
+    block[9] += "| " + std::to_string(static_cast<const Ritual&>(c).getCharges());
     block[9].resize(kWidth - 1, ' ');
     block[9] += "|";
   } else {  // must be spell
@@ -180,4 +182,25 @@ std::vector<std::string> visualizeCard(Card& c) {
   block.emplace_back(kHorizontalBar);
 
   return block;
+}
+
+void printHand(const Player& p) {
+    std::vector<std::unique_ptr<Card>>& hand = p.getHand();
+    std::vector<std::vector<std::string>> hand_text;
+    int currHandSize = 0; 
+    for (auto it = hand.begin(); it != hand.end(); ++it) {
+        hand_text.emplace_back(visualizeCard(**it));
+        currHandSize++;
+    }
+    while (currHandSize < kHandSize) {
+        hand_text.emplace_back(kEmptyBlock);
+        currHandSize++;
+    }
+
+    for (int i = 0; i < kHeight; i++) {
+        for (int j = 0; j < kHandSize; j++) {
+            std::cout << hand_text[j][i];
+        }
+        std::cout << std::endl;
+    }
 }

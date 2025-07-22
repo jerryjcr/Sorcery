@@ -10,6 +10,7 @@
 #include "Minion.h"
 #include "Player.h"
 #include "Ritual.h"
+#include "TextUI.h"
 
 const int kStartOfTurnMagic = 1;
 
@@ -190,10 +191,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "describe") {
         // todo
       } else if (cmd == "hand") {
-        // replace later
-        for (int i = 0; i < 5; i++) {
-          std::cout << activePlayer->getCost(i) << std::endl;
-        }
+        printHand(*activePlayer);
       } else if (cmd == "board") {
         // replace later
         // replace later
