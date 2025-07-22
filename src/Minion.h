@@ -19,8 +19,7 @@ class Minion : public Card {
 
  public:
   Minion(const std::string& name, int cost, int attack, int defence,
-         std::shared_ptr<const Ability> activated = nullptr,
-         std::shared_ptr<const Ability> triggered = nullptr);
+         std::unique_ptr<const Ability> ability);
   virtual ~Minion() = 0;
 
   void attackMinion(Minion& targetMinion);

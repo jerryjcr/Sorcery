@@ -6,9 +6,8 @@
 #include "Player.h"
 
 Minion::Minion(const std::string& name, int cost, int attack, int defence,
-               std::shared_ptr<const Ability> activated,
-               std::shared_ptr<const Ability> triggered)
-    : Card{name, cost, activated, triggered},
+               std::unique_ptr<const Ability> ability)
+    : Card{name, cost, CardType::Minion, std::move(ability)},
       attack{attack},
       defence{defence},
       actions{0} {}
