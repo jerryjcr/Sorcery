@@ -201,7 +201,7 @@ int Player::getCost(int handIndex) const {
     std::cerr << "Hand index out of bounds." << std::endl;
     return -1;
   }
-  return board[handIndex]->getCost();
+  return hand[handIndex]->getCost();
 }
 
 int Player::getLife() const { return life; }
