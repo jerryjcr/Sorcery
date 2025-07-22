@@ -32,10 +32,12 @@ void Minion::attackPlayer(Player& targetPlayer) {
   targetPlayer.adjustLife(-getAttack());
 }
 
-bool Minion::requiresTarget() const { return ability->requiresTarget(); };
+bool Minion::requiresTarget() const {
+  return ability ? ability->requiresTarget() : false;
+};
 
 bool Minion::canTarget(CardType targetType) const {
-  return ability->canTarget(type);
+  return ability ? ability->canTarget(type) : false;
 }
 
 int Minion::getAttack() const { return attack; }

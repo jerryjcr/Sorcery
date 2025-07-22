@@ -22,6 +22,11 @@ class Player : public Subject {
   std::unique_ptr<Ritual> ritual;
   std::vector<std::unique_ptr<Minion>> graveyard;
 
+  bool boundIndex(int index, int lower, int upper,
+                  const std::string& indexName) const;
+
+  bool canAfford(int cost) const;
+
  public:
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
 
@@ -47,8 +52,9 @@ class Player : public Subject {
 
   void setBoard(int index, std::unique_ptr<Card> card);
 
+  std::vector<std::unique_ptr<Minion>>& getHand() const;
+  std::vector<std::unique_ptr<Minion>>& getBoard() const;  // goes from 1-5
   std::unique_ptr<Ritual>& getRitual() const;
-  std::unique_ptr<Minion>& getBoard(int index) const;  // goes from 1-5
 };
 
 #endif

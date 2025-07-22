@@ -14,6 +14,23 @@ const int kInitialLife = 20;
 const int kInitialMagic = 3;
 const int kMaxHandSize = 5;
 
+bool Player::boundIndex(int index, int lower, int upper,
+                        const std::string& indexName) const {
+  if (index < lower || index > upper) {
+    std::cerr << indexName << " index is out of bounds." << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool Player::canAfford(int cost) const {
+  if (magic < cost) {
+    std::cerr << "Not enough magic to play this card." << std::endl;
+    return false;
+  }
+  return true;
+}
+
 Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
     : name{name},
       life{kInitialLife},
@@ -24,27 +41,22 @@ void Player::playCard(int handIndex) {
   if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) return;
 
   std::unique_ptr<Card>& card = hand[handIndex];
-  int cost = card->getCost();
-  if (magic < cost) {
-    std::cerr << "Not enough magic to play this card." << std::endl;
-    return;
-  }
+  if (!canAfford(card->getCost())) return;
 
   // detect the type of card by casting to the appropriate pointer
-  if (dynamic_cast<Minion*>(card.get())) {
+  if (card->getType() == CardType::Minion) {
     if (board.size() >= 5) {
       std::cerr << "Board is full. Cannot play minion." << std::endl;
       return;
     }
-    std::unique_ptr<Minion> minion(static_cast<Minion*>(card.release()));
+    std::unique_ptr<Minion> minion(dynamic_cast<Minion*>(card.release()));
     board.push_back(std::move(minion));
-  } else if (dynamic_cast<Ritual*>(card.get())) {
+  } else if (card->getType() == CardType::Spell) {
+    std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
+    spell->useSpell();  // call the version of the method with no target
+  } else if (card->getType() == CardType::Ritual) {
     std::unique_ptr<Ritual> newRitual(static_cast<Ritual*>(card.release()));
     ritual = std::move(newRitual);
-  } else if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
-             !spellRawPtr->requiresTarget()) {
-    std::unique_ptr<Spell> spell(static_cast<Spell*>(card.release()));
-    spell->useSpell();  // call the version of the method with no target
   } else {
     std::cerr << "Must specify target player and index to play this card."
               << std::endl;
