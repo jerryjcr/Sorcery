@@ -46,5 +46,6 @@ class Player : public Subject {
 
   std::unique_ptr<Ritual>& getRitual() const;
   std::unique_ptr<Minion>& getBoard(int index) const;  // goes from 1-5
+};
 
 #endif

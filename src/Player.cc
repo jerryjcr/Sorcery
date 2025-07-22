@@ -61,7 +61,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int boardIndex) {
     return;
   }
   if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size() + 1)) {
-    std::cerr << "Target index out of bounds." << std::endl;
+    std::cerr << "Board index out of bounds." << std::endl;
     return;
   }
   if (boardIndex == 0 && !targetPlayer.ritual) {
@@ -129,7 +129,17 @@ void Player::discard(int handIndex) {
 
 void Player::attackMinion(int boardIndex, Player& targetPlayer,
                           int targetIndex) {
-  // todo
+  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+    std::cerr << "Board index out of bounds." << std::endl;
+    return;
+  }
+  if (targetIndex < 0 ||
+      targetIndex >= static_cast<int>(targetPlayer.board.size())) {
+    std::cerr << "Target index out of bounds." << std::endl;
+    return;
+  }
+
+  board[boardIndex]->attackMinion(*targetPlayer.board[targetIndex]);
 }
 
 void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
