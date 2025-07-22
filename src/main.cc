@@ -190,7 +190,11 @@ int main(int argc, char* argv[]) {
           std::cout << activePlayer.getCost(i) << std::endl;
         }
       } else if (cmd == "board") {
-        // do later
+        // replace later
+        // replace later
+        for (int i = 0; i < 5; i++) {
+          std::cout << activePlayer.boardCost(i) << std::endl;
+        }
       } else {
         std::cerr << "Error: Command not recognized" << std::endl;
       }
