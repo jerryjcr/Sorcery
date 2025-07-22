@@ -55,7 +55,8 @@ void Player::playCard(int handIndex) {
 }
 
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
-  // todo
+  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) return;
+  if (targetIndex < 0 || targetIndex >= static_cast<int>(board.size() + 1)) return;
 }
 
 void Player::drawCard() {
