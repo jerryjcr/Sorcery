@@ -1,14 +1,16 @@
 #ifndef TEXTUI_H_
 #define TEXTUI_H_
 
-#include <vector>
+#include <iostream>
 #include <string>
-#include "Card.h"
-#include "Minion.h"
-#include "Spell.h"
-#include "Ritual.h"
-#include "Enchantment.h"
+#include <vector>
 
-std::vector<std::string> visualizeMinion(Minion& m);
+#include "Card.h"
+#include "Enchantment.h"
+#include "Minion.h"
+#include "Ritual.h"
+#include "Spell.h"
+
+void printHand(const Player& p1);
 
 #endif
