@@ -8,29 +8,35 @@ class Player;
 
 enum class TriggerType {
   None,
-  StartOfTurn,
-  EndOfTurn,
-  MinionEnters,
-  MinionLeaves
+  MyStartOfTurn,
+  OpponentStartOfTurn,
+  MyEndOfTurn,
+  OpponentEndOfTurn,
+  MyMinionEnters,
+  OpponentMinionEnters,
+  MyMinionLeaves,
+  OpponentMinionLeaves
 };
 
-enum class TargetType { Minion, Ritual };
+enum CardType;
 
 class Ability {
   int cost;
-  std::vector<TargetType> validTargets;
+  std::vector<CardType> validTargets;
 
  public:
   Ability(int cost,
-          std::vector<TargetType> validTargets = {});
-  //if the trigger type is minionenter,or minionleave, targetplayer is owner of target card, which is the trigger minion
-  //if the trigger type is none, targetplayer is owner of the card that called it, not the owner of the target card
-  //if the trigger type is start/end of turn, targetplayer is the player whos turn just started/ended
-  virtual void useAbility(TriggerType type, Player& targetPlayer,
-                          Player& nontargetPlayer, std::unique_ptr<Card>& target) = 0;
+          std::vector<CardType> validTargets = {});
+  //no target
+  virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+                              TriggerType type = TriggerType::None);
+  //target
+  virtual void useAbility(Player& targetPlayer,
+                              std::unique_ptr<Card>& targetCard,
+                              TriggerType type = TriggerType::None);
 
   bool requiresTarget() const;
-  bool canTarget(TargetType targetType) const;
+  bool canTarget(CardType targetType) const;
   int getAbilityCost() const;
 };
 

@@ -15,6 +15,9 @@ void BanishAbility::useAbility(TriggerType type, Player& targetPlayer,
                           Player& nontargetPlayer, std::unique_ptr<Card> target) {
   if (type == TriggerType::None) {
     std::unique_ptr<Card> p = nullptr;
+    for (int i=1;i<6,++i){
+      
+    }
     targetPlayer.setBoard(boardIndex, std::move(p));
   }
 }
