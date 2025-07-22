@@ -1,6 +1,7 @@
 #include "ConcreteAbilities.h"
 
 #include <memory>
+#include <iostream>
 
 #include "Ability.h"
 #include "Card.h"
@@ -15,6 +16,7 @@ bool BanishAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targ
   if (type == TriggerType::None) {
     //move to graveyard
   }
+  return true;
 }
 
 UnsummonAbility::UnsummonAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
@@ -22,13 +24,20 @@ bool UnsummonAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& ta
   if (type == TriggerType::None) {
     //move from board to hand
   }
+  return true;
 }
 
 RechargeAbility::RechargeAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Ritual}}{}
 bool RechargeAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) {
-    
-    activePlayer.getRitual()->adjustCharges(3);
+    if (activePlayer.getRitual().get()){
+      activePlayer.getRitual()->adjustCharges(3);
+      return true;
+    }
+    else {
+      std::cerr<<"Error: cannot use Recharge with no active ritual"<<std::endl;
+      return false;
+    }
   }
 }
 
@@ -43,6 +52,7 @@ bool DisenchantAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& 
     Enchantment* tmp=(dynamic_cast<Enchantment*>(targetCard.get()));
     v[index]=std::move(tmp->getParent());
   }
+  return true;
 }
 
 BlizzardAbility::BlizzardAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
@@ -57,12 +67,20 @@ bool BlizzardAbility::useAbility(Player& activePlayer, Player& inactivePlayer, T
       v[i]->adjustDefence(-2);
     }
   }
+  return true;
 }
 
 RaiseDeadAbility::RaiseDeadAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment,CardType::Ritual}}{}
 bool RaiseDeadAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
-  if (type == TriggerType::None) {  
-    //graveyard to board
+  if (type == TriggerType::None) { 
+    if (!activePlayer.isGraveyardEmpty()) {
+      //graveyard to board
+      return true;
+    }
+    else {
+      std::cerr<<"Cannot use Raise Dead if the graveyard is empty"<<std::endl;
+      return false;
+    }
   }
 }
 
@@ -73,6 +91,7 @@ bool BoneGolemAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& t
     p->adjustAttack(1);
     p->adjustDefence(1);
   }
+  return true;
 }
 
 FireElementalAbility::FireElementalAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
@@ -81,6 +100,7 @@ bool FireElementalAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card
     Minion* p=(dynamic_cast<Minion*>(targetCard.get()));
     p->adjustDefence(-1);
   }
+  return true;
 }
 
 PotionSellerAbility::PotionSellerAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
@@ -91,6 +111,7 @@ bool PotionSellerAbility::useAbility(Player& activePlayer, Player& inactivePlaye
       v[i]->adjustDefence(1);
     }
   }
+  return true;
 }
 
 NovicePyromancerAbility::NovicePyromancerAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
@@ -99,6 +120,7 @@ bool NovicePyromancerAbility::useAbility(Player& targetPlayer, std::unique_ptr<C
     Minion* p=(dynamic_cast<Minion*>(targetCard.get()));
     p->adjustDefence(-1);
   }
+  return true;
 }
 
 ApprenticeSummonerAbility::ApprenticeSummonerAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
@@ -107,6 +129,11 @@ bool ApprenticeSummonerAbility::useAbility(Player& activePlayer, Player& inactiv
     std::vector<std::unique_ptr<Minion>> v=activePlayer.getBoard();
     if (v.size()<5){
       v.emplace_back(AirElemental{});
+      return true;
+    }
+    else {
+      std::cerr<<"Error: Cannot use summoner ability when board is empty"<<std::endl;
+      return false;
     }
   }
 }
@@ -115,10 +142,17 @@ MasterSummonerAbility::MasterSummonerAbility(int cost):Ability{cost,std::vector<
 bool MasterSummonerAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) {
     std::vector<std::unique_ptr<Minion>> v=activePlayer.getBoard();
-    for (int i=0;i<3;++i){
-      if (v.size()<5){
-        v.emplace_back(AirElemental{});
+    if (v.size()<5){
+      for (int i=0;i<3;++i){
+        if (v.size()<5){
+          v.emplace_back(AirElemental{});
+        }
       }
+      return true;
+    }
+    else {
+      std::cerr<<"Error: Cannot use summoner ability when board is empty"<<std::endl;
+      return false;
     }
   }
 }
@@ -128,6 +162,7 @@ bool DarkRitualAbility::useAbility(Player& activePlayer, Player& inactivePlayer,
   if (type == TriggerType::MyStartOfTurn) {
     activePlayer.adjustMagic(1);
   }
+  return true;
 }
 
 AuraOfPowerAbility::AuraOfPowerAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
@@ -137,6 +172,7 @@ bool AuraOfPowerAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>&
     p->adjustAttack(1);
     p->adjustDefence(1);
   }
+  return true;
 }
 
 StandstillAbility::StandstillAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
@@ -144,6 +180,7 @@ bool StandstillAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& 
   if (type == TriggerType::MyMinionEnters||type == TriggerType::MyMinionLeaves) {
     //move to graveyard
   }
+  return true;
 }
 
 
