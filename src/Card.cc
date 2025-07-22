@@ -8,7 +8,7 @@
 
 Card::Card(const std::string& name, int cost, CardType type,
            std::unique_ptr<const Ability> ability)
-    : name{name}, cost{cost}, ability{std::move(ability)} {}
+    : name{name}, cost{cost}, type{type}, ability{std::move(ability)} {}
 
 Card::~Card() {}
 
