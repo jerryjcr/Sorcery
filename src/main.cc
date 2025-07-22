@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
         std::cerr
             << "Error, no filename given for deck 2. Using default instead"
             << std::endl;
-            decklist2 = "default.txt";
+        decklist2 = "default.txt";
       } else {
         i++;
         decklist2 = argv[i];
@@ -72,16 +72,20 @@ int main(int argc, char* argv[]) {
 
   // when we add -init, this will have to change, amoung other things
   std::string name1, name2;
-  std::cin >> name1;
-  std::cin >> name2;
+  std::getline(std::cin, name1);
+  std::getline(std::cin, name2);
 
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
 
   Player& activePlayer = p1;
   Player& opponentPlayer = p2;
+  bool p1Turn = true;
   while (true) {
     // start of turn
+    std::cout << "Player ";
+    p1Turn ? std::cout << "1 : " << name1 : std::cout << "2 : " << name2;
+    std::cout << "'s turn." << std::endl;
 
     // gain 1 magic
     activePlayer.adjustMagic(kStartOfTurnMagic);
@@ -204,5 +208,6 @@ int main(int argc, char* argv[]) {
     // activate end of turn triggers (do later)
     //...
     std::swap(activePlayer, opponentPlayer);
+    p1Turn = not(p1Turn);
   }
 }
