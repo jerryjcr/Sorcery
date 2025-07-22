@@ -143,7 +143,12 @@ void Player::attackMinion(int boardIndex, Player& targetPlayer,
 }
 
 void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
-  // todo
+  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size())) {
+    std::cerr << "Board index out of bounds." << std::endl;
+    return;
+  }
+
+  board[boardIndex]->attackPlayer(targetPlayer);
 }
 
 void Player::use(int boardIndex) {
