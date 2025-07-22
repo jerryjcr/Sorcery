@@ -6,7 +6,7 @@
 class BanishAbility : public Ability {
   public:
     BanishAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -14,7 +14,7 @@ class BanishAbility : public Ability {
 class UnsummonAbility : public Ability {
   public:
     UnsummonAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -22,14 +22,14 @@ class UnsummonAbility : public Ability {
 class RechargeAbility : public Ability {
   public:
     RechargeAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
 class DisenchantAbility : public Ability {
   public:
     DisenchantAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -37,14 +37,14 @@ class DisenchantAbility : public Ability {
 class RaiseDeadAbility : public Ability {
   public:
     RaiseDeadAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
 class BlizzardAbility : public Ability {
   public:
     BlizzardAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
@@ -53,7 +53,7 @@ class BlizzardAbility : public Ability {
 class BoneGolemAbility : public Ability {
   public:
     BoneGolemAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -62,7 +62,7 @@ class BoneGolemAbility : public Ability {
 class FireElementalAbility : public Ability {
   public:
     FireElementalAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -71,7 +71,7 @@ class FireElementalAbility : public Ability {
 class PotionSellerAbility : public Ability {
   public:
     PotionSellerAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
@@ -79,7 +79,7 @@ class PotionSellerAbility : public Ability {
 class NovicePyromancerAbility : public Ability {
   public:
     NovicePyromancerAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -88,7 +88,7 @@ class NovicePyromancerAbility : public Ability {
 class ApprenticeSummonerAbility : public Ability {
   public:
     ApprenticeSummonerAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
@@ -96,7 +96,7 @@ class ApprenticeSummonerAbility : public Ability {
 class MasterSummonerAbility : public Ability {
   public:
     MasterSummonerAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
@@ -104,7 +104,7 @@ class MasterSummonerAbility : public Ability {
 class DarkRitualAbility : public Ability {
   public:
     DarkRitualAbility(int cost);
-    virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+    virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
 };
 
@@ -112,7 +112,7 @@ class DarkRitualAbility : public Ability {
 class AuraOfPowerAbility : public Ability {
   public:
     AuraOfPowerAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };
@@ -121,7 +121,7 @@ class AuraOfPowerAbility : public Ability {
 class StandstillAbility : public Ability {
   public:
     StandstillAbility(int cost);
-    virtual void useAbility(Player& targetPlayer,
+    virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None) override;
 };

@@ -28,10 +28,10 @@ class Ability {
   Ability(int cost,
           std::vector<CardType> validTargets = {});
   //no target
-  virtual void useAbility(Player& activePlayer, Player& inactivePlayer,
+  virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None);
   //target
-  virtual void useAbility(Player& targetPlayer,
+  virtual bool useAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None);
 
