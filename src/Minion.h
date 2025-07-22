@@ -19,7 +19,7 @@ class Minion : public Card {
 
  public:
   Minion(const std::string& name, int cost, int attack, int defence,
-         std::unique_ptr<const Ability> ability);
+         std::unique_ptr<const Ability> ability = nullptr);
   virtual ~Minion() = 0;
 
   void attackMinion(Minion& targetMinion);
