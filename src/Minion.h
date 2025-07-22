@@ -26,7 +26,7 @@ class Minion : public Card {
   void attackPlayer(Player& targetPlayer);
 
   bool requiresTarget() const;
-  bool canTarget(TargetType targetType) const;
+  bool canTarget(CardType targetType) const;
 
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;
@@ -35,9 +35,9 @@ class Minion : public Card {
 
   void adjustAttack(int amount);
   void adjustDefence(int amount);
+
   // sets actions to 1
   void resetActions();
-  bool getIsEnchanted() const;
 };
 
 #endif

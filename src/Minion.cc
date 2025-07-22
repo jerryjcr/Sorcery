@@ -5,6 +5,15 @@
 
 #include "Player.h"
 
+bool Minion::useAction() {
+  if (actions == 0) {
+    return false;
+  } else {
+    actions--;
+    return true;
+  }
+}
+
 Minion::Minion(const std::string& name, int cost, int attack, int defence,
                std::unique_ptr<const Ability> ability)
     : Card{name, cost, CardType::Minion, std::move(ability)},
@@ -15,19 +24,18 @@ Minion::Minion(const std::string& name, int cost, int attack, int defence,
 Minion::~Minion() {}
 
 void Minion::attackMinion(Minion& targetMinion) {
-  // fill in later
+  targetMinion.adjustDefence(-getAttack());
+  adjustDefence(-targetMinion.getAttack());
 }
 
 void Minion::attackPlayer(Player& targetPlayer) {
-  targetPlayer.adjustLife(-1 * attack);
-  // maybe you want to check if this attack wins the game or not
+  targetPlayer.adjustLife(-getAttack());
 }
 
-bool Minion::requiresTarget() const {
-  return activatedAbility->requiresTarget();
-};
-bool Minion::canTarget(TargetType targetType) const {
-  return activatedAbility->canTarget(targetType);
+bool Minion::requiresTarget() const { return ability->requiresTarget(); };
+
+bool Minion::canTarget(CardType targetType) const {
+  return ability->canTarget(type);
 }
 
 int Minion::getAttack() const { return attack; }
