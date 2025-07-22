@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
+#include "Ability.h"
 #include "Card.h"
 
-class Ability;
 class Player;
 
 class Minion : public Card {
@@ -30,6 +30,8 @@ class Minion : public Card {
   virtual void triggerAbility(TriggerType type, Player& targetPlayer,
                               int boardIndex) override;
 
+  bool requiresTarget() const;
+  bool canTarget(TargetType targetType) const;
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;
   virtual int getDefence() const;

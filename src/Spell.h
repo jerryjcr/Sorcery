@@ -7,6 +7,8 @@
 #include "Ability.h"
 #include "Card.h"
 
+class Player;
+
 class Spell : public Card {
  public:
   Spell(const std::string& name, int cost,
