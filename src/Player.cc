@@ -12,6 +12,7 @@
 
 const int kInitialLife = 20;
 const int kInitialMagic = 3;
+const int kMaxHandSize = 5;
 
 Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
     : playerName{name},
@@ -32,7 +33,7 @@ void Player::playCard(int handIndex) {
   // detect the type of card by casting to the appropriate pointer
   if (Minion* minionRawPtr = dynamic_cast<Minion*>(card.get())) {
     if (board.size() >= 5) {
-      std::cerr << "Board is full." << std::endl;
+      std::cerr << "Board is full. Cannot play minion." << std::endl;
       return;
     }
     std::unique_ptr<Minion> minion(static_cast<Minion*>(card.release()));
@@ -104,11 +105,25 @@ void Player::playCard(int handIndex, Player& targetPlayer, int boardIndex) {
 }
 
 void Player::drawCard() {
-  // todo
+  if (deck.empty()) {
+    std::cerr << "Deck is empty. Cannot draw a card." << std::endl;
+  }
+  if (hand.size() >= kMaxHandSize) {
+    std::cerr << "Hand is full. Cannot draw a card." << std::endl;
+    return;
+  }
+
+  hand.push_back(std::move(deck.back()));
+  deck.pop_back();
 }
 
 void Player::discard(int handIndex) {
-  // todo
+  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) {
+    std::cerr << "Hand index out of bounds." << std::endl;
+    return;
+  }
+
+  hand.erase(hand.begin() + handIndex);
 }
 
 void Player::attackMinion(int boardIndex, Player& targetPlayer,
@@ -141,10 +156,5 @@ void Player::adjustLife(int amount) { life += amount; }
 void Player::adjustMagic(int amount) { magic += amount; }
 
 void Player::setBoard(int index, std::unique_ptr<Card> card) {
-  // todo
-}
-
-void Player::moveCard(std::vector<std::unique_ptr<Card>>& oldDeck,
-                      std::vector<std::unique_ptr<Card>>& newDeck, int index) {
   // todo
 }
