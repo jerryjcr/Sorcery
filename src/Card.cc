@@ -18,4 +18,5 @@ void useCardAbility(Player& activePlayer, Player& inactivePlayer,
 void useCardAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard,
                     TriggerType type = TriggerType::None);
 
+const std::string& Card::getName() const { return name; }
 int Card::getCost() const { return cost; }

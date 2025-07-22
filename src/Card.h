@@ -27,6 +27,7 @@ class Card {
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None);
 
+  const std::string& getName() const;
   int getCost() const;
 };
 
