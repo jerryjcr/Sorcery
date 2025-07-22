@@ -196,14 +196,6 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
   }
 }
 
-void Player::describeHand() const {
-  // todo
-}
-
-void Player::describeBoard() const {
-  // todo
-}
-
 int Player::getLife() const { return life; }
 
 int Player::getMagic() const { return magic; }
