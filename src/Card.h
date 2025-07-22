@@ -23,10 +23,10 @@ class Card {
   virtual ~Card() = 0;
 
   // uses an ability without a target
-  virtual void useCardAbility(Player& activePlayer, Player& inactivePlayer,
+  virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None);
   // uses an ability with a target
-  virtual void useCardAbility(Player& targetPlayer,
+  virtual bool useCardAbility(Player& targetPlayer,
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None);
 

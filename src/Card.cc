@@ -12,10 +12,10 @@ Card::Card(const std::string& name, int cost, CardType type,
 
 Card::~Card() {}
 
-void useCardAbility(Player& activePlayer, Player& inactivePlayer,
+bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                     TriggerType type = TriggerType::None);
 
-void useCardAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard,
+bool useCardAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard,
                     TriggerType type = TriggerType::None);
 
 const std::string& Card::getName() const { return name; }

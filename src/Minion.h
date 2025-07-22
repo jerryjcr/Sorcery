@@ -15,8 +15,6 @@ class Minion : public Card {
   int defence;
   int actions;
 
-  bool useAction();
-
  public:
   Minion(const std::string& name, int cost, int attack, int defence,
          std::unique_ptr<const Ability> ability = nullptr);
@@ -24,6 +22,12 @@ class Minion : public Card {
 
   void attackMinion(Minion& targetMinion);
   void attackPlayer(Player& targetPlayer);
+
+  virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                              TriggerType type = TriggerType::None) override;
+  virtual bool useCardAbility(Player& targetPlayer,
+                              std::unique_ptr<Card>& targetCard,
+                              TriggerType type = TriggerType::None) override;
 
   bool requiresTarget() const;
   bool canTarget(CardType targetType) const;

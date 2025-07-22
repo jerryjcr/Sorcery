@@ -1,18 +1,10 @@
 #include "Minion.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 
 #include "Player.h"
-
-bool Minion::useAction() {
-  if (actions == 0) {
-    return false;
-  } else {
-    actions--;
-    return true;
-  }
-}
 
 Minion::Minion(const std::string& name, int cost, int attack, int defence,
                std::unique_ptr<const Ability> ability)
@@ -30,6 +22,31 @@ void Minion::attackMinion(Minion& targetMinion) {
 
 void Minion::attackPlayer(Player& targetPlayer) {
   targetPlayer.adjustLife(-attack);
+}
+
+bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                            TriggerType type = TriggerType::None) {
+  if (actions != 0) {
+    std::cerr << "Minion does not have enough actions." << std::endl;
+    return false;
+  }
+  if (Card::useCardAbility(activePlayer, inactivePlayer, type)) {
+    actions--;
+    return true;
+  }
+}
+
+bool Minion::useCardAbility(Player& targetPlayer,
+                            std::unique_ptr<Card>& targetCard,
+                            TriggerType type = TriggerType::None) {
+  if (actions != 0) {
+    std::cerr << "Minion does not have enough actions." << std::endl;
+    return false;
+  }
+  if (Card::useCardAbility(targetPlayer, targetCard, type)) {
+    actions--;
+    return true;
+  }
 }
 
 bool Minion::requiresTarget() const {

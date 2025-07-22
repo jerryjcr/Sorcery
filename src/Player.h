@@ -37,7 +37,7 @@ class Player : public Subject {
   void discard(int handIndex);
   void attackMinion(int boardIndex, Player& targetPlayer, int targetIndex);
   void attackPlayer(int boardIndex, Player& targetPlayer);
-  void use(int boardIndex);
+  void use(int boardIndex, Player& inactivePlayer);
   void use(int boardIndex, Player& targetPlayer, int targetIndex);
 
   int getCost(int handIndex) const;
