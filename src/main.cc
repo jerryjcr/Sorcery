@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
         if (currline >> handInd) {
           activePlayer.discard(handInd);
         } else {
-          // some sort of error since no index given
+          std::cerr << "Error, no hand index given" << std::endl;
         }
 
       } else if (cmd == "attack") {
@@ -116,14 +116,17 @@ int main(int argc, char* argv[]) {
         int target;
         if (currline >> myMinion) {
           // player checks if myMinion is out of range
-          if (currline >> target) {
+          if (currline >> target && currline.peek() == EOF) {
             activePlayer.attackMinion(myMinion, opponentPlayer, target);
-          } else {  // todo: check for invalid input versus EOF
+          } else if (currline.eof()) {
             // attacking the other player
             activePlayer.attackPlayer(myMinion, opponentPlayer);
+          } else {
+            std::cerr << "Invalid input, expected an integer to target"
+                      << std::endl;
           }
         } else {
-          // bruh error moment
+          std::cerr << "Error, no minon index given" << std::endl;
         }
 
       } else if (cmd == "play") {
@@ -131,28 +134,38 @@ int main(int argc, char* argv[]) {
         int targetPlayer;
         char targetCard;
         if (currline >> myCard) {
-          if (currline >> targetPlayer && currline >> targetCard) {
-            if ((targetPlayer != 1 && targetPlayer != 2) ||
-                (targetCard != 'r' && (targetCard < '1' || targetCard > '5'))) {
-              // error, bad input
-            } else {
-              int targetInd;
-              // we all agree that 0 is how you target a ritual
-              targetCard == 'r' ? targetInd = 0 : targetInd = targetCard - '0';
+          if (currline >> targetPlayer) {
+            if (currline >> targetCard && currline.peek() == EOF) {
+              if ((targetPlayer != 1 && targetPlayer != 2) ||
+                  (targetCard != 'r' &&
+                   (targetCard < '1' || targetCard > '5'))) {
+                std::cerr << "Invalid input, player and or card targets are "
+                             "out of range"
+                          << std::endl;
+              } else {
+                int targetInd;
+                // we all agree that 0 is how you target a ritual
+                targetCard == 'r' ? targetInd = 0
+                                  : targetInd = targetCard - '0';
 
-              // this is weird since the players may forget who player 1 and 2
-              // are, perhaps send a message reminding them?
-              if (targetPlayer == 1) {
-                activePlayer.playCard(myCard, p1, targetCard);
-              } else {  // must be targeting player 2
-                activePlayer.playCard(myCard, p2, targetCard);
+                // this is weird since the players may forget who player 1 and 2
+                // are, perhaps send a message reminding them?
+                if (targetPlayer == 1) {
+                  activePlayer.playCard(myCard, p1, targetCard);
+                } else {  // must be targeting player 2
+                  activePlayer.playCard(myCard, p2, targetCard);
+                }
               }
+            } else {
+              std::cerr << "Invalid input, expected an integer" << std::endl;
             }
-          } else {  // todo: check for invalid input versus EOF
+          } else if (currline.eof()) {
             activePlayer.playCard(myCard);
+          } else {
+            std::cerr << "Invalid input, expected an integer" << std::endl;
           }
         } else {
-          // error no card given
+          std::cerr << "error, no card index give" << std::endl;
         }
 
       } else if (cmd == "use") {
