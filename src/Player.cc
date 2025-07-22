@@ -10,9 +10,14 @@
 #include "Ritual.h"
 #include "Spell.h"
 
-Player::Player(std::string name, std::vector<std::unique_ptr<Card>> deck,
-               int life, int magic)
-    : playerName{name}, deck{std::move(deck)}, life{life}, magic{magic} {}
+const int kInitialLife = 20;
+const int kInitialMagic = 3;
+
+Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
+    : playerName{name},
+      deck{std::move(deck)},
+      life{kInitialLife},
+      magic{kInitialMagic} {}
 
 void Player::playCard(int handIndex) {
   if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) return;
