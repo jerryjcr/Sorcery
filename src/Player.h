@@ -35,6 +35,8 @@ class Player : public Subject {
   void use(int boardIndex);
   void use(int boardIndex, Player& targetPlayer, int targetIndex);
 
+  int getCost(int handIndex) const;
+
   int getLife() const;
   int getMagic() const;
 
