@@ -187,7 +187,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "hand") {
         // replace later
         for (int i = 0; i < 5; i++) {
-          std::cin << activePlayer.getCost(i) << std::endl;
+          std::cout << activePlayer.getCost(i) << std::endl;
         }
       } else if (cmd == "board") {
         // do later
