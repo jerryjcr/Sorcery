@@ -14,6 +14,8 @@ Card::Card(const std::string& name, int cost,
       activatedAbility{activated},
       triggeredAbility{triggered} {}
 
+Card::~Card() {}
+
 void Card::activateAbility() {
   // figure this out later
 }

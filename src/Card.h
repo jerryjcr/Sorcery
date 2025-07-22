@@ -19,7 +19,7 @@ class Card {
   Card(const std::string& name, int cost,
        std::shared_ptr<const Ability> activated = nullptr,
        std::shared_ptr<const Ability> triggered = nullptr);
-  virtual ~Card() = default;
+  virtual ~Card() = 0;
 
   // uses an activated ability without a target
   virtual void activateAbility();
@@ -28,7 +28,6 @@ class Card {
   // uses a trigger ability (ability compares trigger type)
   virtual void triggerAbility(TriggerType type, Player& targetPlayer,
                               int targetIndex);
-  virtual void describe() const = 0;
 
   int getCost() const;
 };
