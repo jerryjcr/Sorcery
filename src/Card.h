@@ -8,14 +8,17 @@
 
 class Player;
 
+enum class CardType { Minion, EnchantedMinion, Spell, Ritual };
+
 class Card {
  protected:
   std::string name;
   int cost;
+  CardType type;
   std::unique_ptr<const Ability> ability;
 
  public:
-  Card(const std::string& name, int cost,
+  Card(const std::string& name, int cost, CardType type,
        std::unique_ptr<const Ability> ability = nullptr);
   virtual ~Card() = 0;
 
@@ -27,6 +30,7 @@ class Card {
                               std::unique_ptr<Card>& targetCard,
                               TriggerType type = TriggerType::None);
 
+  CardType getType() const { return type; }
   const std::string& getName() const;
   int getCost() const;
 };
