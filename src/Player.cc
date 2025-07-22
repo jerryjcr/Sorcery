@@ -197,7 +197,7 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
 }
 
 int Player::getCost(int handIndex) const {
-  if (handIndex < 0 || handIndex >= static_cast<int>(board.size())) {
+  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) {
     std::cerr << "Hand index out of bounds." << std::endl;
     return -1;
   }
