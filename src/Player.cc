@@ -54,9 +54,53 @@ void Player::playCard(int handIndex) {
   hand.erase(hand.begin() + handIndex);
 }
 
-void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
-  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) return;
-  if (targetIndex < 0 || targetIndex >= static_cast<int>(board.size() + 1)) return;
+void Player::playCard(int handIndex, Player& targetPlayer, int boardIndex) {
+  if (handIndex < 0 || handIndex >= static_cast<int>(hand.size())) {
+    std::cerr << "Hand index out of bounds." << std::endl;
+    return;
+  }
+  if (boardIndex < 0 || boardIndex >= static_cast<int>(board.size() + 1)) {
+    std::cerr << "Target index out of bounds." << std::endl;
+    return;
+  }
+  if (boardIndex == 0 && !targetPlayer.ritual) {
+    std::cerr << "Target ritual does not exist." << std::endl;
+    return;
+  }
+
+  std::unique_ptr<Card>& card = hand[handIndex];
+  int cost = card->getCost();
+  if (magic < cost) {
+    std::cerr << "Not enough magic to play this card." << std::endl;
+    return;
+  }
+
+  // detect the type of card by casting to the appropriate pointer
+  if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
+      spellRawPtr && spellRawPtr->requiresTarget()) {
+    TargetType targetType;
+    if (boardIndex == 0) {
+      targetType = TargetType::Ritual;
+    } else {
+      targetType = TargetType::Minion;
+    }
+    if (spellRawPtr->canTarget(targetType)) {
+      std::unique_ptr<Spell> spell(static_cast<Spell*>(card.release()));
+      spell->useSpell(targetPlayer, boardIndex);
+    } else {
+      std::cerr << "This spell cannot target a "
+                << (targetType == TargetType::Minion ? "minion." : "ritual.")
+                << std::endl;
+      return;
+    }
+
+  } else {
+    std::cerr << "This card does not require a target." << std::endl;
+    return;
+  }
+
+  magic -= cost;
+  hand.erase(hand.begin() + handIndex);
 }
 
 void Player::drawCard() {

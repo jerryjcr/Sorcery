@@ -1,5 +1,6 @@
 #include "Spell.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
@@ -13,3 +14,8 @@ Spell::Spell(const std::string& name, int cost,
     : Card{name, cost, activated}, validTargets{std::move(targets)} {}
 
 bool Spell::requiresTarget() const { return !validTargets.empty(); }
+
+bool Spell::canTarget(TargetType targetType) const {
+  return std::find(validTargets.begin(), validTargets.end(), targetType) !=
+         validTargets.end();
+}
