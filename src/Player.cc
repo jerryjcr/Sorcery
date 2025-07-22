@@ -79,7 +79,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
 
   // detect the type of card by casting to the appropriate pointer
   if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
-      spellRawPtr->requiresTarget()) {
+      spellRawPtr && spellRawPtr->requiresTarget()) {
     TargetType targetType;
     if (targetIndex == 0) {
       targetType = TargetType::Ritual;

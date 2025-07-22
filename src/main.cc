@@ -161,9 +161,9 @@ int main(int argc, char* argv[]) {
                 // this is weird since the players may forget who player 1 and 2
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
-                  activePlayer.playCard(myCard, p1, targetCard);
+                  activePlayer.playCard(myCard, p1, targetInd);
                 } else {  // must be targeting player 2
-                  activePlayer.playCard(myCard, p2, targetCard);
+                  activePlayer.playCard(myCard, p2, targetInd);
                 }
               }
             } else {
