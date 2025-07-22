@@ -13,15 +13,14 @@ class Ritual;
 
 class Player : public Subject {
   std::string playerName;
+  int life;
+  int magic;
 
   std::vector<std::unique_ptr<Card>> deck;
   std::vector<std::unique_ptr<Card>> hand;
   std::vector<std::unique_ptr<Minion>> board;
   std::unique_ptr<Ritual> ritual;
   std::vector<std::unique_ptr<Minion>> graveyard;
-
-  int life;
-  int magic;
 
  public:
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
