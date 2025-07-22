@@ -31,18 +31,18 @@ void Player::playCard(int handIndex) {
   }
 
   // detect the type of card by casting to the appropriate pointer
-  if (Minion* minionRawPtr = dynamic_cast<Minion*>(card.get())) {
+  if (dynamic_cast<Minion*>(card.get())) {
     if (board.size() >= 5) {
       std::cerr << "Board is full. Cannot play minion." << std::endl;
       return;
     }
     std::unique_ptr<Minion> minion(static_cast<Minion*>(card.release()));
     board.push_back(std::move(minion));
-  } else if (Ritual* ritualRawPtr = dynamic_cast<Ritual*>(card.get())) {
+  } else if (dynamic_cast<Ritual*>(card.get())) {
     std::unique_ptr<Ritual> newRitual(static_cast<Ritual*>(card.release()));
     ritual = std::move(newRitual);
   } else if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
-             spellRawPtr && !spellRawPtr->requiresTarget()) {
+             !spellRawPtr->requiresTarget()) {
     std::unique_ptr<Spell> spell(static_cast<Spell*>(card.release()));
     spell->useSpell();  // call the version of the method with no target
   } else {
@@ -79,7 +79,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
 
   // detect the type of card by casting to the appropriate pointer
   if (Spell* spellRawPtr = dynamic_cast<Spell*>(card.get());
-      spellRawPtr && spellRawPtr->requiresTarget()) {
+      spellRawPtr->requiresTarget()) {
     TargetType targetType;
     if (targetIndex == 0) {
       targetType = TargetType::Ritual;
