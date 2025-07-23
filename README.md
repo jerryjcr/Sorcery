@@ -35,7 +35,7 @@ In the second phase of the project, we focus on extending the game loop and addi
   - etc.
 - Parse command input
 
-## Phase 3
+## Phase 3 ✅
 The third phase of the project focuses on adding concrete minions and abilities. We add combat resolution, minion actions, and actual ability usage.
 
 - Action system (minions get one action per turn)
