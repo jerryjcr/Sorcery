@@ -14,6 +14,16 @@ Ritual::Ritual(const std::string& name, int cost, int charges, int chargeCost,
 
 Ritual::~Ritual() {}
 
-int Ritual::getCharges() const{
-  return charges;
+bool Ritual::useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                            TriggerType type = TriggerType::None) {
+  if (charges < chargeCost) {
+    // no message if you don't have enough charges, since it's triggered
+    return false;
+  }
+  if (Card::useCardAbility(activePlayer, inactivePlayer, type)) {
+    charges -= chargeCost;
+    return true;
+  }
 }
+
+int Ritual::getCharges() const { return charges; }

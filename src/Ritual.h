@@ -17,7 +17,8 @@ class Ritual : public Card {
          std::unique_ptr<const Ability> ability);
   virtual ~Ritual() = 0;
 
-  void useRitual(TriggerType type, Player& targetPlayer, int boardIndex);
+  virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                              TriggerType type = TriggerType::None) override;
 
   void adjustCharges(int amount);
   int getCharges() const;
