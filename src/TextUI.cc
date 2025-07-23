@@ -138,12 +138,12 @@ std::vector<std::string> visualizeCard(const Card& c) {
   block[5] += "|";
   // line 6
   block.emplace_back("| ");
-  block[6] += c.getDescription()[0];
+  block[6] += c.getDescription()[1];
   block[6].resize(kWidth - 1, ' ');
   block[6] += "|";
   // line 7
   block.emplace_back("| ");
-  block[7] += c.getDescription()[0];
+  block[7] += c.getDescription()[2];
   block[7].resize(kWidth - 1, ' ');
   block[7] += "|";
   // line 8 & 9
