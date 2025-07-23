@@ -239,15 +239,15 @@ int main(int argc, char* argv[]) {
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
                   if (cmd == "play") {
-                    activePlayer->playCard(myCard - 1, p1, targetInd - 1);
+                    activePlayer->playCard(myCard - 1, p1, targetInd);
                   } else {
-                    activePlayer->use(myCard - 1, p1, targetInd - 1);
+                    activePlayer->use(myCard - 1, p1, targetInd);
                   }
                 } else {  // must be targeting player 2
                   if (cmd == "play")
-                    activePlayer->playCard(myCard - 1, p2, targetInd - 1);
+                    activePlayer->playCard(myCard - 1, p2, targetInd);
                   else
-                    activePlayer->use(myCard - 1, p2, targetInd - 1);
+                    activePlayer->use(myCard - 1, p2, targetInd);
                 }
               }
             } else {
