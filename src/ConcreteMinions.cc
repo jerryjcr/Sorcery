@@ -35,7 +35,7 @@ bool BoneGolem::useCardAbility(Player& targetPlayer, Card& targetCard, TriggerTy
 bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   std::vector<std::unique_ptr<Minion>>& v=activePlayer.getBoard();
   int i=0;
-  for (;i<v.size();++i){
+  for (;i<static_cast<int>(v.size());++i){
     if (v[i].get()==this)break;
   }
   return ability->useAbility(activePlayer,*v[i],type);
