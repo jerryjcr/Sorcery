@@ -16,17 +16,25 @@ Minion::Minion(const std::string& name, int cost, int attack, int defence,
 Minion::~Minion() {}
 
 void Minion::attackMinion(Minion& targetMinion) {
-  targetMinion.adjustDefence(-attack);
-  adjustDefence(-targetMinion.attack);
+  if (getActions() <= 0) {
+    std::cerr << "Minion does not have enough actions." << std::endl;
+  }
+  targetMinion.adjustDefence(-getAttack());
+  adjustDefence(-targetMinion.getAttack());
+  --actions;
 }
 
 void Minion::attackPlayer(Player& targetPlayer) {
-  targetPlayer.adjustLife(-attack);
+  if (getActions() <= 0) {
+    std::cerr << "Minion does not have enough actions." << std::endl;
+  }
+  targetPlayer.adjustLife(-getAttack());
+  --actions;
 }
 
 bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                             TriggerType type) {
-  if (actions != 0) {
+  if (getActions() <= 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
     return false;
   }
@@ -39,7 +47,7 @@ bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 
 bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
                             TriggerType type) {
-  if (actions != 0) {
+  if (getActions() <= 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
     return false;
   }

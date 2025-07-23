@@ -29,9 +29,9 @@ class Card {
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
                               TriggerType type = TriggerType::None);
 
-  const std::string& getName() const;
-  int getCost() const;
-  CardType getType() const;
+  virtual const std::string& getName() const;
+  virtual int getCost() const;
+  virtual CardType getType() const;
   virtual const std::vector<std::string> getDescription() const = 0;
 };
 
