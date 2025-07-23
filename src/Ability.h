@@ -5,6 +5,7 @@
 #include <vector>
 
 class Player;
+class Card;
 
 enum class TriggerType {
   None,
