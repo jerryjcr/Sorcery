@@ -113,7 +113,7 @@ std::vector<std::string> visualizeCard(const Card& c) {
   block[1].resize(kWidth - 1, ' ');
   block[1] += "|";
   // line 2
-  block.emplace_back("kHorizontalBar");
+  block.emplace_back(kHorizontalBar);
   // line 3
   std::string typeName;
   if (type == CardType::Minion) {
@@ -232,7 +232,7 @@ void printBoard(Player& active, Player& opponent) {
   std::cout << "-" << theLine << "-" << std::endl;
 
   // first row
-  if (opponent.getRitual() != nullptr) {
+  if (opponent.getRitual().get() != nullptr) {
     currRow.emplace_back(visualizeCard(*opponent.getRitual()));
   } else {
     currRow.emplace_back(kEmptyBlock);
