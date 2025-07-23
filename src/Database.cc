@@ -1,5 +1,5 @@
 #include "Card.h"
-#include "ConcreteMinion.h"
+#include "ConcreteMinions.h"
 #include "Minion.h"
 #include "Ritual.h"
 #include "Spell.h"
