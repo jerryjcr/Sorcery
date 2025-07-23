@@ -31,7 +31,7 @@ class Player : public Subject {
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
 
   // player actions
-  void playCard(int handIndex, Player& opponentPlayer);
+  void playCard(int handIndex, Player& inactivePlayer);
   // target index is 0 for ritual, 1-5 for minions
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
   void drawCard();
@@ -43,6 +43,7 @@ class Player : public Subject {
 
   // useful methods for abilities to use
   void killMinion(int boardIndex);
+  void killRitual();
   void returnMinionToHand(int boardIndex);
   void reviveMinion();
 

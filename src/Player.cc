@@ -175,6 +175,14 @@ void Player::killMinion(int boardIndex) {
   board.erase(board.begin() + boardIndex);
 }
 
+void Player::killRitual() {
+  if (!ritual) {
+    std::cerr << "Target ritual does not exist." << std::endl;
+    return;
+  }
+  ritual.reset();
+}
+
 void Player::returnMinionToHand(int boardIndex) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
