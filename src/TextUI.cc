@@ -18,11 +18,11 @@ const std::vector<std::string> kBlankBlock{
 };
 
 void printSorcery() {
-    std::fstream sorcery("sorcery.txt");
-    std::string templine;
-    while (std::getline(sorcery, templine)) {
-        std::cout << templine << std::endl;
-    }
+  std::fstream sorcery("sorcery.txt");
+  std::string templine;
+  while (std::getline(sorcery, templine)) {
+    std::cout << templine << std::endl;
+  }
 }
 
 std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
@@ -36,7 +36,7 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     block[1] += std::to_string(p.getLife());
     block[1].resize(std::string("|   ").length(), ' ');
     block[1] += "|";
-    block[1].resize(kWidth - std::string("| 26 |").length(), ' ');
+    block[1].resize(kWidth - std::string("| 26  |").length(), ' ');
     block[1] += "| " + std::to_string(p.getMagic());
     block[1].resize(kWidth - 1, ' ');
     block[1] += "|";
@@ -85,9 +85,9 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     // line 9
     block.emplace_back("| ");
     block[9] += std::to_string(p.getLife());
-    block[9].resize(std::string("|   ").length(), ' ');
+    block[9].resize(std::string("|     |").length(), ' ');
     block[9] += "|";
-    block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
+    block[9].resize(kWidth - std::string("| 26  |").length(), ' ');
     block[9] += "| " + std::to_string(p.getMagic());
     block[9].resize(kWidth - 1, ' ');
     block[9] += "|";
@@ -107,11 +107,11 @@ std::vector<std::string> visualizeCard(const Card& c) {
   block.emplace_back(kHorizontalBar);
   // line 1
   block.emplace_back("| ");
-  block[1] += c.getName();
-  block[1].resize(kWidth - std::string("| 26 |").length(), ' ');
-  block[1] += "| " + std::to_string(c.getCost());
-  block[1].resize(kWidth - 1, ' ');
-  block[1] += "|";
+  block.back() += c.getName();
+  block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
+  block.back() += "| " + std::to_string(c.getCost());
+  block.back().resize(kWidth - 1, ' ');
+  block.back() += "|";
   // line 2
   block.emplace_back(kHorizontalBar);
   // line 3
@@ -127,60 +127,60 @@ std::vector<std::string> visualizeCard(const Card& c) {
   }
 
   block.emplace_back("|");
-  block[3].resize(kWidth - (typeName + " |").length(), ' ');
-  block[3] += typeName + " |";
+  block.back().resize(kWidth - (typeName + " |").length(), ' ');
+  block.back() += typeName + " |";
   // line 4
   block.emplace_back(kHorizontalBar);
   // line 5
   block.emplace_back("| ");
-  block[5] += c.getDescription()[0];
-  block[5].resize(kWidth - 1, ' ');
-  block[5] += "|";
+  block.back() += c.getDescription()[0];
+  block.back().resize(kWidth - 1, ' ');
+  block.back() += "|";
   // line 6
   block.emplace_back("| ");
-  block[6] += c.getDescription()[1];
-  block[6].resize(kWidth - 1, ' ');
-  block[6] += "|";
+  block.back() += c.getDescription()[1];
+  block.back().resize(kWidth - 1, ' ');
+  block.back() += "|";
   // line 7
   block.emplace_back("| ");
-  block[7] += c.getDescription()[2];
-  block[7].resize(kWidth - 1, ' ');
-  block[7] += "|";
+  block.back() += c.getDescription()[2];
+  block.back().resize(kWidth - 1, ' ');
+  block.back() += "|";
   // line 8 & 9
   if (type == CardType::Minion) {
     // line 8
     block.emplace_back("|------                   ------|");
     // line 9
     block.emplace_back("| ");
-    block[9] += std::to_string(static_cast<const Minion&>(c).getAttack());
-    block[9].resize(std::string("|   ").length(), ' ');
-    block[9] += "|";
-    block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
-    block[9] +=
-        "| " + std::to_string(static_cast<const Minion&>(c).getDefence());
-    block[9].resize(kWidth - 1, ' ');
-    block[9] += "|";
+    block.back() += std::to_string(static_cast<const Minion&>(c).getAttack());
+    block.back().resize(std::string("|     |").length(), ' ');
+    block.back() += "|";
+    block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
+    block.back() +=
+        "|  " + std::to_string(static_cast<const Minion&>(c).getDefence());
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
   } else if (type == CardType::Enchantment) {
     // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
 
     block.emplace_back("| ");
-    block[8] += static_cast<const Enchantment&>(c).getDescription()[3];
-    block[8].resize(kWidth - 1, ' ');
-    block[8] += "|";
+    block.back() += static_cast<const Enchantment&>(c).getDescription()[3];
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
     // line 9
     block.emplace_back("| ");
-    block[9] += static_cast<const Enchantment&>(c).getDescription()[4];
-    block[9].resize(kWidth - 1, ' ');
-    block[9] += "|";
+    block.back() += static_cast<const Enchantment&>(c).getDescription()[4];
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
   } else if (type == CardType::Ritual) {
     block.emplace_back("|                         ------|");
     // line 9
     block.emplace_back("| ");
-    block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
-    block[9] +=
+    block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
+    block.back() +=
         "| " + std::to_string(static_cast<const Ritual&>(c).getCharges());
-    block[9].resize(kWidth - 1, ' ');
-    block[9] += "|";
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
   } else {  // must be spell
     // line 8
     block.emplace_back(kEmpty);
