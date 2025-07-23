@@ -128,8 +128,8 @@ void Player::attackMinion(int boardIndex, Player& targetPlayer,
                           int targetIndex) {
   if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
-  if (!boundIndex(targetIndex, 0, static_cast<int>(targetPlayer.board.size()) - 1,
-                  "Target"))
+  if (!boundIndex(targetIndex, 0,
+                  static_cast<int>(targetPlayer.board.size()) - 1, "Target"))
     return;
 
   board[boardIndex]->attackMinion(*targetPlayer.board[targetIndex]);
@@ -173,6 +173,12 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
 
   if (board[boardIndex]->useCardAbility(targetPlayer, targetCard)) {
     magic -= board[boardIndex]->getAbilityCost();
+  }
+}
+
+void Player::resetBoardActions() {
+  for (auto& minion : board) {
+    minion->resetActions();
   }
 }
 

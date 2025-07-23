@@ -41,6 +41,8 @@ class Player : public Subject {
   void use(int boardIndex, Player& inactivePlayer);
   void use(int boardIndex, Player& targetPlayer, int targetIndex);
 
+  void resetBoardActions();
+
   // useful methods for abilities to use
   void killMinion(int boardIndex);
   void killRitual();

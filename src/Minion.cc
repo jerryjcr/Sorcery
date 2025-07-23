@@ -18,6 +18,7 @@ Minion::~Minion() {}
 void Minion::attackMinion(Minion& targetMinion) {
   if (getActions() <= 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
+    return;
   }
   targetMinion.adjustDefence(-getAttack());
   adjustDefence(-targetMinion.getAttack());
@@ -27,6 +28,7 @@ void Minion::attackMinion(Minion& targetMinion) {
 void Minion::attackPlayer(Player& targetPlayer) {
   if (getActions() <= 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
+    return;
   }
   targetPlayer.adjustLife(-getAttack());
   --actions;
