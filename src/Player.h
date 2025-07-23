@@ -30,6 +30,7 @@ class Player : public Subject {
  public:
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
 
+  // player actions
   void playCard(int handIndex);
   // target index is 0 for ritual, 1-5 for minions
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
@@ -39,6 +40,11 @@ class Player : public Subject {
   void attackPlayer(int boardIndex, Player& targetPlayer);
   void use(int boardIndex, Player& inactivePlayer);
   void use(int boardIndex, Player& targetPlayer, int targetIndex);
+
+  // useful methods for abilities to use
+  void killMinion(int boardIndex);
+  void returnMinionToHand(int boardIndex);
+  void reviveMinion(int boardIndex);
 
   const std::string& getName() const;
   int getLife() const;
@@ -50,6 +56,7 @@ class Player : public Subject {
   std::vector<std::unique_ptr<Card>>& getHand();
   std::vector<std::unique_ptr<Minion>>& getBoard();  // goes from 1-5
   std::unique_ptr<Ritual>& getRitual();
+  std::vector<std::unique_ptr<Minion>>& getGraveyard();
 };
 
 #endif

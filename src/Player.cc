@@ -144,11 +144,9 @@ void Player::use(int boardIndex, Player& inactivePlayer) {
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
-  if (targetIndex < 0 ||
-      targetIndex > static_cast<int>(targetPlayer.board.size())) {
-    std::cerr << "Target index out of bounds." << std::endl;
+  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
+                  "Target"))
     return;
-  }
   if (targetIndex == 0 && !targetPlayer.ritual) {
     std::cerr << "Target ritual does not exist." << std::endl;
     return;
@@ -161,6 +159,40 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
   }
 }
 
+void Player::killMinion(int boardIndex) {
+  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+    return;
+
+  graveyard.push_back(std::move(board[boardIndex]));
+  board.erase(board.begin() + boardIndex);
+}
+
+void Player::returnMinionToHand(int boardIndex) {
+  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+    return;
+
+  if (hand.size() >= kMaxHandSize) {
+    std::cerr << "Hand is full. Cannot return card to hand." << std::endl;
+    return;
+  }
+
+  hand.push_back(std::move(board[boardIndex]));
+  board.erase(board.begin() + boardIndex);
+}
+
+void Player::reviveMinion(int boardIndex) {
+  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+    return;
+
+  if (board.size() >= 5) {
+    std::cerr << "Board is full. Cannot play minion." << std::endl;
+    return;
+  }
+
+  graveyard.push_back(std::move(board[boardIndex]));
+  board.erase(board.begin() + boardIndex);
+}
+
 const std::string& Player::getName() const { return name; }
 
 int Player::getLife() const { return life; }
@@ -171,6 +203,12 @@ void Player::adjustLife(int amount) { life += amount; }
 
 void Player::adjustMagic(int amount) { magic += amount; }
 
-std::vector<std::unique_ptr<Card>>& getHand();
-std::vector<std::unique_ptr<Minion>>& getBoard();  // goes from 1-5
-std::unique_ptr<Ritual>& getRitual();
+std::vector<std::unique_ptr<Card>>& Player::getHand() { return hand; }
+
+std::vector<std::unique_ptr<Minion>>& Player::getBoard() { return board; }
+
+std::unique_ptr<Ritual>& Player::getRitual() { return ritual; }
+
+std::vector<std::unique_ptr<Minion>>& Player::getGraveyard() {
+  return graveyard;
+}
