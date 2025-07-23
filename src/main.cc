@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
   // bool graphicsMode = false;
-  //bool fileMode = false;
+  // bool fileMode = false;
   // default.txt still needs to be made
   std::string decklist1 = "default.txt";
   std::string decklist2 = "default.txt";
@@ -48,7 +48,6 @@ int main(int argc, char* argv[]) {
         decklist2 = argv[i];
       }
     } else if (cmd == "-init") {
-
     } else if (cmd == "-testing") {
       testingMode = true;
     } else if (cmd == "-graphics") {
@@ -75,23 +74,24 @@ int main(int argc, char* argv[]) {
 
   // when we add -init, this will have to change, amoung other things
   std::string name1, name2;
-  while(true) {
+  while (true) {
     std::getline(std::cin, name1);
     if (name1.length() > kMaxNameLength) {
-      std::cerr << "Error name too long, please enter a shorter name" << std::endl;
+      std::cerr << "Error name too long, please enter a shorter name"
+                << std::endl;
     } else {
       break;
     }
   }
-  while(true) {
+  while (true) {
     std::getline(std::cin, name2);
     if (name2.length() > kMaxNameLength) {
-      std::cerr << "Error name too long, please enter a shorter name" << std::endl;
+      std::cerr << "Error name too long, please enter a shorter name"
+                << std::endl;
     } else {
       break;
     }
   }
-
 
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
@@ -102,8 +102,7 @@ int main(int argc, char* argv[]) {
   while (true) {
     // start of turn
     std::cout << "Player ";
-    p1Turn ? std::cout << "1 : "
-           : std::cout << "2 : ";
+    p1Turn ? std::cout << "1 : " : std::cout << "2 : ";
     std::cout << activePlayer->getName() << "'s turn." << std::endl;
 
     // gain 1 magic
@@ -116,6 +115,25 @@ int main(int argc, char* argv[]) {
 
     // "action phase"
     while (true) {
+      // checking if someone won the game
+      if (p1.getLife() < 1 && p2.getLife() < 1) {
+        printBoard(*activePlayer, *opponentPlayer);
+        std::cout << "Somehow, someway, this game has ended in a tie!"
+                  << std::endl;
+        std::cout << "Both of you lose!" << std::endl;
+        return 0;
+      } else if (p1.getLife() < 1) {
+        printBoard(*activePlayer, *opponentPlayer);
+        std::cout << p1.getName() << " has fallen in combat!" << std::endl;
+        std::cout << p2.getName() << " wins!" << std::endl;
+        return 0;
+      } else if (p2.getLife() < 1) {
+        printBoard(*activePlayer, *opponentPlayer);
+        std::cout << p2.getName() << " has fallen in combat!" << std::endl;
+        std::cout << p1.getName() << " wins!" << std::endl;
+        return 0;
+      }
+
       // have to change the way that input works with the -init command
       std::string cmd;
       std::getline(std::cin, cmd);
@@ -126,7 +144,7 @@ int main(int argc, char* argv[]) {
       if (cmd == "help") {
         std::fstream help("help.txt");
         std::string helpLine;
-        while(std::getline(help, helpLine)) {
+        while (std::getline(help, helpLine)) {
           std::cout << helpLine << std::endl;
         }
         help.close();
@@ -154,7 +172,8 @@ int main(int argc, char* argv[]) {
         if (currline >> myMinion) {
           // player checks if myMinion is out of range
           if (currline >> target && currline.peek() == EOF) {
-            activePlayer->attackMinion(myMinion - 1, *opponentPlayer, target - 1);
+            activePlayer->attackMinion(myMinion - 1, *opponentPlayer,
+                                       target - 1);
           } else if (currline.eof()) {
             // attacking the other player
             activePlayer->attackPlayer(myMinion - 1, *opponentPlayer);
