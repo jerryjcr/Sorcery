@@ -285,7 +285,7 @@ void printBoard(Player& active, Player& opponent) {
   currRow.clear();
   // fourth row
 
-  if (active.getRitual() != nullptr) {
+  if (active.getRitual().get() != nullptr) {
     currRow.emplace_back(visualizeCard(*active.getRitual()));
   } else {
     currRow.emplace_back(kEmptyBlock);
