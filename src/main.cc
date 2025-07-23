@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
     if (cmd == "-deck1") {
       if (i + 1 >= argc) {
         std::cerr
-            << "Error, no filename given for deck 1. Using default instead"
+            << "Error: No filename given for deck 1. Using default.txt instead."
             << std::endl;
         decklist1 = kDefaultDeck;
       } else {
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     } else if (cmd == "-deck2") {
       if (i + 1 >= argc) {
         std::cerr
-            << "Error, no filename given for deck 2. Using default instead"
+            << "Error: No filename given for deck 2. Using default.txt instead."
             << std::endl;
         decklist2 = kDefaultDeck;
       } else {
@@ -62,8 +62,8 @@ int main(int argc, char* argv[]) {
       }
     } else if (cmd == "-init") {
       if (i + 1 >= argc) {
-        std::cerr << "Error, no filename given for taking input. Reading from "
-                     "standard in instead"
+        std::cerr << "Error: No filename given for taking input. Reading from "
+                     "stdin instead."
                   << std::endl;
         fileIn = std::fstream{};
       } else {
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
       std::getline(std::cin, name1);
     }
     if (name1.length() > kMaxNameLength) {
-      std::cerr << "Error name too long, please enter a shorter name"
+      std::cerr << "Invalid input: Name too long, please enter a shorter name."
                 << std::endl;
     } else {
       break;
@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
       std::getline(std::cin, name2);
     }
     if (name2.length() > kMaxNameLength) {
-      std::cerr << "Error name too long, please enter a shorter name"
+      std::cerr << "Invalid input: Name too long, please enter a shorter name."
                 << std::endl;
     } else {
       break;
@@ -144,16 +144,13 @@ int main(int argc, char* argv[]) {
     triggerBoard(*opponentPlayer, *activePlayer, *opponentPlayer,
                  TriggerType::OpponentStartOfTurn);
 
-    std::cerr << "Just triggered start trigger." << std::endl;
-
     // "action phase"
     while (true) {
       // checking if someone won the game
       if (p1.getLife() < 1 && p2.getLife() < 1) {
         printBoard(*activePlayer, *opponentPlayer);
-        std::cout << "Somehow, someway, this game has ended in a tie!"
-                  << std::endl;
-        std::cout << "Both of you lose!" << std::endl;
+        std::cout << "Both players have fallen!" << std::endl;
+        std::cout << "The game ends in a draw." << std::endl;
         return 0;
       } else if (p1.getLife() < 1) {
         printBoard(*activePlayer, *opponentPlayer);
@@ -198,7 +195,7 @@ int main(int argc, char* argv[]) {
         if (currline >> handInd) {
           activePlayer->discard(handInd);
         } else {
-          std::cerr << "Error, no hand index given" << std::endl;
+          std::cerr << "Invalid input: No hand index given." << std::endl;
         }
 
       } else if (cmd == "attack") {
@@ -213,14 +210,13 @@ int main(int argc, char* argv[]) {
             // attacking the other player
             activePlayer->attackPlayer(myMinion - 1, *opponentPlayer);
           } else {
-            std::cerr << "Error Invalid input, expected an integer to target"
-                      << std::endl;
+            std::cerr << "Invalid input: Wrong arguments." << std::endl;
           }
         } else {
-          std::cerr << "Error, no minon index given" << std::endl;
+          std::cerr << "Invalid input: No minion index given." << std::endl;
         }
 
-      } else if (cmd == "play") {
+      } else if (cmd == "play" || cmd == "use") {
         int myCard;
         int targetPlayer;
         char targetCard;
@@ -230,10 +226,9 @@ int main(int argc, char* argv[]) {
               if ((targetPlayer != 1 && targetPlayer != 2) ||
                   (targetCard != 'r' &&
                    (targetCard < '1' || targetCard > '5'))) {
-                std::cerr
-                    << "Error Invalid input, player and or card targets are "
-                       "out of range"
-                    << std::endl;
+                std::cerr << "Invalid input: Player and/or card targets are "
+                             "out of range."
+                          << std::endl;
               } else {
                 int targetInd;
                 // we all agree that 0 is how you target a ritual
@@ -243,65 +238,28 @@ int main(int argc, char* argv[]) {
                 // this is weird since the players may forget who player 1 and 2
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
-                  activePlayer->playCard(myCard - 1, p1, targetInd - 1);
+                  if (cmd == "play") {
+                    activePlayer->playCard(myCard - 1, p1, targetInd - 1);
+                  } else {
+                    activePlayer->use(myCard - 1, p1, targetInd - 1);
+                  }
                 } else {  // must be targeting player 2
-                  activePlayer->playCard(myCard - 1, p2, targetInd - 1);
+                  if (cmd == "play")
+                    activePlayer->playCard(myCard - 1, p2, targetInd - 1);
+                  else
+                    activePlayer->use(myCard - 1, p2, targetInd - 1);
                 }
               }
             } else {
-              std::cerr << "Error Invalid input, expected an integer"
-                        << std::endl;
+              std::cerr << "Invalid input: Expected an integer." << std::endl;
             }
           } else if (currline.eof()) {
             activePlayer->playCard(myCard - 1, *opponentPlayer);
           } else {
-            std::cerr << "Error Invalid input, expected an integer"
-                      << std::endl;
+            std::cerr << "Invalid input: Expected an integer." << std::endl;
           }
         } else {
-          std::cerr << "Error, no card index given" << std::endl;
-        }
-
-      } else if (cmd == "use") {
-        int myCard;
-        int targetPlayer;
-        char targetCard;
-        if (currline >> myCard) {
-          if (currline >> targetPlayer) {
-            if (currline >> targetCard && currline.peek() == EOF) {
-              if ((targetPlayer != 1 && targetPlayer != 2) ||
-                  (targetCard != 'r' &&
-                   (targetCard < '1' || targetCard > '5'))) {
-                std::cerr
-                    << "Error Invalid input, player and or card targets are "
-                       "out of range"
-                    << std::endl;
-              } else {
-                int targetInd;
-                // we all agree that 0 is how you target a ritual
-                targetCard == 'r' ? targetInd = 0
-                                  : targetInd = targetCard - '0';
-
-                // this is weird since the players may forget who player 1 and 2
-                // are, perhaps send a message reminding them?
-                if (targetPlayer == 1) {
-                  activePlayer->use(myCard - 1, p1, targetInd - 1);
-                } else {  // must be targeting player 2
-                  activePlayer->use(myCard - 1, p2, targetInd - 1);
-                }
-              }
-            } else {
-              std::cerr << "Error Invalid input, expected an integer"
-                        << std::endl;
-            }
-          } else if (currline.eof()) {
-            activePlayer->use(myCard - 1, *opponentPlayer);
-          } else {
-            std::cerr << "Error Invalid input, expected an integer"
-                      << std::endl;
-          }
-        } else {
-          std::cerr << "Error, no card index given" << std::endl;
+          std::cerr << "Invalid input: No card index given." << std::endl;
         }
       } else if (cmd == "inspect") {
         // todo
@@ -310,7 +268,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "board") {
         printBoard(*activePlayer, *opponentPlayer);
       } else {
-        std::cerr << "Error: Command not recognized" << std::endl;
+        std::cerr << "Invalid input: command not recognized." << std::endl;
       }
     }
 
