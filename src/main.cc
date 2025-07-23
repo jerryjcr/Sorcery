@@ -107,7 +107,12 @@ int main(int argc, char* argv[]) {
       currline >> cmd;
 
       if (cmd == "help") {
-        // help message goes here do if you are bored
+        std::fstream help("help.txt");
+        std::string helpLine;
+        while(std::getline(help, helpLine)) {
+          std::cout << helpLine << std::endl;
+        }
+        help.close();
 
       } else if (cmd == "end") {
         break;
