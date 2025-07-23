@@ -2,7 +2,7 @@
 
 const int kWidth = 33;
 const int kHeight = 11;
-const int kHandSize = 5;
+const int kBoardWidth = 5;
 
 const std::string kHorizontalBar = "|-------------------------------|";
 const std::string kEmpty = "|                               |";
@@ -17,8 +17,15 @@ const std::vector<std::string> kBlankBlock{
     kBlank, kBlank, kBlank, kBlank, kBlank,
 };
 
-// could combine active and opponent
-std::vector<std::string> visualizePlayer(Player& p, bool isActive) {
+void printSorcery() {
+    std::fstream sorcery("sorcery.txt");
+    std::string templine;
+    while (std::getline(sorcery, templine)) {
+        std::cout << templine << std::endl;
+    }
+}
+
+std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
   std::vector<std::string> block;
   // line 0
   block.emplace_back(kHorizontalBar);
@@ -149,7 +156,8 @@ std::vector<std::string> visualizeCard(const Card& c) {
     block[9].resize(std::string("|   ").length(), ' ');
     block[9] += "|";
     block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
-    block[9] += "| " + std::to_string(static_cast<const Minion&>(c).getDefence());
+    block[9] +=
+        "| " + std::to_string(static_cast<const Minion&>(c).getDefence());
     block[9].resize(kWidth - 1, ' ');
     block[9] += "|";
   } else if (type == CardType::Enchantment) {
@@ -169,7 +177,8 @@ std::vector<std::string> visualizeCard(const Card& c) {
     // line 9
     block.emplace_back("| ");
     block[9].resize(kWidth - std::string("| 26 |").length(), ' ');
-    block[9] += "| " + std::to_string(static_cast<const Ritual&>(c).getCharges());
+    block[9] +=
+        "| " + std::to_string(static_cast<const Ritual&>(c).getCharges());
     block[9].resize(kWidth - 1, ' ');
     block[9] += "|";
   } else {  // must be spell
@@ -184,23 +193,111 @@ std::vector<std::string> visualizeCard(const Card& c) {
   return block;
 }
 
-void printHand(const Player& p) {
-    std::vector<std::unique_ptr<Card>>& hand = p.getHand();
-    std::vector<std::vector<std::string>> hand_text;
-    int currHandSize = 0; 
-    for (auto it = hand.begin(); it != hand.end(); ++it) {
-        hand_text.emplace_back(visualizeCard(**it));
-        currHandSize++;
+void printRow(std::vector<std::vector<std::string>>& row) {
+  for (int i = 0; i < kHeight; i++) {
+    std::cout << "|";
+    for (int j = 0; j < kBoardWidth; j++) {
+      std::cout << row[j][i];
     }
-    while (currHandSize < kHandSize) {
-        hand_text.emplace_back(kEmptyBlock);
-        currHandSize++;
-    }
+    std::cout << "|" << std::endl;
+  }
+}
 
-    for (int i = 0; i < kHeight; i++) {
-        for (int j = 0; j < kHandSize; j++) {
-            std::cout << hand_text[j][i];
-        }
-        std::cout << std::endl;
+void printHand(Player& p) {
+  std::vector<std::unique_ptr<Card>>& hand = p.getHand();
+  std::vector<std::vector<std::string>> hand_text;
+  int currHandSize = 0;
+  for (auto it = hand.begin(); it != hand.end(); ++it) {
+    hand_text.emplace_back(visualizeCard(**it));
+    currHandSize++;
+  }
+  while (currHandSize < kBoardWidth) {
+    hand_text.emplace_back(kEmptyBlock);
+    currHandSize++;
+  }
+
+  for (int i = 0; i < kHeight; i++) {
+    for (int j = 0; j < kBoardWidth; j++) {
+      std::cout << hand_text[j][i];
     }
+    std::cout << std::endl;
+  }
+}
+
+void printBoard(Player& active, Player& opponent) {
+  std::vector<std::vector<std::string>> currRow;
+
+  std::string theLine = "-";
+  theLine.resize(kWidth * kBoardWidth, '-');
+  std::cout << "-" << theLine << "-" << std::endl;
+
+  // first row
+  if (opponent.getRitual() != nullptr) {
+    currRow.emplace_back(visualizeCard(*opponent.getRitual()));
+  } else {
+    currRow.emplace_back(kEmptyBlock);
+  }
+  currRow.emplace_back(kBlankBlock);
+  currRow.emplace_back(visualizePlayer(opponent, false));
+  currRow.emplace_back(kBlankBlock);
+
+  // graveyard needs to be implemented!!!
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  currRow.emplace_back(kEmptyBlock);
+
+  printRow(currRow);
+  currRow.clear();
+
+  // second row
+  int currBoardSize = 0;
+  std::vector<std::unique_ptr<Minion>>& oppBoard = opponent.getBoard();
+  for (auto it = oppBoard.begin(); it != oppBoard.end(); ++it) {
+    currRow.emplace_back(visualizeCard(**it));
+    currBoardSize++;
+  }
+  while (currBoardSize < kBoardWidth) {
+    currRow.emplace_back(kEmptyBlock);
+    currBoardSize++;
+  }
+  currBoardSize = 0;
+
+  printRow(currRow);
+  currRow.clear();
+
+  // sorcery
+  printSorcery();
+
+  // third row
+  std::vector<std::unique_ptr<Minion>>& activeBoard = active.getBoard();
+  for (auto it = activeBoard.begin(); it != activeBoard.end(); ++it) {
+    currRow.emplace_back(visualizeCard(**it));
+    currBoardSize++;
+  }
+  while (currBoardSize < kBoardWidth) {
+    currRow.emplace_back(kEmptyBlock);
+    currBoardSize++;
+  }
+  currBoardSize = 0;
+
+  printRow(currRow);
+  currRow.clear();
+  // fourth row
+
+  if (active.getRitual() != nullptr) {
+    currRow.emplace_back(visualizeCard(*active.getRitual()));
+  } else {
+    currRow.emplace_back(kEmptyBlock);
+  }
+  currRow.emplace_back(kBlankBlock);
+  currRow.emplace_back(visualizePlayer(active, false));
+  currRow.emplace_back(kBlankBlock);
+
+  // graveyard needs to be implemented!!!
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  currRow.emplace_back(kEmptyBlock);
+
+  printRow(currRow);
+  currRow.clear();
+
+  std::cout << "-" << theLine << "-" << std::endl;
 }
