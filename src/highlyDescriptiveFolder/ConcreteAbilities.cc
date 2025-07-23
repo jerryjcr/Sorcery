@@ -12,17 +12,42 @@
 #include "ConcreteMinions.h"
 
 BanishAbility::BanishAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment,CardType::Ritual}}{}
-bool BanishAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
-  if (type == TriggerType::None) {
-    //move to graveyard
+bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
+  if (type == TriggerType::None&&(targetCard.getType()==CardType::Minion||targetCard.getType()==CardType::Enchantment)) {
+    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    int i=0;
+    for (;i<v.size();++i){
+      if (v[i].get()==&targetCard)break;
+    }
+    targetPlayer.killMinion(i);
+  }
+  else if (type == TriggerType::None){
+    targetPlayer.killRitual();
   }
   return true;
 }
 
 UnsummonAbility::UnsummonAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
-bool UnsummonAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::None) {
-    //move from board to hand
+    if (targetPlayer.getHand().size()>=5){
+      std::cerr<<"Error: Cannot play Unsummon if hand is full"<<std::endl;
+      return false;
+    }
+    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    int i=0;
+    for (;i<v.size();++i){
+      if (v[i].get()==&targetCard)break;
+    }
+    targetPlayer.returnMinionToHand(i);
   }
   return true;
 }
@@ -42,14 +67,18 @@ bool RechargeAbility::useAbility(Player& activePlayer, Player& inactivePlayer, T
 }
 
 DisenchantAbility::DisenchantAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Enchantment}}{}
-bool DisenchantAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool DisenchantAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::None) {
     std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
     int index=0;
     for (;index<v.size();++index){
-      if (v[index].get()==targetCard.get()) break;
+      if (v[index].get()==&targetCard) break;
     }
-    Enchantment* tmp=(dynamic_cast<Enchantment*>(targetCard.get()));
+    Enchantment* tmp=(dynamic_cast<Enchantment*>(&targetCard));
     v[index]=std::move(tmp->getParent());
   }
   return true;
@@ -73,8 +102,10 @@ bool BlizzardAbility::useAbility(Player& activePlayer, Player& inactivePlayer, T
 RaiseDeadAbility::RaiseDeadAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment,CardType::Ritual}}{}
 bool RaiseDeadAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) { 
-    if (!activePlayer.isGraveyardEmpty()) {
-      //graveyard to board
+    std::vector<std::unique_ptr<Minion>> v=activePlayer.getGraveyard();
+    if (!v.empty()) {
+      v.back()->adjustDefence(1-(v.back()->getDefence()));
+      activePlayer.reviveMinion();
       return true;
     }
     else {
@@ -85,9 +116,13 @@ bool RaiseDeadAbility::useAbility(Player& activePlayer, Player& inactivePlayer, 
 }
 
 BoneGolemAbility::BoneGolemAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
-bool BoneGolemAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool BoneGolemAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::MyMinionLeaves||type == TriggerType::OpponentMinionLeaves) {
-    Minion* p=(dynamic_cast<Minion*>(targetCard.get()));
+    Minion* p=(dynamic_cast<Minion*>(&targetCard));
     p->adjustAttack(1);
     p->adjustDefence(1);
   }
@@ -95,9 +130,13 @@ bool BoneGolemAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& t
 }
 
 FireElementalAbility::FireElementalAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
-bool FireElementalAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool FireElementalAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::OpponentMinionEnters) {
-    Minion* p=(dynamic_cast<Minion*>(targetCard.get()));
+    Minion* p=(dynamic_cast<Minion*>(&targetCard));
     p->adjustDefence(-1);
   }
   return true;
@@ -115,9 +154,13 @@ bool PotionSellerAbility::useAbility(Player& activePlayer, Player& inactivePlaye
 }
 
 NovicePyromancerAbility::NovicePyromancerAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
-bool NovicePyromancerAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool NovicePyromancerAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::None) {
-    Minion* p=(dynamic_cast<Minion*>(targetCard.get()));
+    Minion* p=(dynamic_cast<Minion*>(&targetCard));
     p->adjustDefence(-1);
   }
   return true;
@@ -166,9 +209,13 @@ bool DarkRitualAbility::useAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 AuraOfPowerAbility::AuraOfPowerAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
-bool AuraOfPowerAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool AuraOfPowerAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::MyMinionEnters) {
-    Minion* p=(dynamic_cast<Minion*>(targetCard.get()));
+    Minion* p=(dynamic_cast<Minion*>(&targetCard));
     p->adjustAttack(1);
     p->adjustDefence(1);
   }
@@ -176,9 +223,18 @@ bool AuraOfPowerAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>&
 }
 
 StandstillAbility::StandstillAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment}}{}
-bool StandstillAbility::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard, TriggerType type) {
+bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerType type) {
+  if (!this->canTarget(targetCard.getType())){
+    std::cerr<<"Error: Cannot target card of this type"<<std::endl;
+    return false;
+  }
   if (type == TriggerType::MyMinionEnters||type == TriggerType::MyMinionLeaves) {
-    //move to graveyard
+    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    int i=0;
+    for (;i<v.size();++i){
+      if (v[i].get()==&targetCard)break;
+    }
+    targetPlayer.killMinion(i);
   }
   return true;
 }

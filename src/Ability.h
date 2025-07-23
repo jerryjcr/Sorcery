@@ -32,7 +32,7 @@ class Ability {
                               TriggerType type = TriggerType::None);
   //target
   virtual bool useAbility(Player& targetPlayer,
-                              std::unique_ptr<Card>& targetCard,
+                              Card& targetCard,
                               TriggerType type = TriggerType::None);
 
   bool requiresTarget() const;
