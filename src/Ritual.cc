@@ -24,6 +24,7 @@ bool Ritual::useCardAbility(Player& activePlayer, Player& inactivePlayer,
     charges -= chargeCost;
     return true;
   }
+  return false;
 }
 
 int Ritual::getCharges() const { return charges; }
