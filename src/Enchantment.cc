@@ -6,6 +6,7 @@ std::unique_ptr<Minion>& Enchantment::getParent() {
     return parent;
 }
 
+Enchantment::~Enchantment() {}
 
 CardType Enchantment::getType() const {
     return CardType::Enchantment;
