@@ -268,7 +268,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "board") {
         printBoard(*activePlayer, *opponentPlayer);
       } else {
-        std::cerr << "Invalid input: command not recognized." << std::endl;
+        std::cerr << "Invalid input: Command not recognized." << std::endl;
       }
     }
 
