@@ -15,11 +15,11 @@ class Card {
   std::string name;
   int cost;
   CardType type;
-  std::unique_ptr<const Ability> ability;
+  std::unique_ptr<Ability> ability;
 
  public:
   Card(const std::string& name, int cost, CardType type,
-       std::unique_ptr<const Ability> ability);
+       std::unique_ptr<Ability> ability);
   virtual ~Card() = 0;
 
   // uses an ability without a target

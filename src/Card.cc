@@ -7,16 +7,20 @@
 #include "Player.h"
 
 Card::Card(const std::string& name, int cost, CardType type,
-           std::unique_ptr<const Ability> ability)
+           std::unique_ptr<Ability> ability)
     : name{name}, cost{cost}, type{type}, ability{std::move(ability)} {}
 
 Card::~Card() {}
 
-bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
-                    TriggerType type = TriggerType::None);
+bool Card::useCardAbility(Player& activePlayer, Player& inactivePlayer,
+                          TriggerType type) {
+  return ability->useAbility(activePlayer, inactivePlayer, type);
+}
 
-bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                    TriggerType type = TriggerType::None);
+bool Card::useCardAbility(Player& targetPlayer, Card& targetCard,
+                          TriggerType type) {
+  return ability->useAbility(targetPlayer, targetCard, type);
+}
 
 const std::string& Card::getName() const { return name; }
 

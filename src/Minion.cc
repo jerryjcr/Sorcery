@@ -7,7 +7,7 @@
 #include "Player.h"
 
 Minion::Minion(const std::string& name, int cost, int attack, int defence,
-               std::unique_ptr<const Ability> ability)
+               std::unique_ptr<Ability> ability)
     : Card{name, cost, CardType::Minion, std::move(ability)},
       attack{attack},
       defence{defence},

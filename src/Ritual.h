@@ -14,7 +14,7 @@ class Ritual : public Card {
 
  public:
   Ritual(const std::string& name, int cost, int charges, int chargeCost,
-         std::unique_ptr<const Ability> ability);
+         std::unique_ptr<Ability> ability);
   virtual ~Ritual() = 0;
 
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,

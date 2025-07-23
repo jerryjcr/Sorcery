@@ -7,7 +7,7 @@
 #include "Card.h"
 
 Ritual::Ritual(const std::string& name, int cost, int charges, int chargeCost,
-               std::unique_ptr<const Ability> ability)
+               std::unique_ptr<Ability> ability)
     : Card{name, cost, CardType::Ritual, std::move(ability)},
       charges{charges},
       chargeCost{chargeCost} {}

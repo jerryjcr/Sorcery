@@ -8,7 +8,7 @@
 #include "Card.h"
 
 Spell::Spell(const std::string& name, int cost,
-             std::unique_ptr<const Ability> ability)
+             std::unique_ptr<Ability> ability)
     : Card{name, cost, CardType::Spell, std::move(ability)} {}
 
 Spell::~Spell() {}
