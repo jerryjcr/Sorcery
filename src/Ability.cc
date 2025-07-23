@@ -22,7 +22,7 @@ int Ability::getAbilityCost() const {
 }
 
 bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
-                              TriggerType type = TriggerType::None){
+                              TriggerType type){
   if (this->requiresTarget()){
     std::cerr<<"Error: cannot use targeted ability with no target"<<std::endl;
   }
@@ -33,7 +33,7 @@ bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 bool Ability::useAbility(Player& targetPlayer, Card& targetCard,
-                              TriggerType type = TriggerType::None){
+                              TriggerType type){
   if (!this->canTarget(targetCard.getType())){
     std::cerr<<"Error: cannot target a card of this type"<<std::endl;
   }
