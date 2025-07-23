@@ -9,6 +9,7 @@ class DefaultMinion : public Minion {
   public:
     DefaultMinion();
     ~DefaultMinion() = default;
+    virtual const std::vector<std::string> getDescription() const override;
 };
 
 class AirElemental : public Minion {
