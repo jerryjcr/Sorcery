@@ -34,7 +34,7 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     // line 1
     block.emplace_back("| ");
     block[1] += std::to_string(p.getLife());
-    block[1].resize(std::string("|   ").length(), ' ');
+    block[1].resize(std::string("|     |").length() - 1, ' ');
     block[1] += "|";
     block[1].resize(kWidth - std::string("| 26  |").length(), ' ');
     block[1] += "| " + std::to_string(p.getMagic());
@@ -85,7 +85,7 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     // line 9
     block.emplace_back("| ");
     block[9] += std::to_string(p.getLife());
-    block[9].resize(std::string("|     |").length(), ' ');
+    block[9].resize(std::string("|     |").length() - 1, ' ');
     block[9] += "|";
     block[9].resize(kWidth - std::string("| 26  |").length(), ' ');
     block[9] += "| " + std::to_string(p.getMagic());
@@ -153,7 +153,7 @@ std::vector<std::string> visualizeCard(const Card& c) {
     // line 9
     block.emplace_back("| ");
     block.back() += std::to_string(static_cast<const Minion&>(c).getAttack());
-    block.back().resize(std::string("|     |").length(), ' ');
+    block.back().resize(std::string("|     |").length() - 1, ' ');
     block.back() += "|";
     block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
     block.back() +=
