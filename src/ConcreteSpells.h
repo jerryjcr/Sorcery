@@ -1,5 +1,5 @@
-#ifndef CONCRETESPELL_H_
-#define CONCRETESPELL_H_
+#ifndef CONCRETESPELLS_H_
+#define CONCRETESPELLS_H_
 
 #include "Spell.h"
 
