@@ -205,11 +205,50 @@ int main(int argc, char* argv[]) {
                       << std::endl;
           }
         } else {
-          std::cerr << "Error, no card index give" << std::endl;
+          std::cerr << "Error, no card index given" << std::endl;
         }
 
       } else if (cmd == "use") {
-        // do later since abilities aren't done yet
+        int myCard;
+        int targetPlayer;
+        char targetCard;
+        if (currline >> myCard) {
+          if (currline >> targetPlayer) {
+            if (currline >> targetCard && currline.peek() == EOF) {
+              if ((targetPlayer != 1 && targetPlayer != 2) ||
+                  (targetCard != 'r' &&
+                   (targetCard < '1' || targetCard > '5'))) {
+                std::cerr
+                    << "Error Invalid input, player and or card targets are "
+                       "out of range"
+                    << std::endl;
+              } else {
+                int targetInd;
+                // we all agree that 0 is how you target a ritual
+                targetCard == 'r' ? targetInd = 0
+                                  : targetInd = targetCard - '0';
+
+                // this is weird since the players may forget who player 1 and 2
+                // are, perhaps send a message reminding them?
+                if (targetPlayer == 1) {
+                  activePlayer->use(myCard - 1, p1, targetInd - 1);
+                } else {  // must be targeting player 2
+                  activePlayer->use(myCard - 1, p2, targetInd - 1);
+                }
+              }
+            } else {
+              std::cerr << "Error Invalid input, expected an integer"
+                        << std::endl;
+            }
+          } else if (currline.eof()) {
+            activePlayer->use(myCard - 1, *opponentPlayer);
+          } else {
+            std::cerr << "Error Invalid input, expected an integer"
+                      << std::endl;
+          }
+        } else {
+          std::cerr << "Error, no card index given" << std::endl;
+        }
       } else if (cmd == "describe") {
         // todo
       } else if (cmd == "hand") {
