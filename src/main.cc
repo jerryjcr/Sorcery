@@ -18,7 +18,7 @@ const int kMaxNameLength = 28;
 int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
-  bool graphicsMode = false;
+  // bool graphicsMode = false;
   //bool fileMode = false;
   // default.txt still needs to be made
   std::string decklist1 = "default.txt";
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
     } else if (cmd == "-testing") {
       testingMode = true;
     } else if (cmd == "-graphics") {
-      graphicsMode = true;
+      // graphicsMode = true;
     }
   }
 
