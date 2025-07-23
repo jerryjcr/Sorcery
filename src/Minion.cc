@@ -34,6 +34,7 @@ bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
     actions--;
     return true;
   }
+  return false;
 }
 
 bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
@@ -46,6 +47,7 @@ bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
     actions--;
     return true;
   }
+  return false;
 }
 
 bool Minion::requiresTarget() const {
