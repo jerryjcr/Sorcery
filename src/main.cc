@@ -14,6 +14,7 @@
 
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
+const std::string kDefaultDeck = "default.txt";
 
 // triggers all minion on p's board and p's ritual if they exist with the
 // specified trigger type
@@ -31,9 +32,9 @@ int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
   // bool graphicsMode = false;
-  // default.txt still needs to be made
-  std::string decklist1 = "default.txt";
-  std::string decklist2 = "default.txt";
+
+  std::string decklist1 = kDefaultDeck;
+  std::string decklist2 = kDefaultDeck;
   std::fstream fileIn;
 
   for (int i = 1; i < argc; i++) {
@@ -44,7 +45,7 @@ int main(int argc, char* argv[]) {
         std::cerr
             << "Error, no filename given for deck 1. Using default instead"
             << std::endl;
-        decklist1 = "default.txt";
+        decklist1 = kDefaultDeck;
       } else {
         i++;
         decklist1 = argv[i];
@@ -54,7 +55,7 @@ int main(int argc, char* argv[]) {
         std::cerr
             << "Error, no filename given for deck 2. Using default instead"
             << std::endl;
-        decklist2 = "default.txt";
+        decklist2 = kDefaultDeck;
       } else {
         i++;
         decklist2 = argv[i];
