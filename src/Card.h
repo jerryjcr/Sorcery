@@ -32,7 +32,7 @@ class Card {
   const std::string& getName() const;
   int getCost() const;
   CardType getType() const;
-  virtual const std::vector<std::string>& getDescription() const = 0;
+  virtual const std::vector<std::string> getDescription() const = 0;
 };
 
 #endif
