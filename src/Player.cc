@@ -180,17 +180,14 @@ void Player::returnMinionToHand(int boardIndex) {
   board.erase(board.begin() + boardIndex);
 }
 
-void Player::reviveMinion(int boardIndex) {
-  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
-    return;
-
+void Player::reviveMinion() {
   if (board.size() >= 5) {
     std::cerr << "Board is full. Cannot play minion." << std::endl;
     return;
   }
 
-  graveyard.push_back(std::move(board[boardIndex]));
-  board.erase(board.begin() + boardIndex);
+  board.push_back(std::move(graveyard.back()));
+  graveyard.pop_back();
 }
 
 const std::string& Player::getName() const { return name; }

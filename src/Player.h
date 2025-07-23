@@ -44,7 +44,7 @@ class Player : public Subject {
   // useful methods for abilities to use
   void killMinion(int boardIndex);
   void returnMinionToHand(int boardIndex);
-  void reviveMinion(int boardIndex);
+  void reviveMinion();
 
   const std::string& getName() const;
   int getLife() const;
