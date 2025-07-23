@@ -33,13 +33,13 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
   if (isActive) {
     // line 1
     block.emplace_back("| ");
-    block[1] += std::to_string(p.getLife());
-    block[1].resize(std::string("|     |").length() - 1, ' ');
-    block[1] += "|";
-    block[1].resize(kWidth - std::string("| 26  |").length(), ' ');
-    block[1] += "| " + std::to_string(p.getMagic());
-    block[1].resize(kWidth - 1, ' ');
-    block[1] += "|";
+    block.back() += std::to_string(p.getLife());
+    block.back().resize(std::string("|     |").length() - 1, ' ');
+    block.back() += "|";
+    block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
+    block.back() += "| " + std::to_string(p.getMagic());
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
     // line 2
     block.emplace_back("|------                   ------|");
     // line 3
@@ -51,12 +51,12 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     block.emplace_back(kEmpty);
     // line 3
     block.emplace_back("| ");
-    block[3].resize(
+    block.back().resize(
         (kWidth - p.getName().length() - std::string("| ").length() * 2) / 2,
         ' ');
-    block[3] += p.getName();
-    block[3].resize(kWidth - 1, ' ');
-    block[3] += "|";
+    block.back() += p.getName();
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
   }
   // line 4
   block.emplace_back(kEmpty);
@@ -67,12 +67,12 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
   // line 7,8 & 9
   if (isActive) {
     block.emplace_back("| ");
-    block[7].resize(
+    block.back().resize(
         (kWidth - p.getName().length() - std::string("| ").length() * 2) / 2,
         ' ');
-    block[7] += p.getName();
-    block[7].resize(kWidth - 1, ' ');
-    block[7] += "|";
+    block.back() += p.getName();
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
     // line 8
     block.emplace_back(kEmpty);
     // line 9
@@ -84,13 +84,13 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     block.emplace_back("|------                   ------|");
     // line 9
     block.emplace_back("| ");
-    block[9] += std::to_string(p.getLife());
-    block[9].resize(std::string("|     |").length() - 1, ' ');
-    block[9] += "|";
-    block[9].resize(kWidth - std::string("| 26  |").length(), ' ');
-    block[9] += "| " + std::to_string(p.getMagic());
-    block[9].resize(kWidth - 1, ' ');
-    block[9] += "|";
+    block.back() += std::to_string(p.getLife());
+    block.back().resize(std::string("|     |").length() - 1, ' ');
+    block.back() += "|";
+    block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
+    block.back() += "| " + std::to_string(p.getMagic());
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
   }
   // line 10
   block.emplace_back(kHorizontalBar);

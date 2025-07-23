@@ -154,10 +154,10 @@ int main(int argc, char* argv[]) {
         if (currline >> myMinion) {
           // player checks if myMinion is out of range
           if (currline >> target && currline.peek() == EOF) {
-            activePlayer->attackMinion(myMinion, *opponentPlayer, target);
+            activePlayer->attackMinion(myMinion - 1, *opponentPlayer, target - 1);
           } else if (currline.eof()) {
             // attacking the other player
-            activePlayer->attackPlayer(myMinion, *opponentPlayer);
+            activePlayer->attackPlayer(myMinion - 1, *opponentPlayer);
           } else {
             std::cerr << "Error Invalid input, expected an integer to target"
                       << std::endl;
@@ -189,9 +189,9 @@ int main(int argc, char* argv[]) {
                 // this is weird since the players may forget who player 1 and 2
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
-                  activePlayer->playCard(myCard, p1, targetInd);
+                  activePlayer->playCard(myCard - 1, p1, targetInd - 1);
                 } else {  // must be targeting player 2
-                  activePlayer->playCard(myCard, p2, targetInd);
+                  activePlayer->playCard(myCard - 1, p2, targetInd - 1);
                 }
               }
             } else {
@@ -199,7 +199,7 @@ int main(int argc, char* argv[]) {
                         << std::endl;
             }
           } else if (currline.eof()) {
-            activePlayer->playCard(myCard, *opponentPlayer);
+            activePlayer->playCard(myCard - 1, *opponentPlayer);
           } else {
             std::cerr << "Error Invalid input, expected an integer"
                       << std::endl;
