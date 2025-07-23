@@ -91,9 +91,9 @@ bool BlizzardAbility::useAbility(Player& activePlayer, Player& inactivePlayer, T
     for (int i=0;i<v.size();++i){
       v[i]->adjustDefence(-2);
     }
-    std::vector<std::unique_ptr<Minion>> v=inactivePlayer.getBoard();
-    for (int i=0;i<v.size();++i){
-      v[i]->adjustDefence(-2);
+    std::vector<std::unique_ptr<Minion>> k=inactivePlayer.getBoard();
+    for (int i=0;i<k.size();++i){
+      k[i]->adjustDefence(-2);
     }
   }
   return true;
@@ -179,6 +179,7 @@ bool ApprenticeSummonerAbility::useAbility(Player& activePlayer, Player& inactiv
       return false;
     }
   }
+  return true;
 }
 
 MasterSummonerAbility::MasterSummonerAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
@@ -198,6 +199,7 @@ bool MasterSummonerAbility::useAbility(Player& activePlayer, Player& inactivePla
       return false;
     }
   }
+  return true;
 }
 
 DarkRitualAbility::DarkRitualAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
