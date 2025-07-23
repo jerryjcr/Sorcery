@@ -18,7 +18,7 @@ bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard, TriggerTy
     return false;
   }
   if (type == TriggerType::None&&(targetCard.getType()==CardType::Minion||targetCard.getType()==CardType::Enchantment)) {
-    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=targetPlayer.getBoard();
     int i=0;
     for (;i<v.size();++i){
       if (v[i].get()==&targetCard)break;
@@ -42,7 +42,7 @@ bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard, Trigger
       std::cerr<<"Error: Cannot play Unsummon if hand is full"<<std::endl;
       return false;
     }
-    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=targetPlayer.getBoard();
     int i=0;
     for (;i<v.size();++i){
       if (v[i].get()==&targetCard)break;
@@ -73,7 +73,7 @@ bool DisenchantAbility::useAbility(Player& targetPlayer, Card& targetCard, Trigg
     return false;
   }
   if (type == TriggerType::None) {
-    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=targetPlayer.getBoard();
     int index=0;
     for (;index<v.size();++index){
       if (v[index].get()==&targetCard) break;
@@ -87,11 +87,11 @@ bool DisenchantAbility::useAbility(Player& targetPlayer, Card& targetCard, Trigg
 BlizzardAbility::BlizzardAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
 bool BlizzardAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) {
-    std::vector<std::unique_ptr<Minion>> v=activePlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=activePlayer.getBoard();
     for (int i=0;i<v.size();++i){
       v[i]->adjustDefence(-2);
     }
-    std::vector<std::unique_ptr<Minion>> k=inactivePlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& k=inactivePlayer.getBoard();
     for (int i=0;i<k.size();++i){
       k[i]->adjustDefence(-2);
     }
@@ -102,7 +102,7 @@ bool BlizzardAbility::useAbility(Player& activePlayer, Player& inactivePlayer, T
 RaiseDeadAbility::RaiseDeadAbility(int cost):Ability{cost,std::vector<CardType>{CardType::Minion,CardType::Enchantment,CardType::Ritual}}{}
 bool RaiseDeadAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) { 
-    std::vector<std::unique_ptr<Minion>> v=activePlayer.getGraveyard();
+    std::vector<std::unique_ptr<Minion>>& v=activePlayer.getGraveyard();
     if (!v.empty()) {
       v.back()->adjustDefence(1-(v.back()->getDefence()));
       activePlayer.reviveMinion();
@@ -145,7 +145,7 @@ bool FireElementalAbility::useAbility(Player& targetPlayer, Card& targetCard, Tr
 PotionSellerAbility::PotionSellerAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
 bool PotionSellerAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::MyEndOfTurn) {
-    std::vector<std::unique_ptr<Minion>> v=activePlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=activePlayer.getBoard();
     for (int i=0;i<v.size();++i){
       v[i]->adjustDefence(1);
     }
@@ -169,9 +169,10 @@ bool NovicePyromancerAbility::useAbility(Player& targetPlayer, Card& targetCard,
 ApprenticeSummonerAbility::ApprenticeSummonerAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
 bool ApprenticeSummonerAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) {
-    std::vector<std::unique_ptr<Minion>> v=activePlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=activePlayer.getBoard();
     if (v.size()<5){
-      v.emplace_back(AirElemental{});
+      std::unique_ptr<Minion> card=std::make_unique<AirElemental>();
+      v.push_back(std::move(card));
       return true;
     }
     else {
@@ -185,11 +186,12 @@ bool ApprenticeSummonerAbility::useAbility(Player& activePlayer, Player& inactiv
 MasterSummonerAbility::MasterSummonerAbility(int cost):Ability{cost,std::vector<CardType>{}}{}
 bool MasterSummonerAbility::useAbility(Player& activePlayer, Player& inactivePlayer, TriggerType type) {
   if (type == TriggerType::None) {
-    std::vector<std::unique_ptr<Minion>> v=activePlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=activePlayer.getBoard();
     if (v.size()<5){
       for (int i=0;i<3;++i){
         if (v.size()<5){
-          v.emplace_back(AirElemental{});
+          std::unique_ptr<Minion> card=std::make_unique<AirElemental>();
+          v.push_back(std::move(card));
         }
       }
       return true;
@@ -231,7 +233,7 @@ bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard, Trigg
     return false;
   }
   if (type == TriggerType::MyMinionEnters||type == TriggerType::MyMinionLeaves) {
-    std::vector<std::unique_ptr<Minion>> v=targetPlayer.getBoard();
+    std::vector<std::unique_ptr<Minion>>& v=targetPlayer.getBoard();
     int i=0;
     for (;i<v.size();++i){
       if (v[i].get()==&targetCard)break;

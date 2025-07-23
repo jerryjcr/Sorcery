@@ -7,7 +7,7 @@ class Enchantment : public Minion {
   std::unique_ptr<Minion> parent;
   public:
     Enchantment(std::unique_ptr<Minion> parent);
-    std::unique_ptr<Minion>& getParent() const;
+    std::unique_ptr<Minion>& getParent();
     virtual ~Enchantment()=0;
 };
 
