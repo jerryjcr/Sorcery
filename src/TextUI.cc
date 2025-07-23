@@ -51,12 +51,12 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
     block.emplace_back(kEmpty);
     // line 3
     block.emplace_back("| ");
-    block[7].resize(
+    block[3].resize(
         (kWidth - p.getName().length() - std::string("| ").length() * 2) / 2,
         ' ');
-    block[7] += p.getName();
-    block[7].resize(kWidth - 1, ' ');
-    block[7] += "|";
+    block[3] += p.getName();
+    block[3].resize(kWidth - 1, ' ');
+    block[3] += "|";
   }
   // line 4
   block.emplace_back(kEmpty);
