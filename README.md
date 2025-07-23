@@ -42,3 +42,16 @@ The third phase of the project focuses on adding concrete minions and abilities.
 - Allow attacking either the inactive player or one of their minions
 - Add concrete minions and abilities
 - Implement the TUI
+
+## Phase 4
+The fourth phase is heavily based upon adding passive game logic for implementing triggered abilities and thus rituals. 
+
+- Implement the four trigger types
+  - Start of turn
+  - End of turn
+  - Minion enters play
+  - Minion leaves play
+- Implement concrete rituals
+- TriggerType must match for the ability
+- Handle charges and target minion (e.g. for standstill, the minion that leaves play must be targeted and killed)
+- Ensure triggers occur properly and in the correct specified order
