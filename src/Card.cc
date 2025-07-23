@@ -14,11 +14,13 @@ Card::~Card() {}
 
 bool Card::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                           TriggerType type) {
+  if (!ability) return false;
   return ability->useAbility(activePlayer, inactivePlayer, type);
 }
 
 bool Card::useCardAbility(Player& targetPlayer, Card& targetCard,
                           TriggerType type) {
+  if (!ability) return false;
   return ability->useAbility(targetPlayer, targetCard, type);
 }
 
