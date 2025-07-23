@@ -133,6 +133,13 @@ void Player::attackMinion(int boardIndex, Player& targetPlayer,
     return;
 
   board[boardIndex]->attackMinion(*targetPlayer.board[targetIndex]);
+
+  if (board[boardIndex]->getDefence() < 0) {
+    killMinion(boardIndex);
+  }
+  if (targetPlayer.board[targetIndex]->getDefence() < 0) {
+    killMinion(boardIndex);
+  }
 }
 
 void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
