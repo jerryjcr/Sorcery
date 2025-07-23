@@ -13,11 +13,13 @@
 #include "TextUI.h"
 
 const int kStartOfTurnMagic = 1;
+const int kMaxNameLength = 28;
 
 int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
   bool graphicsMode = false;
+  //bool fileMode = false;
   // default.txt still needs to be made
   std::string decklist1 = "default.txt";
   std::string decklist2 = "default.txt";
@@ -46,7 +48,7 @@ int main(int argc, char* argv[]) {
         decklist2 = argv[i];
       }
     } else if (cmd == "-init") {
-      //... do this later
+
     } else if (cmd == "-testing") {
       testingMode = true;
     } else if (cmd == "-graphics") {
@@ -73,8 +75,23 @@ int main(int argc, char* argv[]) {
 
   // when we add -init, this will have to change, amoung other things
   std::string name1, name2;
-  std::getline(std::cin, name1);
-  std::getline(std::cin, name2);
+  while(true) {
+    std::getline(std::cin, name1);
+    if (name1.length() > kMaxNameLength) {
+      std::cerr << "Error name too long, please enter a shorter name" << std::endl;
+    } else {
+      break;
+    }
+  }
+  while(true) {
+    std::getline(std::cin, name2);
+    if (name2.length() > kMaxNameLength) {
+      std::cerr << "Error name too long, please enter a shorter name" << std::endl;
+    } else {
+      break;
+    }
+  }
+
 
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
