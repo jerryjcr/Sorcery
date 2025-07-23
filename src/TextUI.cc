@@ -244,7 +244,7 @@ void printBoard(Player& active, Player& opponent) {
   if (opponent.getGraveyard().empty()) {
     currRow.emplace_back(kEmptyBlock);
   } else {
-    currRow.emplace_back(visualizeCard(*opponent.getGraveyard()[0]));
+    currRow.emplace_back(visualizeCard(*opponent.getGraveyard().back()));
   }
 
   printRow(currRow);
@@ -297,7 +297,7 @@ void printBoard(Player& active, Player& opponent) {
   if (active.getGraveyard().empty()) {
     currRow.emplace_back(kEmptyBlock);
   } else {
-    currRow.emplace_back(visualizeCard(*active.getGraveyard()[0]));
+    currRow.emplace_back(visualizeCard(*active.getGraveyard().back()));
   }
 
   printRow(currRow);
