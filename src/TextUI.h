@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <istream>
+#include <fstream>
 
 #include "Card.h"
 #include "Enchantment.h"
@@ -11,6 +13,8 @@
 #include "Ritual.h"
 #include "Spell.h"
 
-void printHand(const Player& p1);
+void printHand(Player& p1);
+void printBoard(Player& active, Player& opponent);
+void printSorcery();
 
 #endif

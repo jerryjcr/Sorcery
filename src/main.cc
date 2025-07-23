@@ -193,7 +193,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "hand") {
         printHand(*activePlayer);
       } else if (cmd == "board") {
-        
+        printBoard(*activePlayer, *opponentPlayer);
       } else {
         std::cerr << "Error: Command not recognized" << std::endl;
       }
