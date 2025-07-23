@@ -8,7 +8,7 @@
 
 class Player;
 
-enum class CardType { Minion, Enchantment, Spell, Ritual };
+
 
 class Card {
  protected:

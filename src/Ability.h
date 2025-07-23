@@ -18,7 +18,7 @@ enum class TriggerType {
   OpponentMinionLeaves
 };
 
-enum CardType;
+enum class CardType { Minion, Enchantment, Spell, Ritual };
 
 class Ability {
   int cost;
