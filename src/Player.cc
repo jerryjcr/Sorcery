@@ -126,9 +126,9 @@ void Player::discard(int handIndex) {
 
 void Player::attackMinion(int boardIndex, Player& targetPlayer,
                           int targetIndex) {
-  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
-  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
+  if (!boundIndex(targetIndex, 0, static_cast<int>(targetPlayer.board.size()) - 1,
                   "Target"))
     return;
 
@@ -143,24 +143,24 @@ void Player::attackMinion(int boardIndex, Player& targetPlayer,
 }
 
 void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
-  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
 
   board[boardIndex]->attackPlayer(targetPlayer);
 }
 
 void Player::use(int boardIndex, Player& inactivePlayer) {
-  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
 
   board[boardIndex]->useCardAbility(*this, inactivePlayer);
 }
 
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
-  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
-  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
-                  "Target"))
+  if (!boundIndex(targetIndex, 0,
+                  static_cast<int>(targetPlayer.board.size()) - 1, "Target"))
     return;
   if (targetIndex == 0 && !targetPlayer.ritual) {
     std::cerr << "Target ritual does not exist." << std::endl;
@@ -175,7 +175,7 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
 }
 
 void Player::killMinion(int boardIndex) {
-  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
+  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
 
   graveyard.push_back(std::move(board[boardIndex]));
