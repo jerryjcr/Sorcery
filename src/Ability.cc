@@ -25,9 +25,10 @@ bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None){
   if (this->requiresTarget()){
     std::cerr<<"Error: cannot use targeted ability with no target"<<std::endl;
-    return false;
   }
-  std::cerr<<"function was not overridden correctly"<<std::endl;
+  else{
+    std::cerr<<"function was not overridden correctly"<<std::endl;
+  }
   return false;
 }
 
@@ -35,8 +36,9 @@ bool Ability::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard
                               TriggerType type = TriggerType::None){
   if (!this->canTarget(targetCard->getType())){
     std::cerr<<"Error: cannot target a card of this type"<<std::endl;
-    return false;
   }
-  std::cerr<<"function was not overridden correctly"<<std::endl;
+  else {
+    std::cerr<<"function was not overridden correctly"<<std::endl;
+  }
   return false;
 }
