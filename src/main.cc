@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
                         << std::endl;
             }
           } else if (currline.eof()) {
-            activePlayer->playCard(myCard);
+            activePlayer->playCard(myCard, *opponentPlayer);
           } else {
             std::cerr << "Error Invalid input, expected an integer"
                       << std::endl;

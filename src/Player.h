@@ -31,7 +31,7 @@ class Player : public Subject {
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
 
   // player actions
-  void playCard(int handIndex, Player& inactivePlayer);
+  void playCard(int handIndex, Player& opponentPlayer);
   // target index is 0 for ritual, 1-5 for minions
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
   void drawCard();
