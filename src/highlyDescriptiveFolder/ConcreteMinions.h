@@ -30,7 +30,7 @@ class BoneGolem : public Minion {
     BoneGolem();
     ~BoneGolem() = default;
     virtual bool useCardAbility(Player& targetPlayer,
-                              std::unique_ptr<Card>& targetCard,
+                              Card& targetCard,
                               TriggerType type = TriggerType::None) override;
     //override in order to ensure target is itself
     virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
