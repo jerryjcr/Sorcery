@@ -268,7 +268,7 @@ int main(int argc, char* argv[]) {
         } else {
           std::cerr << "Error, no card index given" << std::endl;
         }
-      } else if (cmd == "describe") {
+      } else if (cmd == "inspect") {
         // todo
       } else if (cmd == "hand") {
         printHand(*activePlayer);
