@@ -15,14 +15,24 @@
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 
+// triggers all minion on p's board and p's ritual if they exist with the specified trigger type
+void triggerBoard(Player& p, Player& active, Player& opponent,
+                  TriggerType type) {
+  std::vector<std::unique_ptr<Minion>>& myBoard = p.getBoard();
+  for (int i = 0; i < static_cast<int>(myBoard.size()); i++) {
+    myBoard[i]->useCardAbility(active, opponent, type);
+  }
+  if (p.getRitual()) {p.getRitual()->useCardAbility(active,opponent,type);}
+}
+
 int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
   // bool graphicsMode = false;
-  // bool fileMode = false;
   // default.txt still needs to be made
   std::string decklist1 = "default.txt";
   std::string decklist2 = "default.txt";
+  std::fstream fileIn;
 
   for (int i = 1; i < argc; i++) {
     std::string cmd = argv[i];
@@ -48,6 +58,15 @@ int main(int argc, char* argv[]) {
         decklist2 = argv[i];
       }
     } else if (cmd == "-init") {
+      if (i + 1 >= argc) {
+        std::cerr
+            << "Error, no filename given for taking input. Reading from standard in instead"
+            << std::endl;
+        fileIn = std::fstream{};
+      } else {
+        i++;
+        fileIn = std::fstream{argv[i]};
+      }
     } else if (cmd == "-testing") {
       testingMode = true;
     } else if (cmd == "-graphics") {
@@ -75,7 +94,9 @@ int main(int argc, char* argv[]) {
   // when we add -init, this will have to change, amoung other things
   std::string name1, name2;
   while (true) {
-    std::getline(std::cin, name1);
+    if (!std::getline(fileIn, name1)) {
+      std::getline(std::cin,name1);
+    }
     if (name1.length() > kMaxNameLength) {
       std::cerr << "Error name too long, please enter a shorter name"
                 << std::endl;
@@ -84,7 +105,9 @@ int main(int argc, char* argv[]) {
     }
   }
   while (true) {
-    std::getline(std::cin, name2);
+    if (!std::getline(fileIn, name2)) {
+      std::getline(std::cin,name2);
+    }
     if (name2.length() > kMaxNameLength) {
       std::cerr << "Error name too long, please enter a shorter name"
                 << std::endl;
@@ -110,8 +133,11 @@ int main(int argc, char* argv[]) {
     // draw a card
     activePlayer->drawCard();
 
-    // start of turn effects trigger
-    // do this later
+    activePlayer->resetBoardActions();
+
+    // start of turn triggers
+    triggerBoard(*activePlayer, *activePlayer, *opponentPlayer, TriggerType::MyStartOfTurn);
+    triggerBoard(*opponentPlayer, *activePlayer, *opponentPlayer, TriggerType::OpponentStartOfTurn);
 
     // "action phase"
     while (true) {
@@ -134,9 +160,11 @@ int main(int argc, char* argv[]) {
         return 0;
       }
 
-      // have to change the way that input works with the -init command
+      // taking input either from file or stdin
       std::string cmd;
-      std::getline(std::cin, cmd);
+      if(!std::getline(fileIn, cmd)) {
+        std::getline(std::cin, cmd);
+      }
       std::stringstream currline{cmd};
       cmd.clear();
       currline >> cmd;
@@ -279,9 +307,10 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    // end of turn
-    // activate end of turn triggers (do later)
-    //...
+    // end of turn triggers
+    triggerBoard(*activePlayer, *activePlayer, *opponentPlayer, TriggerType::MyEndOfTurn);
+    triggerBoard(*opponentPlayer, *activePlayer, *opponentPlayer, TriggerType::OpponentEndOfTurn);
+    
     std::swap(activePlayer, opponentPlayer);
     p1Turn = not(p1Turn);
   }
