@@ -193,11 +193,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "hand") {
         printHand(*activePlayer);
       } else if (cmd == "board") {
-        // replace later
-        // replace later
-        for (int i = 0; i < 5; i++) {
-          std::cout << activePlayer->boardCost(i) << std::endl;
-        }
+        
       } else {
         std::cerr << "Error: Command not recognized" << std::endl;
       }
