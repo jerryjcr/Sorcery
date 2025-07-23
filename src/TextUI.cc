@@ -241,9 +241,11 @@ void printBoard(Player& active, Player& opponent) {
   currRow.emplace_back(visualizePlayer(opponent, false));
   currRow.emplace_back(kBlankBlock);
 
-  // graveyard needs to be implemented!!!
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  currRow.emplace_back(kEmptyBlock);
+  if (opponent.getGraveyard().empty()) {
+    currRow.emplace_back(kEmptyBlock);
+  } else {
+    currRow.emplace_back(visualizeCard(*opponent.getGraveyard()[0]));
+  }
 
   printRow(currRow);
   currRow.clear();
@@ -292,9 +294,11 @@ void printBoard(Player& active, Player& opponent) {
   currRow.emplace_back(visualizePlayer(active, false));
   currRow.emplace_back(kBlankBlock);
 
-  // graveyard needs to be implemented!!!
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  currRow.emplace_back(kEmptyBlock);
+  if (active.getGraveyard().empty()) {
+    currRow.emplace_back(kEmptyBlock);
+  } else {
+    currRow.emplace_back(visualizeCard(*active.getGraveyard()[0]));
+  }
 
   printRow(currRow);
   currRow.clear();
