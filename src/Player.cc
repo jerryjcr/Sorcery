@@ -153,7 +153,9 @@ void Player::use(int boardIndex, Player& inactivePlayer) {
   if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
     return;
 
-  board[boardIndex]->useCardAbility(*this, inactivePlayer);
+  if (board[boardIndex]->useCardAbility(*this, inactivePlayer)) {
+    magic -= board[boardIndex]->getAbilityCost();
+  }
 }
 
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
