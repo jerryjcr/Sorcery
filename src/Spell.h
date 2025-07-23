@@ -12,14 +12,8 @@ class Player;
 class Spell : public Card {
  public:
   Spell(const std::string& name, int cost,
-        std::shared_ptr<const Ability> activated);
+        std::unique_ptr<const Ability> ability);
   virtual ~Spell() = 0;
-
-  void useSpell();
-  void useSpell(Player& targetPlayer, int targetIndex);
-
-  bool requiresTarget() const;
-  bool canTarget(TargetType targetType) const;
 };
 
 #endif

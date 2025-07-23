@@ -31,7 +31,7 @@ class Player : public Subject {
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
 
   // player actions
-  void playCard(int handIndex);
+  void playCard(int handIndex, Player& inactivePlayer);
   // target index is 0 for ritual, 1-5 for minions
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
   void drawCard();
@@ -54,7 +54,7 @@ class Player : public Subject {
   void adjustMagic(int amount);
 
   std::vector<std::unique_ptr<Card>>& getHand();
-  std::vector<std::unique_ptr<Minion>>& getBoard();  // goes from 1-5
+  std::vector<std::unique_ptr<Minion>>& getBoard();
   std::unique_ptr<Ritual>& getRitual();
   std::vector<std::unique_ptr<Minion>>& getGraveyard();
 };

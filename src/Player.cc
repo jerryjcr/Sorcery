@@ -37,12 +37,13 @@ Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
       magic{kInitialMagic},
       deck{std::move(deck)} {}
 
-void Player::playCard(int handIndex) {
+void Player::playCard(int handIndex, Player& inactivePlayer) {
   if (!boundIndex(handIndex, 0, static_cast<int>(hand.size()) - 1, "Hand"))
     return;
 
   std::unique_ptr<Card>& card = hand[handIndex];
-  if (!canAfford(card->getCost())) return;
+  int cost = card->getCost();
+  if (!canAfford(cost)) return;
 
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Minion) {
@@ -54,7 +55,8 @@ void Player::playCard(int handIndex) {
     board.push_back(std::move(minion));
   } else if (card->getType() == CardType::Spell) {
     std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
-    spell->useSpell();  // call the version of the method with no target
+    // call the version of the method with no target
+    spell->useCardAbility(*this, inactivePlayer);
   } else if (card->getType() == CardType::Ritual) {
     std::unique_ptr<Ritual> newRitual(static_cast<Ritual*>(card.release()));
     ritual = std::move(newRitual);
@@ -64,7 +66,7 @@ void Player::playCard(int handIndex) {
     return;
   }
 
-  magic -= card->getCost();
+  magic -= cost;
   hand.erase(hand.begin() + handIndex);
 }
 
@@ -80,18 +82,24 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
   }
 
   std::unique_ptr<Card>& card = hand[handIndex];
-  if (!canAfford(card->getCost())) return;
+  int cost = card->getCost();
+  if (!canAfford(cost)) return;
 
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Spell) {
     std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
-    spell->useSpell(targetPlayer, targetIndex);
+    if (targetIndex == 0) {
+      spell->useCardAbility(targetPlayer, *ritual);
+    } else {
+      spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex]);
+    }
+
   } else {
     std::cerr << "This card does not require a target." << std::endl;
     return;
   }
 
-  magic -= card->getCost();
+  magic -= cost;
   hand.erase(hand.begin() + handIndex);
 }
 
