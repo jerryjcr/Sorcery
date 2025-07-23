@@ -27,7 +27,8 @@ bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
     std::cerr<<"Error: cannot use targeted ability with no target"<<std::endl;
     return false;
   }
-  return true;
+  std::cerr<<"function was not overridden correctly"<<std::endl;
+  return false;
 }
 
 bool Ability::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard,
@@ -36,5 +37,6 @@ bool Ability::useAbility(Player& targetPlayer, std::unique_ptr<Card>& targetCard
     std::cerr<<"Error: cannot target a card of this type"<<std::endl;
     return false;
   }
-  return true;
+  std::cerr<<"function was not overridden correctly"<<std::endl;
+  return false;
 }
