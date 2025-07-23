@@ -25,7 +25,7 @@ void Minion::attackPlayer(Player& targetPlayer) {
 }
 
 bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
-                            TriggerType type = TriggerType::None) {
+                            TriggerType type) {
   if (actions != 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
     return false;
@@ -37,7 +37,7 @@ bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
-                            TriggerType type = TriggerType::None) {
+                            TriggerType type) {
   if (actions != 0) {
     std::cerr << "Minion does not have enough actions." << std::endl;
     return false;

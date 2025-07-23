@@ -15,7 +15,7 @@ Ritual::Ritual(const std::string& name, int cost, int charges, int chargeCost,
 Ritual::~Ritual() {}
 
 bool Ritual::useCardAbility(Player& activePlayer, Player& inactivePlayer,
-                            TriggerType type = TriggerType::None) {
+                            TriggerType type) {
   if (charges < chargeCost) {
     // no message if you don't have enough charges, since it's triggered
     return false;
