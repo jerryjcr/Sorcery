@@ -11,6 +11,7 @@ class Enchantment : public Minion {
   Enchantment(const std::string& name, int cost,
               std::unique_ptr<Minion> parent);
   std::unique_ptr<Minion>& getParent();
+  void setParent(std::unique_ptr<Minion> parent);
   virtual ~Enchantment() = 0;
 
   virtual CardType getType() const override;

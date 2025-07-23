@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Card.h"
+#include "Enchantment.h"
 #include "Minion.h"
 #include "Ritual.h"
 #include "Spell.h"
@@ -95,7 +96,19 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
     } else {
       spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex]);
     }
+  } else if (card->getType() == CardType::Enchantment) {
+    std::unique_ptr<Enchantment> enchantment(
+        dynamic_cast<Enchantment*>(card.release()));
+    if (targetIndex == 0) {
+      std::cout << "Cannot play an enchantment on a ritual." << std::endl;
+    } else {
+      std::unique_ptr<Minion> targetMinion =
+          std::move(targetPlayer.board[targetIndex]);
 
+      enchantment->setParent(std::move(targetMinion));
+
+      targetPlayer.board[targetIndex] = std::move(enchantment);
+    }
   } else {
     std::cerr << "Invalid input: This card does not require a target."
               << std::endl;
@@ -181,6 +194,11 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
 
 void Player::resetBoardActions() {
   for (auto& minion : board) {
+    if (!minion) {
+      std::cerr << "Error: Null minion found in board during actions reset."
+                << std::endl;
+      return;
+    }
     minion->resetActions();
   }
 }
