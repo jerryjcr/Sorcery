@@ -11,8 +11,7 @@ class Player;
 
 class Spell : public Card {
  public:
-  Spell(const std::string& name, int cost,
-        std::unique_ptr<Ability> ability);
+  Spell(const std::string& name, int cost, std::unique_ptr<Ability> ability);
   virtual ~Spell() = 0;
 };
 

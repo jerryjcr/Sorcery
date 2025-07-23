@@ -29,6 +29,4 @@ bool Ritual::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 
 int Ritual::getCharges() const { return charges; }
 
-void Ritual::adjustCharges(int amount) {
-  charges+=amount;
-}
+void Ritual::adjustCharges(int amount) { charges += amount; }

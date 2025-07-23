@@ -17,7 +17,7 @@ Minion::~Minion() {}
 
 void Minion::attackMinion(Minion& targetMinion) {
   if (getActions() <= 0) {
-    std::cerr << "Minion does not have enough actions." << std::endl;
+    std::cout << "Minion does not have enough actions." << std::endl;
     return;
   }
   targetMinion.adjustDefence(-getAttack());
@@ -27,7 +27,7 @@ void Minion::attackMinion(Minion& targetMinion) {
 
 void Minion::attackPlayer(Player& targetPlayer) {
   if (getActions() <= 0) {
-    std::cerr << "Minion does not have enough actions." << std::endl;
+    std::cout << "Minion does not have enough actions." << std::endl;
     return;
   }
   targetPlayer.adjustLife(-getAttack());
@@ -37,7 +37,7 @@ void Minion::attackPlayer(Player& targetPlayer) {
 bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                             TriggerType type) {
   if (getActions() <= 0 && type == TriggerType::None) {
-    std::cerr << "Minion does not have enough actions." << std::endl;
+    std::cout << "Minion does not have enough actions." << std::endl;
     return false;
   }
   if (Card::useCardAbility(activePlayer, inactivePlayer, type)) {
@@ -50,7 +50,7 @@ bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
                             TriggerType type) {
   if (getActions() <= 0 && type == TriggerType::None) {
-    std::cerr << "Minion does not have enough actions." << std::endl;
+    std::cout << "Minion does not have enough actions." << std::endl;
     return false;
   }
   if (Card::useCardAbility(targetPlayer, targetCard, type)) {

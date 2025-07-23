@@ -1,11 +1,11 @@
 #ifndef TEXTUI_H_
 #define TEXTUI_H_
 
+#include <fstream>
 #include <iostream>
+#include <istream>
 #include <string>
 #include <vector>
-#include <istream>
-#include <fstream>
 
 #include "Card.h"
 #include "Enchantment.h"

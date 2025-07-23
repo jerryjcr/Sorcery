@@ -26,15 +26,13 @@ class Ability {
   std::vector<CardType> validTargets;
 
  public:
-  Ability(int cost,
-          std::vector<CardType> validTargets = {});
-  //no target
+  Ability(int cost, std::vector<CardType> validTargets = {});
+  // no target
   virtual bool useAbility(Player& activePlayer, Player& inactivePlayer,
-                              TriggerType type = TriggerType::None);
-  //target
-  virtual bool useAbility(Player& targetPlayer,
-                              Card& targetCard,
-                              TriggerType type = TriggerType::None);
+                          TriggerType type = TriggerType::None);
+  // target
+  virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          TriggerType type = TriggerType::None);
 
   bool requiresTarget() const;
   bool canTarget(CardType targetType) const;

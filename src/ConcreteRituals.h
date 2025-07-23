@@ -3,21 +3,21 @@
 #include "Ritual.h"
 
 class DarkRitual : public Ritual {
-    public:
-        DarkRitual();
-        ~DarkRitual() = default;
+ public:
+  DarkRitual();
+  ~DarkRitual() = default;
 };
 
 class AuraOfPower : public Ritual {
-    public:
-        AuraOfPower();
-        ~AuraOfPower() = default;
+ public:
+  AuraOfPower();
+  ~AuraOfPower() = default;
 };
 
 class Standstill : public Ritual {
-    public:
-        Standstill();
-        ~Standstill() = default;
+ public:
+  Standstill();
+  ~Standstill() = default;
 };
 
 #endif

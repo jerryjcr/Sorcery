@@ -8,8 +8,6 @@
 
 class Player;
 
-
-
 class Card {
  protected:
   std::string name;

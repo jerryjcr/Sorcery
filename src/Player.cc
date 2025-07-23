@@ -17,7 +17,8 @@ const int kMaxHandSize = 5;
 bool Player::boundIndex(int index, int lower, int upper,
                         const std::string& indexName) const {
   if (index < lower || index > upper) {
-    std::cerr << indexName << " index is out of bounds." << std::endl;
+    std::cerr << "Invalid input: " << indexName << " index is out of bounds."
+              << std::endl;
     return false;
   }
   return true;
@@ -25,7 +26,7 @@ bool Player::boundIndex(int index, int lower, int upper,
 
 bool Player::canAfford(int cost) const {
   if (magic < cost) {
-    std::cerr << "Not enough magic to play this card." << std::endl;
+    std::cout << "Not enough magic to play this card." << std::endl;
     return false;
   }
   return true;
@@ -48,7 +49,7 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Minion) {
     if (board.size() >= 5) {
-      std::cerr << "Board is full. Cannot play minion." << std::endl;
+      std::cout << "Board is full. Cannot play minion." << std::endl;
       return;
     }
     std::unique_ptr<Minion> minion(dynamic_cast<Minion*>(card.release()));
@@ -61,7 +62,8 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
     std::unique_ptr<Ritual> newRitual(static_cast<Ritual*>(card.release()));
     ritual = std::move(newRitual);
   } else {
-    std::cerr << "Must specify target player and index to play this card."
+    std::cerr << "Invalid input: Must specify target player and index to play "
+                 "this card."
               << std::endl;
     return;
   }
@@ -77,7 +79,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
                   "Target"))
     return;
   if (targetIndex == 0 && !targetPlayer.ritual) {
-    std::cerr << "Target ritual does not exist." << std::endl;
+    std::cout << "Target ritual does not exist." << std::endl;
     return;
   }
 
@@ -95,7 +97,8 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
     }
 
   } else {
-    std::cerr << "This card does not require a target." << std::endl;
+    std::cerr << "Invalid input: This card does not require a target."
+              << std::endl;
     return;
   }
 
@@ -105,11 +108,11 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
 
 void Player::drawCard() {
   if (deck.empty()) {
-    std::cerr << "Deck is empty. Cannot draw a card." << std::endl;
+    std::cout << "Deck is empty. Cannot draw a card." << std::endl;
     return;
   }
   if (hand.size() >= kMaxHandSize) {
-    std::cerr << "Hand is full. Cannot draw a card." << std::endl;
+    std::cout << "Hand is full. Cannot draw a card." << std::endl;
     return;
   }
 
@@ -165,7 +168,7 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
                   static_cast<int>(targetPlayer.board.size()) - 1, "Target"))
     return;
   if (targetIndex == 0 && !targetPlayer.ritual) {
-    std::cerr << "Target ritual does not exist." << std::endl;
+    std::cout << "Target ritual does not exist." << std::endl;
     return;
   }
 
@@ -192,7 +195,7 @@ void Player::killMinion(int boardIndex) {
 
 void Player::killRitual() {
   if (!ritual) {
-    std::cerr << "Target ritual does not exist." << std::endl;
+    std::cout << "Target ritual does not exist." << std::endl;
     return;
   }
   ritual.reset();
@@ -203,7 +206,7 @@ void Player::returnMinionToHand(int boardIndex) {
     return;
 
   if (hand.size() >= kMaxHandSize) {
-    std::cerr << "Hand is full. Cannot return card to hand." << std::endl;
+    std::cout << "Hand is full. Cannot return card to hand." << std::endl;
     return;
   }
 
@@ -213,7 +216,7 @@ void Player::returnMinionToHand(int boardIndex) {
 
 void Player::reviveMinion() {
   if (board.size() >= 5) {
-    std::cerr << "Board is full. Cannot play minion." << std::endl;
+    std::cout << "Board is full. Cannot revive minion." << std::endl;
     return;
   }
 
