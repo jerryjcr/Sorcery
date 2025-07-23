@@ -205,20 +205,20 @@ void printRow(std::vector<std::vector<std::string>>& row) {
 
 void printHand(Player& p) {
   std::vector<std::unique_ptr<Card>>& hand = p.getHand();
-  std::vector<std::vector<std::string>> hand_text;
+  std::vector<std::vector<std::string>> handText;
   int currHandSize = 0;
   for (auto it = hand.begin(); it != hand.end(); ++it) {
-    hand_text.emplace_back(visualizeCard(**it));
+    handText.emplace_back(visualizeCard(**it));
     currHandSize++;
   }
   while (currHandSize < kBoardWidth) {
-    hand_text.emplace_back(kEmptyBlock);
+    handText.emplace_back(kEmptyBlock);
     currHandSize++;
   }
 
   for (int i = 0; i < kHeight; i++) {
     for (int j = 0; j < kBoardWidth; j++) {
-      std::cout << hand_text[j][i];
+      std::cout << handText[j][i];
     }
     std::cout << std::endl;
   }
