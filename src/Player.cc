@@ -85,7 +85,8 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
                       bool isTargetRitual) {
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
-  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
+  if (!isTargetRitual &&
+      !boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
                   "Target"))
     return;
 
@@ -190,9 +191,11 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
                  bool isTargetRitual) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
-  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
-                  "Target"))
+  if (!isTargetRitual &&
+      !boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
+                  "Target")) {
     return;
+  }
 
   boardIndex--;
   targetIndex--;
