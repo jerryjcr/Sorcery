@@ -41,7 +41,7 @@ bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
     return false;
   }
   if (Card::useCardAbility(activePlayer, inactivePlayer, type)) {
-    if (type == TriggerType::None) actions--;
+    if (type == TriggerType::None) adjustActions(-1);
     return true;
   }
   return false;
@@ -54,7 +54,7 @@ bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
     return false;
   }
   if (Card::useCardAbility(targetPlayer, targetCard, type)) {
-    if (type == TriggerType::None) actions--;
+    if (type == TriggerType::None) adjustActions(-1);
     return true;
   }
   return false;

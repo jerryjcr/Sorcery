@@ -219,7 +219,7 @@ bool ApprenticeSummonerAbility::useAbility(Player& activePlayer,
       v.push_back(std::move(card));
       return true;
     } else {
-      std::cerr << "Error: Cannot use summoner ability when board is empty."
+      std::cerr << "Error: Cannot use summoner ability when board is full."
                 << std::endl;
       return false;
     }
@@ -243,7 +243,7 @@ bool MasterSummonerAbility::useAbility(Player& activePlayer,
       }
       return true;
     } else {
-      std::cerr << "Error: Cannot use summoner ability when board is empty."
+      std::cerr << "Error: Cannot use summoner ability when board is full."
                 << std::endl;
       return false;
     }

@@ -1,4 +1,5 @@
 #include "Enchantment.h"
+#include <iostream>
 
 Enchantment::Enchantment(const std::string& name, int cost)
     : Minion{name, cost, 420, 420}, parent{nullptr} {}
@@ -7,7 +8,7 @@ Enchantment::Enchantment(const std::string& name, int cost,
                          std::unique_ptr<Minion> parent)
     : Minion{name, cost, 6969, 6969}, parent{std::move(parent)} {}
 
-const std::unique_ptr<Minion>& Enchantment::getParent() const { return parent; }
+std::unique_ptr<Minion>& Enchantment::getParent() { return parent; }
 
 void Enchantment::setParent(std::unique_ptr<Minion> newParent) {
   parent = std::move(newParent);
@@ -23,7 +24,15 @@ bool Enchantment::useCardAbility(Player& activePlayer, Player& inactivePlayer,
     return false;
   }
   else {
-    return parent->useCardAbility(activePlayer, inactivePlayer, type);
+    if (getActions() <= 0 && type == TriggerType::None){
+      std::cout<<"Minion does not have enought actions."<<std::endl;
+      return false;
+    }
+    if (parent->Card::useCardAbility(activePlayer, inactivePlayer, type)) {
+      if (type == TriggerType::None) adjustActions(-1);
+      return true;
+    }
+    return false;
   }
 }
 
@@ -33,7 +42,15 @@ bool Enchantment::useCardAbility(Player& targetPlayer, Card& targetCard,
     return false;
   }
   else {
-    return parent->useCardAbility(targetPlayer, targetCard, type);
+    if (getActions() <= 0 && type == TriggerType::None) {
+      std::cout << "Minion does not have enough actions." << std::endl;
+      return false;
+    }
+    if (parent->Card::useCardAbility(targetPlayer, targetCard, type)) {
+      if (type == TriggerType::None) adjustActions(-1);
+      return true;
+    }
+    return false;
   }
 } 
 \
