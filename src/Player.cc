@@ -180,9 +180,9 @@ void Player::use(int boardIndex, Player& inactivePlayer) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
 
-  if (!canAfford(board[boardIndex]->getCost())) return;
-
   boardIndex--;
+
+  if (!canAfford(board[boardIndex]->getCost())) return;
 
   if (board[boardIndex]->useCardAbility(*this, inactivePlayer)) {
     magic -= board[boardIndex]->getAbilityCost();
@@ -199,10 +199,10 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
     return;
   }
 
-  if (!canAfford(board[boardIndex]->getCost())) return;
-
   boardIndex--;
   targetIndex--;
+
+  if (!canAfford(board[boardIndex]->getCost())) return;
 
   if (isTargetRitual) {
     if (!targetPlayer.ritual) {
