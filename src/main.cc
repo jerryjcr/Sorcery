@@ -17,18 +17,6 @@ const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
 const std::string kDefaultDeck = "assets/text/default.txt";
 
-// triggers all minion on p's board and p's ritual if they exist with the
-// specified trigger type
-void triggerBoard(Player& p, Player& active, Player& opponent,
-                  TriggerType type) {
-  for (auto& minion : p.getBoard()) {
-    minion->useCardAbility(active, opponent, type);
-  }
-  if (p.getRitual()) {
-    p.getRitual()->useCardAbility(active, opponent, type);
-  }
-}
-
 int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
@@ -123,8 +111,20 @@ int main(int argc, char* argv[]) {
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
 
+
+
+
+
+
+
+  /*
   p1.shuffleDeck();
   p2.shuffleDeck();
+  */
+
+
+
+  
 
   // drawing starting hands
   for (int i = 0; i < kStartingHandSize; i++) {
@@ -149,10 +149,8 @@ int main(int argc, char* argv[]) {
     activePlayer->resetBoardActions();
 
     // start of turn triggers
-    triggerBoard(*activePlayer, *activePlayer, *opponentPlayer,
-                 TriggerType::MyStartOfTurn);
-    triggerBoard(*opponentPlayer, *activePlayer, *opponentPlayer,
-                 TriggerType::OpponentStartOfTurn);
+    activePlayer->triggerBoard(*opponentPlayer, TriggerType::MyStartOfTurn);
+    opponentPlayer->triggerBoard(*activePlayer, TriggerType::OpponentStartOfTurn);
 
     // "action phase"
     while (true) {
@@ -291,11 +289,9 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    // end of turn triggers
-    triggerBoard(*activePlayer, *activePlayer, *opponentPlayer,
-                 TriggerType::MyEndOfTurn);
-    triggerBoard(*opponentPlayer, *activePlayer, *opponentPlayer,
-                 TriggerType::OpponentEndOfTurn);
+    // end of turn 
+    activePlayer->triggerBoard(*opponentPlayer, TriggerType::MyEndOfTurn);
+    opponentPlayer->triggerBoard(*activePlayer, TriggerType::OpponentEndOfTurn);
     std::swap(activePlayer, opponentPlayer);
     p1Turn = not(p1Turn);
   }

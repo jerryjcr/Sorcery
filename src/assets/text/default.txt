@@ -14,9 +14,15 @@ Enrage
 Haste
 MagicFatigue
 Silence
-Banish
 Unsummon
 Recharge
 Disenchant
 RaiseDead
 Blizzard
+
+
+BoneGolem
+FireElemental
+PotionSeller
+EarthElemental
+AirElemental

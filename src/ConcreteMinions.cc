@@ -45,11 +45,30 @@ bool BoneGolem::useCardAbility(Player& targetPlayer, Card& targetCard,
 bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                                TriggerType type) {
   std::vector<std::unique_ptr<Minion>>& v = activePlayer.getBoard();
+  bool found=false;
   int i = 0;
   for (; i < static_cast<int>(v.size()); ++i) {
-    if (v[i].get() == this) break;
+    if (v[i].get() == this) {
+      found=true;
+      break;
+    }
   }
-  return ability->useAbility(activePlayer, *v[i], type);
+  if (found) {
+    return ability->useAbility(activePlayer, *v[i], type);
+  }
+  std::vector<std::unique_ptr<Minion>>& k = inactivePlayer.getBoard();
+  i = 0;
+  for (; i < static_cast<int>(k.size()); ++i) {
+    if (k[i].get() == this) {
+      found=true;
+      break;
+    }
+  }
+  if (found) {
+    return ability->useAbility(inactivePlayer, *k[i], type);
+  }
+  return false;
+  
 }
 
 const std::vector<std::string> BoneGolem::getDescription() const {

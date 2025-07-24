@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Subject.h"
+#include "Ability.h"
 
 class Card;
 class Minion;
@@ -47,6 +48,8 @@ class Player : public Subject {
 
   void resetBoardActions();
   void checkForDeaths();
+  //triggers all triggered abilities on the player's board
+  void triggerBoard(Player& opponent, TriggerType type);
 
   // useful methods for abilities to use
   void killMinion(int boardIndex);

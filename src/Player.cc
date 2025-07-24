@@ -240,6 +240,15 @@ void Player::checkForDeaths() {
   }
 }
 
+void Player::triggerBoard(Player& opponent, TriggerType type) {
+  for (auto& minion : getBoard()) {
+    minion->useCardAbility(*this, opponent, type);
+  }
+  if (getRitual()) {
+    getRitual()->useCardAbility(*this, opponent, type);
+  }
+}
+
 void Player::killMinion(int boardIndex) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;

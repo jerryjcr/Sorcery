@@ -17,6 +17,7 @@ BanishAbility::BanishAbility(int cost)
                                     CardType::Ritual}} {}
 bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard,
                                TriggerType type) {
+  std::cout<<"we are using banish"<<std::endl;
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
     return false;
@@ -29,7 +30,7 @@ bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard,
     for (; i < static_cast<int>(v.size()); ++i) {
       if (v[i].get() == &targetCard) break;
     }
-    targetPlayer.killMinion(i);
+    targetPlayer.killMinion(i+1);
   } else if (type == TriggerType::None) {
     targetPlayer.killRitual();
   }
@@ -55,7 +56,7 @@ bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard,
     for (; i < static_cast<int>(v.size()); ++i) {
       if (v[i].get() == &targetCard) break;
     }
-    targetPlayer.returnMinionToHand(i);
+    targetPlayer.returnMinionToHand(i+1);
   }
   return false;
 }
@@ -140,6 +141,7 @@ BoneGolemAbility::BoneGolemAbility(int cost)
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool BoneGolemAbility::useAbility(Player& targetPlayer, Card& targetCard,
                                   TriggerType type) {
+  std::cout<<"bone golem running"<<std::endl;
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
     return false;
@@ -285,7 +287,7 @@ bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard,
     for (; i < static_cast<int>(v.size()); ++i) {
       if (v[i].get() == &targetCard) break;
     }
-    targetPlayer.killMinion(i);
+    targetPlayer.killMinion(i+1);
   }
   return false;
 }
