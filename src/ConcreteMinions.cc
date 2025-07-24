@@ -31,9 +31,11 @@ BoneGolem::BoneGolem()
 
 bool BoneGolem::useCardAbility(Player& targetPlayer, Card& targetCard,
                                TriggerType type) {
-  std::cerr << "Error: Cannot target this card, or this ability may not "
-               "target a card."
-            << std::endl;
+  if (type==TriggerType::None){
+    std::cerr << "Error: Cannot target this card, or this ability may not "
+                "target a card."
+              << std::endl;
+  }
   return false;
 }
 

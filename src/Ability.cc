@@ -21,9 +21,9 @@ int Ability::getAbilityCost() const { return cost; }
 
 bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
                          TriggerType type) {
-  if (this->requiresTarget()) {
+  if (this->requiresTarget()&&type==TriggerType::None) {
     std::cerr << "Error: Cannot use this ability with no target." << std::endl;
-  } else {
+  } else if (!this->requiresTarget()) {
     std::cerr << "Error: Function was not overridden correctly." << std::endl;
   }
   return false;
@@ -31,11 +31,11 @@ bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
 
 bool Ability::useAbility(Player& targetPlayer, Card& targetCard,
                          TriggerType type) {
-  if (!this->canTarget(targetCard.getType())) {
+  if (!this->canTarget(targetCard.getType())&&type==TriggerType::None) {
     std::cerr << "Error: Cannot target this card, or this ability may not "
                  "target a card."
               << std::endl;
-  } else {
+  } else if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Function was not overridden correctly." << std::endl;
   }
   return false;
