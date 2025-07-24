@@ -2,36 +2,35 @@
 
 #include <iostream>
 
-GiantStrength::GiantStrength()
-    : Enchantment{"Giant Strength", 1} {}
+GiantStrength::GiantStrength() : Enchantment{"Giant Strength", 1} {}
 
 GiantStrength::GiantStrength(std::unique_ptr<Minion> parent)
     : Enchantment{"Giant Strength", 1, std::move(parent)} {}
 
 const std::vector<std::string> GiantStrength::getDescription() const {
-  return std::vector<std::string>{"", "", "", "", ""};
+  return std::vector<std::string>{"", "", "", "------                   ------",
+                                  " +2  |                   | +2"};
 }
 
 int GiantStrength::getAttack() const { return parent->getAttack() + 2; }
 
 int GiantStrength::getDefence() const { return parent->getDefence() + 2; }
 
-Enrage::Enrage()
-    : Enchantment{"Enrage", 1} {}
+Enrage::Enrage() : Enchantment{"Enrage", 1} {}
 
 Enrage::Enrage(std::unique_ptr<Minion> parent)
     : Enchantment{"Enrage", 1, std::move(parent)} {}
 
 const std::vector<std::string> Enrage::getDescription() const {
-  return std::vector<std::string>{"", "", "", "", ""};
+  return std::vector<std::string>{"", "", "", "------                   ------",
+                                  " *2  |                   | *2"};
 }
 
 int Enrage::getAttack() const { return parent->getAttack() * 2; }
 
 int Enrage::getDefence() const { return parent->getDefence() * 2; }
 
-Haste::Haste()
-    : Enchantment{"Haste", 1} {}
+Haste::Haste() : Enchantment{"Haste", 1} {}
 
 Haste::Haste(std::unique_ptr<Minion> parent)
     : Enchantment{"Haste", 1, std::move(parent)} {}
@@ -43,8 +42,7 @@ const std::vector<std::string> Haste::getDescription() const {
 
 int Haste::getActions() const { return parent->getActions() + 1; }
 
-MagicFatigue::MagicFatigue()
-    : Enchantment{"Magic Fatigue", 1} {}
+MagicFatigue::MagicFatigue() : Enchantment{"Magic Fatigue", 1} {}
 
 MagicFatigue::MagicFatigue(std::unique_ptr<Minion> parent)
     : Enchantment{"Magic Fatigue", 1, std::move(parent)} {}
@@ -58,8 +56,7 @@ int MagicFatigue::getAbilityCost() const {
   return parent->getAbilityCost() + 2;
 }
 
-Silence::Silence()
-    : Enchantment{"Silence", 1} {}
+Silence::Silence() : Enchantment{"Silence", 1} {}
 
 Silence::Silence(std::unique_ptr<Minion> parent)
     : Enchantment{"Silence", 1, std::move(parent)} {}

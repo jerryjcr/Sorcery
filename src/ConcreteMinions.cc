@@ -63,7 +63,7 @@ FireElemental::FireElemental()
 
 const std::vector<std::string> FireElemental::getDescription() const {
   return std::vector<std::string>{" Whenever an opponent's minion",
-                                  " enters play, deal 1 damage to", "it."};
+                                  " enters play, deal 1 damage to", " it."};
 }
 
 PotionSeller::PotionSeller()
