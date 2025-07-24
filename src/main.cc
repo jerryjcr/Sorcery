@@ -234,6 +234,7 @@ int main(int argc, char* argv[]) {
         int myCard;
         int targetPlayer;
         char targetCard;
+        bool isRitual = false;
         if (currline >> myCard) {
           if (currline >> targetPlayer) {
             if (currline >> targetCard && currline.peek() == EOF) {
@@ -244,24 +245,24 @@ int main(int argc, char* argv[]) {
                              "out of range."
                           << std::endl;
               } else {
-                int targetInd;
+                int targetInd = 0;
                 // we all agree that 6 is how you target a ritual
-                targetCard == 'r' ? targetInd = 6
+                targetCard == 'r' ? isRitual = true
                                   : targetInd = targetCard - '0';
 
                 // this is weird since the players may forget who player 1 and 2
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
                   if (cmd == "play") {
-                    activePlayer->playCard(myCard, p1, targetInd);
+                    activePlayer->playCard(myCard, p1, targetInd, isRitual);
                   } else {
-                    activePlayer->use(myCard, p1, targetInd);
+                    activePlayer->use(myCard, p1, targetInd, isRitual);
                   }
                 } else {  // must be targeting player 2
                   if (cmd == "play")
-                    activePlayer->playCard(myCard, p2, targetInd);
+                    activePlayer->playCard(myCard, p2, targetInd, isRitual);
                   else
-                    activePlayer->use(myCard, p2, targetInd);
+                    activePlayer->use(myCard, p2, targetInd, isRitual);
                 }
               }
             } else {
