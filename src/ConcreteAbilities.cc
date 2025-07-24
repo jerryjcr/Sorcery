@@ -141,7 +141,6 @@ BoneGolemAbility::BoneGolemAbility(int cost)
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool BoneGolemAbility::useAbility(Player& targetPlayer, Card& targetCard,
                                   TriggerType type) {
-  std::cout<<"bone golem running"<<std::endl;
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
     return false;

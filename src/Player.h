@@ -47,7 +47,7 @@ class Player : public Subject {
            bool isTargetRitual = false);
 
   void resetBoardActions();
-  void checkForDeaths();
+  void checkForDeaths(Player& opponent);
   //triggers all triggered abilities on the player's board
   void triggerBoard(Player& opponent, TriggerType type);
 
