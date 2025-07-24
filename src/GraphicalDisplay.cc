@@ -4,6 +4,10 @@
 #include <SDL2/SDL_image.h>
 
 void GraphicalDisplay::clear() {
+  if (!renderer) {
+    std::cerr << "Error: Cannot clear without a renderer." << std::endl;
+    return;
+  }
   SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 255);
   SDL_RenderClear(renderer.get());
 }

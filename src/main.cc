@@ -189,7 +189,7 @@ int main(int argc, char* argv[]) {
       opponentPlayer->checkForDeaths(*activePlayer);
 
       // update screen
-      display->update();
+      // display->update();
 
       // taking input either from file or stdin
       std::string cmd;
