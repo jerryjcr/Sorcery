@@ -21,8 +21,8 @@ RaiseDead
 Blizzard
 
 
-MagicFatigue
-Silence
-Haste
+DarkRitual
+AuraOfPower
+Standstill
 ApprenticeSummoner
 AirElemental

@@ -30,8 +30,10 @@ bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard,
       if (v[i].get() == &targetCard) break;
     }
     targetPlayer.killMinion(i+1);
+    return true;
   } else if (type == TriggerType::None) {
     targetPlayer.killRitual();
+    return true;
   }
   return false;
 }
@@ -56,6 +58,7 @@ bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard,
       if (v[i].get() == &targetCard) break;
     }
     targetPlayer.returnMinionToHand(i+1);
+    return true;
   }
   return false;
 }
@@ -93,6 +96,7 @@ bool DisenchantAbility::useAbility(Player& targetPlayer, Card& targetCard,
     }
     Enchantment* tmp = (dynamic_cast<Enchantment*>(&targetCard));
     v[index] = std::move(tmp->getParent());
+    return true;
   }
   return false;
 }
@@ -110,6 +114,7 @@ bool BlizzardAbility::useAbility(Player& activePlayer, Player& inactivePlayer,
     for (int i = 0; i < static_cast<int>(k.size()); ++i) {
       k[i]->adjustDefence(-2);
     }
+    return true;
   }
   return false;
 }
@@ -149,6 +154,7 @@ bool BoneGolemAbility::useAbility(Player& targetPlayer, Card& targetCard,
     Minion* p = (dynamic_cast<Minion*>(&targetCard));
     p->adjustAttack(1);
     p->adjustDefence(1);
+    return true;
   }
   return false;
 }
@@ -165,6 +171,7 @@ bool FireElementalAbility::useAbility(Player& targetPlayer, Card& targetCard,
   if (type == TriggerType::OpponentMinionEnters) {
     Minion* p = (dynamic_cast<Minion*>(&targetCard));
     p->adjustDefence(-1);
+    return true;
   }
   return false;
 }
@@ -178,6 +185,7 @@ bool PotionSellerAbility::useAbility(Player& activePlayer,
     for (int i = 0; i < static_cast<int>(v.size()); ++i) {
       v[i]->adjustDefence(1);
     }
+    return true;
   }
   return false;
 }
@@ -194,6 +202,7 @@ bool NovicePyromancerAbility::useAbility(Player& targetPlayer, Card& targetCard,
   if (type == TriggerType::None) {
     Minion* p = (dynamic_cast<Minion*>(&targetCard));
     p->adjustDefence(-1);
+    return true;
   }
   return false;
 }
@@ -248,6 +257,7 @@ bool DarkRitualAbility::useAbility(Player& activePlayer, Player& inactivePlayer,
                                    TriggerType type) {
   if (type == TriggerType::MyStartOfTurn) {
     activePlayer.adjustMagic(1);
+    return true;
   }
   return false;
 }
@@ -265,6 +275,7 @@ bool AuraOfPowerAbility::useAbility(Player& targetPlayer, Card& targetCard,
     Minion* p = (dynamic_cast<Minion*>(&targetCard));
     p->adjustAttack(1);
     p->adjustDefence(1);
+    return true;
   }
   return false;
 }
@@ -286,6 +297,7 @@ bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard,
       if (v[i].get() == &targetCard) break;
     }
     targetPlayer.killMinion(i+1);
+    return true;
   }
   return false;
 }
