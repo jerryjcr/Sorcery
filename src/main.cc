@@ -1,3 +1,6 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -11,6 +14,7 @@
 #include "Player.h"
 #include "Ritual.h"
 #include "TextUI.h"
+#include "GraphicalDisplay.h"
 
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
@@ -20,7 +24,7 @@ const std::string kDefaultDeck = "assets/text/default.txt";
 int main(int argc, char* argv[]) {
   // processing command line args
   bool testingMode = false;
-  // bool graphicsMode = false;
+  bool graphicsMode = false;
 
   std::string decklist1 = kDefaultDeck;
   std::string decklist2 = kDefaultDeck;
@@ -62,8 +66,20 @@ int main(int argc, char* argv[]) {
     } else if (cmd == "-testing") {
       testingMode = true;
     } else if (cmd == "-graphics") {
-      // graphicsMode = true;
+      graphicsMode = true;
     }
+  }
+
+  std::unique_ptr<GraphicalDisplay> display;
+
+  if (graphicsMode) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+      std::cerr << "Error: " << SDL_GetError() << std::endl;
+      return 1;
+    }
+
+    display = std::make_unique<GraphicalDisplay>();
+    if (!display->window->is)
   }
 
   std::ifstream deckfile1{decklist1};
@@ -111,20 +127,10 @@ int main(int argc, char* argv[]) {
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
 
-
-
-
-
-
-
   /*
   p1.shuffleDeck();
   p2.shuffleDeck();
   */
-
-
-
-  
 
   // drawing starting hands
   for (int i = 0; i < kStartingHandSize; i++) {
@@ -150,7 +156,8 @@ int main(int argc, char* argv[]) {
 
     // start of turn triggers
     activePlayer->triggerBoard(*opponentPlayer, TriggerType::MyStartOfTurn);
-    opponentPlayer->triggerBoard(*activePlayer, TriggerType::OpponentStartOfTurn);
+    opponentPlayer->triggerBoard(*activePlayer,
+                                 TriggerType::OpponentStartOfTurn);
 
     // "action phase"
     while (true) {
@@ -216,8 +223,7 @@ int main(int argc, char* argv[]) {
         if (currline >> myMinion) {
           // player checks if myMinion is out of range
           if (currline >> target && currline.peek() == EOF) {
-            activePlayer->attackMinion(myMinion, *opponentPlayer,
-                                       target);
+            activePlayer->attackMinion(myMinion, *opponentPlayer, target);
           } else if (currline.eof()) {
             // attacking the other player
             activePlayer->attackPlayer(myMinion, *opponentPlayer);
@@ -284,7 +290,8 @@ int main(int argc, char* argv[]) {
           if (activePlayer->getBoard().size() > boardInd) {
             inspectCard(*activePlayer->getBoard()[boardInd - 1]);
           } else {
-            std::cerr << "Invalid input: given index is out of bounds." << std::endl;
+            std::cerr << "Invalid input: given index is out of bounds."
+                      << std::endl;
           }
         } else {
           std::cerr << "Invalid input: Expected a single integer" << std::endl;
@@ -298,10 +305,12 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    // end of turn 
+    // end of turn
     activePlayer->triggerBoard(*opponentPlayer, TriggerType::MyEndOfTurn);
     opponentPlayer->triggerBoard(*activePlayer, TriggerType::OpponentEndOfTurn);
     std::swap(activePlayer, opponentPlayer);
     p1Turn = not(p1Turn);
   }
+
+  SDL_Quit();
 }
