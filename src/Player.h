@@ -34,7 +34,7 @@ class Player : public Subject {
 
   // player actions
   void playCard(int handIndex, Player& inactivePlayer);
-  // target index is 0 for ritual, 1-5 for minions
+  // target index is 1-5 for minions, 6 for ritual
   void playCard(int handIndex, Player& targetPlayer, int targetIndex);
   void drawCard();
   void discard(int handIndex);
@@ -44,6 +44,7 @@ class Player : public Subject {
   void use(int boardIndex, Player& targetPlayer, int targetIndex);
 
   void resetBoardActions();
+  void checkForDeaths();
 
   // useful methods for abilities to use
   void killMinion(int boardIndex);
