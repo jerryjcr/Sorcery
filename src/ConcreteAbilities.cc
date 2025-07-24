@@ -17,7 +17,6 @@ BanishAbility::BanishAbility(int cost)
                                     CardType::Ritual}} {}
 bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard,
                                TriggerType type) {
-  std::cout<<"we are using banish"<<std::endl;
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
     return false;

@@ -98,7 +98,7 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
   return block;
 }
 
-std::vector<std::string> visualizeCard(const Card& c) {
+std::vector<std::string> visualizeCard(Card& c) {
   std::vector<std::string> block;
 
   CardType type = c.getType();
@@ -116,10 +116,14 @@ std::vector<std::string> visualizeCard(const Card& c) {
   block.emplace_back(kHorizontalBar);
   // line 3
   std::string typeName;
-  if (type == CardType::Minion) {
-    typeName = "Minion";
-  } else if (type == CardType::Enchantment) {
+  if (type == CardType::Enchantment) {
     typeName = "Enchantment";
+    Enchantment *p=dynamic_cast<Enchantment*>(&c);
+    if (p->getParent()!=nullptr){
+      typeName = "Minion";
+    }
+  } else if (type == CardType::Minion) {
+    typeName = "Minion";
   } else if (type == CardType::Spell) {
     typeName = "Spell";
   } else {  // must be ritual
@@ -147,7 +151,36 @@ std::vector<std::string> visualizeCard(const Card& c) {
   block.back().resize(kWidth - 1, ' ');
   block.back() += "|";
   // line 8 & 9
-  if (type == CardType::Minion) {
+  if (type == CardType::Enchantment) {
+    // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
+    Enchantment *p=dynamic_cast<Enchantment*>(&c);
+    if (p->getParent()!=nullptr){
+      // line 8
+      block.emplace_back("|------                   ------|");
+      // line 9
+      block.emplace_back("| ");
+      block.back() += std::to_string(static_cast<const Minion&>(c).getAttack());
+      block.back().resize(std::string("|     |").length() - 1, ' ');
+      block.back() += "|";
+      block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
+      block.back() +=
+          "|  " + std::to_string(static_cast<const Minion&>(c).getDefence());
+      block.back().resize(kWidth - 1, ' ');
+      block.back() += "|";
+
+    }
+    else {
+      block.emplace_back("|");
+      block.back() += static_cast<const Enchantment&>(c).getDescription()[3];
+      block.back().resize(kWidth - 1, ' ');
+      block.back() += "|";
+      // line 9
+      block.emplace_back("|");
+      block.back() += static_cast<const Enchantment&>(c).getDescription()[4];
+      block.back().resize(kWidth - 1, ' ');
+      block.back() += "|";
+    }
+  } else if (type == CardType::Minion) {
     // line 8
     block.emplace_back("|------                   ------|");
     // line 9
@@ -158,18 +191,6 @@ std::vector<std::string> visualizeCard(const Card& c) {
     block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
     block.back() +=
         "|  " + std::to_string(static_cast<const Minion&>(c).getDefence());
-    block.back().resize(kWidth - 1, ' ');
-    block.back() += "|";
-  } else if (type == CardType::Enchantment) {
-    // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
-
-    block.emplace_back("|");
-    block.back() += static_cast<const Enchantment&>(c).getDescription()[3];
-    block.back().resize(kWidth - 1, ' ');
-    block.back() += "|";
-    // line 9
-    block.emplace_back("|");
-    block.back() += static_cast<const Enchantment&>(c).getDescription()[4];
     block.back().resize(kWidth - 1, ' ');
     block.back() += "|";
   } else if (type == CardType::Ritual) {

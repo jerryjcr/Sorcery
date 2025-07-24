@@ -20,8 +20,9 @@ Disenchant
 RaiseDead
 Blizzard
 
-NovicePyromancer
+
+GiantStrength
+Enrage
+Haste
 ApprenticeSummoner
-MasterSummoner
-EarthElemental
 AirElemental

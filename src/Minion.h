@@ -28,8 +28,8 @@ class Minion : public Card {
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
                               TriggerType type = TriggerType::None) override;
 
-  bool requiresTarget() const;
-  bool canTarget(CardType targetType) const;
+  virtual bool requiresTarget() const;
+  virtual bool canTarget(CardType targetType) const;
 
   // enchantments can override these methods or Card's ability methods
   virtual int getAttack() const;
@@ -38,11 +38,11 @@ class Minion : public Card {
   virtual int getAbilityCost() const;
   virtual const std::vector<std::string> getDescription() const override = 0;
 
-  void adjustAttack(int amount);
-  void adjustDefence(int amount);
+  virtual void adjustAttack(int amount);
+  virtual void adjustDefence(int amount);
 
   // sets actions to 1
-  void resetActions();
+  virtual void resetActions();
 };
 
 #endif
