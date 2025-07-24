@@ -174,6 +174,10 @@ int main(int argc, char* argv[]) {
         return 0;
       }
 
+      // checking if anyone died
+      p1.checkForDeaths();
+      p2.checkForDeaths();
+
       // taking input either from file or stdin
       std::string cmd;
       if (!std::getline(fileIn, cmd)) {

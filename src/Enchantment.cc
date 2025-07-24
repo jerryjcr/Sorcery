@@ -9,8 +9,8 @@ Enchantment::Enchantment(const std::string& name, int cost,
 
 std::unique_ptr<Minion>& Enchantment::getParent() { return parent; }
 
-void Enchantment::setParent(std::unique_ptr<Minion> parent) {
-  parent = std::move(parent);
+void Enchantment::setParent(std::unique_ptr<Minion> newParent) {
+  parent = std::move(newParent);
 }
 
 Enchantment::~Enchantment() {}
