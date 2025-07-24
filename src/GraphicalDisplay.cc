@@ -8,13 +8,13 @@ void GraphicalDisplay::clear() {
   SDL_RenderClear(renderer.get());
 }
 
-void GraphicalDisplay::drawBackground(int width, int height) {
+void GraphicalDisplay::drawBackground() {
   if (!backgroundTexture) {
     std::cerr << "Error: Null background texture." << std::endl;
     return;
   }
 
-  SDL_Rect destRect(0, 0, width, height);
+  SDL_Rect destRect(0, 0, 1280, 960);
 
   SDL_RenderCopy(renderer.get(), backgroundTexture.get(), nullptr, &destRect);
 }
@@ -36,19 +36,6 @@ void GraphicalDisplay::drawCard(size_t index, int x, int y, int w, int h) {
 }
 
 void GraphicalDisplay::present() { SDL_RenderPresent(renderer.get()); }
-
-void GraphicalDisplay::update() {
-  clear();
-  drawBackground();
-
-  int x = 50;
-  int y = 50;
-  int cardWidth = 100;
-  int cardHeight = 150;
-  int spacing = 10;
-
-  for (size_t i = 0; i < cardTextures.size())
-}
 
 GraphicalDisplay::GraphicalDisplay()
     : window(nullptr, SDL_DestroyWindow),
@@ -134,4 +121,20 @@ bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
   return true;
 }
 
-bool GraphicalDisplay::isInitialized() const { return window != nullptr; }
+void GraphicalDisplay::update() {
+  clear();
+  drawBackground();
+
+  int x = 50;
+  int y = 50;
+  int cardWidth = 100;
+  int cardHeight = 150;
+  int spacing = 10;
+
+  for (size_t i = 0; i < cardTextures.size(); i++) {
+    drawCard(i, x, y, cardWidth, cardHeight);
+    x += cardWidth + spacing;
+  }
+
+  present();
+}

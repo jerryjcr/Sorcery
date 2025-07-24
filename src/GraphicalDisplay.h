@@ -21,13 +21,11 @@ class GraphicalDisplay {
 
   void clear();
 
-  void drawBackground(int width, int height);
+  void drawBackground();
 
   void drawCard(size_t index, int x, int y, int w, int h);
 
   void present();
-
-  void update();
 
  public:
   GraphicalDisplay();
@@ -38,7 +36,7 @@ class GraphicalDisplay {
 
   bool loadTextures(const std::string& backgroundPath, const std::vector<std::string>& cardPaths);
 
-  bool isInitialized() const;
+  void update();
 };
 
 #endif
