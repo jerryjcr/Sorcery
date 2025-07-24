@@ -3,6 +3,40 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+void GraphicalDisplay::clear() {
+  SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 255);
+  SDL_RenderClear(renderer.get());
+}
+
+void GraphicalDisplay::drawBackground() {
+  if (!backgroundTexture) {
+    std::cerr << "Error: Null background texture." << std::endl;
+    return;
+  }
+
+  SDL_Rect destRect(0, 0, 1280, 960);
+
+  SDL_RenderCopy(renderer.get(), backgroundTexture.get(), nullptr, &destRect);
+}
+
+void GraphicalDisplay::drawCard(size_t index, int x, int y, int w, int h) {
+  if (index >= cardTextures.size()) {
+    std::cerr << "Error: Card index out of bounds." << std::endl;
+    return;
+  }
+
+  if (!cardTextures[index]) {
+    std::cerr << "Error: Null card texture." << std::endl;
+    return;
+  }
+
+  SDL_Rect destRect(x, y, w, h);
+
+  SDL_RenderCopy(renderer.get(), cardTextures[index].get(), nullptr, &destRect);
+}
+
+void GraphicalDisplay::present() { SDL_RenderPresent(renderer.get()); }
+
 GraphicalDisplay::GraphicalDisplay()
     : window(nullptr, SDL_DestroyWindow),
       renderer(nullptr, SDL_DestroyRenderer),
@@ -87,4 +121,20 @@ bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
   return true;
 }
 
-bool GraphicalDisplay::isInitialized() const { return window != nullptr; }
+void GraphicalDisplay::update() {
+  clear();
+  drawBackground();
+
+  int x = 50;
+  int y = 50;
+  int cardWidth = 100;
+  int cardHeight = 150;
+  int spacing = 10;
+
+  for (size_t i = 0; i < cardTextures.size(); i++) {
+    drawCard(i, x, y, cardWidth, cardHeight);
+    x += cardWidth + spacing;
+  }
+
+  present();
+}

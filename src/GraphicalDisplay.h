@@ -23,9 +23,9 @@ class GraphicalDisplay {
 
   void drawBackground();
 
-  void drawCard(size_t index, int x, int y, int w, int h) {
-    if (index)
-  }
+  void drawCard(size_t index, int x, int y, int w, int h);
+
+  void present();
 
  public:
   GraphicalDisplay();
@@ -36,7 +36,7 @@ class GraphicalDisplay {
 
   bool loadTextures(const std::string& backgroundPath, const std::vector<std::string>& cardPaths);
 
-  bool isInitialized() const;
+  void update();
 };
 
 #endif

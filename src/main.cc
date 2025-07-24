@@ -188,6 +188,9 @@ int main(int argc, char* argv[]) {
       activePlayer->checkForDeaths(*opponentPlayer);
       opponentPlayer->checkForDeaths(*activePlayer);
 
+      // update screen
+      display->update();
+
       // taking input either from file or stdin
       std::string cmd;
       if (!std::getline(fileIn, cmd)) {
