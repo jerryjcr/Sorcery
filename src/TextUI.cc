@@ -18,7 +18,7 @@ const std::vector<std::string> kBlankBlock{
 };
 
 void printSorcery() {
-  std::fstream sorcery("assets/text/sorcery.txt");
+  std::fstream sorcery("src/assets/text/sorcery.txt");
   std::string templine;
   while (std::getline(sorcery, templine)) {
     std::cout << templine << std::endl;

@@ -19,10 +19,10 @@
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
-const std::string kDefaultDeck = "assets/text/default.txt";
-const std::string kBackgroundPath = "assets/img/background.png";
-const std::vector<std::string> kCardPaths = {"assets/img/Master Summoner.png",
-                                             "assets/img/Earth Elemental.png"};
+const std::string kDefaultDeck = "src/assets/text/default.txt";
+const std::string kBackgroundPath = "src/assets/img/background.png";
+const std::vector<std::string> kCardPaths = {"src/assets/img/Master Summoner.png",
+                                             "src/assets/img/Earth Elemental.png"};
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -189,7 +189,7 @@ int main(int argc, char* argv[]) {
       opponentPlayer->checkForDeaths(*activePlayer);
 
       // update screen
-      // display->update();
+      display->update();
 
       // taking input either from file or stdin
       std::string cmd;
@@ -201,7 +201,7 @@ int main(int argc, char* argv[]) {
       currline >> cmd;
 
       if (cmd == "help") {
-        std::fstream help("assets/text/help.txt");
+        std::fstream help("src/assets/text/help.txt");
         std::string helpLine;
         while (std::getline(help, helpLine)) {
           std::cout << helpLine << std::endl;
