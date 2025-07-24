@@ -22,7 +22,7 @@ void Minion::attackMinion(Minion& targetMinion) {
   }
   targetMinion.adjustDefence(-getAttack());
   adjustDefence(-targetMinion.getAttack());
-  --actions;
+  adjustActions(-1);
 }
 
 void Minion::attackPlayer(Player& targetPlayer) {
@@ -31,7 +31,7 @@ void Minion::attackPlayer(Player& targetPlayer) {
     return;
   }
   targetPlayer.adjustLife(-getAttack());
-  --actions;
+  adjustActions(-1);
 }
 
 bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
@@ -75,6 +75,8 @@ int Minion::getDefence() const { return defence; }
 int Minion::getActions() const { return actions; }
 
 int Minion::getAbilityCost() const { return ability->getAbilityCost(); }
+
+void Minion::adjustActions(int amount) { actions += amount; }
 
 void Minion::adjustAttack(int amount) { attack += amount; }
 

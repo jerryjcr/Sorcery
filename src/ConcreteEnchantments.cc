@@ -21,10 +21,10 @@ int GiantStrength::getAttack() const { return parent->getAttack() + 2; }
 
 int GiantStrength::getDefence() const { return parent->getDefence() + 2; }
 
-Enrage::Enrage() : Enchantment{"Enrage", 1} {}
+Enrage::Enrage() : Enchantment{"Enrage", 2} {}
 
 Enrage::Enrage(std::unique_ptr<Minion> parent)
-    : Enchantment{"Enrage", 1, std::move(parent)} {}
+    : Enchantment{"Enrage", 2, std::move(parent)} {}
 
 const std::vector<std::string> Enrage::getDescription() const {
   if (parent.get()==nullptr){
@@ -57,10 +57,10 @@ const std::vector<std::string> Haste::getDescription() const {
 
 int Haste::getActions() const { return parent->getActions() + 1; }
 
-MagicFatigue::MagicFatigue() : Enchantment{"Magic Fatigue", 1} {}
+MagicFatigue::MagicFatigue() : Enchantment{"Magic Fatigue", 0} {}
 
 MagicFatigue::MagicFatigue(std::unique_ptr<Minion> parent)
-    : Enchantment{"Magic Fatigue", 1, std::move(parent)} {}
+    : Enchantment{"Magic Fatigue", 0, std::move(parent)} {}
 
 const std::vector<std::string> MagicFatigue::getDescription() const {
   if (parent.get()==nullptr){

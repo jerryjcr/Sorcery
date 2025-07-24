@@ -92,6 +92,15 @@ int Enchantment::getAbilityCost() const {
   }
 }
 
+void Enchantment::adjustActions(int amount) {
+  if (parent.get()==nullptr){
+    return;
+  }
+  else {
+    parent->adjustActions(amount);
+  }
+}
+
 void Enchantment::adjustAttack(int amount) {
   if (parent.get()==nullptr){
     return;

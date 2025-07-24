@@ -26,9 +26,11 @@ class Enchantment : public Minion {
   virtual int getDefence() const override;
   virtual int getActions() const override;
   virtual int getAbilityCost() const override;
-  void adjustAttack(int amount) override;
-  void adjustDefence(int amount) override;
-  void resetActions() override;
+  virtual void adjustActions(int amount) override;
+  virtual void adjustAttack(int amount) override;
+  virtual void adjustDefence(int amount) override;
+  virtual void resetActions() override;
+
   // if parent is nullptr, then the object is a pure enchantment, so we output
   // the enchantment name and cost if parent is not, then the object is an
   // enchanted minion, so we output the minion name and cost

@@ -21,8 +21,8 @@ RaiseDead
 Blizzard
 
 
-GiantStrength
-Enrage
+MagicFatigue
+Silence
 Haste
 ApprenticeSummoner
 AirElemental
