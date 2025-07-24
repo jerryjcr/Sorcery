@@ -206,12 +206,12 @@ std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
 
     } else {
       block.emplace_back("|");
-      block.back() += static_cast<const Enchantment&>(c).getDescription()[3];
+      block.back() += static_cast<const Enchantment&>(c).getEnchantDescription()[3];
       block.back().resize(kWidth - 1, ' ');
       block.back() += "|";
       // line 9
       block.emplace_back("|");
-      block.back() += static_cast<const Enchantment&>(c).getDescription()[4];
+      block.back() += static_cast<const Enchantment&>(c).getEnchantDescription()[4];
       block.back().resize(kWidth - 1, ' ');
       block.back() += "|";
     }
