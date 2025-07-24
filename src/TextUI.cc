@@ -112,7 +112,13 @@ std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
   block.emplace_back(kHorizontalBar);
   // line 1
   block.emplace_back("| ");
-  block.back() += c.getName();
+
+  // to ge the name of the enchantment when inspecting
+  if (c.getType() == CardType::Enchantment && isInspect) {
+    block.back() += dynamic_cast<Enchantment*>(&c)->getEnchantName();
+  } else {
+    block.back() += c.getName();
+  }
   block.back().resize(kWidth - std::string("| 26  |").length(), ' ');
   block.back() += "| " + std::to_string(c.getCost());
   block.back().resize(kWidth - 1, ' ');
@@ -124,7 +130,7 @@ std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
   if (type == CardType::Enchantment) {
     typeName = "Enchantment";
     Enchantment* p = dynamic_cast<Enchantment*>(&c);
-    if (p->getParent() != nullptr) {
+    if (p->getParent() != nullptr && !isInspect) {
       typeName = "Enchanted Minion";
     }
   } else if (type == CardType::Minion) {
@@ -144,10 +150,16 @@ std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
   // line 5, 6, 7 (descriptions)
   // for minions with abilities there is a box with a number which could be
   // changed dynamically
-
-  if (c.getName() == std::string("Novice Pyromancer") ||
-      c.getName() == std::string("Apprentice Summoner") ||
-      c.getName() == std::string("Master Summoner")) {
+  if (isInspect && type == CardType::Enchantment) {
+    for (int i = 0; i < 3; i++) {
+      block.emplace_back("|");
+      block.back() += static_cast<Enchantment*>(&c)->getEnchantDescription()[i];
+      block.back().resize(kWidth - 1, ' ');
+      block.back() += "|";
+    }
+  } else if (c.getName() == std::string("Novice Pyromancer") ||
+             c.getName() == std::string("Apprentice Summoner") ||
+             c.getName() == std::string("Master Summoner")) {
     block.emplace_back("|");
     block.back() += (abilityCostBox(*static_cast<Minion*>(&c)));
     block.back() += c.getDescription()[0];
@@ -178,7 +190,7 @@ std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
   if (type == CardType::Enchantment) {
     // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
     Enchantment* p = dynamic_cast<Enchantment*>(&c);
-    if (p->getParent() != nullptr) {
+    if (p->getParent() != nullptr && isInspect) {
       // line 8
       block.emplace_back("|------                   ------|");
       // line 9
@@ -247,6 +259,8 @@ void printRow(std::vector<std::vector<std::string>>& row, bool isBoard = true) {
     }
     if (isBoard) {
       std::cout << "|" << std::endl;
+    } else {
+      std::cout << std::endl;
     }
   }
 }
@@ -355,15 +369,19 @@ void printBoard(Player& active, Player& opponent) {
 }
 
 void inspectCard(Minion& m) {
-  std::vector<std::vector<std::string>> currRow{
-      visualizeCard(m), kBlankBlock, kBlankBlock, kBlankBlock, kBlankBlock};
+  std::vector<std::vector<std::string>> currRow;
+  currRow.emplace_back(visualizeCard(m));
+  currRow.emplace_back(kBlankBlock);
+  currRow.emplace_back(kBlankBlock);
+  currRow.emplace_back(kBlankBlock);
+  currRow.emplace_back(kBlankBlock);
   printRow(currRow, false);
 
   if (m.getType() == CardType::Enchantment) {
     Enchantment* e = dynamic_cast<Enchantment*>(&m);
     currRow.clear();
 
-    while (true) {
+    while (e != nullptr) {
       for (int i = 0; i < kBoardWidth; i++) {
         if (e != nullptr) {
           currRow.emplace_back(visualizeCard(*e, true));
@@ -371,7 +389,8 @@ void inspectCard(Minion& m) {
           currRow.emplace_back(kBlankBlock);
         }
 
-        if (e->getParent()->getType() == CardType::Enchantment) {
+        if (e != nullptr &&
+            e->getParent()->getType() == CardType::Enchantment) {
           e = dynamic_cast<Enchantment*>(e->getParent().get());
         } else {
           e = nullptr;

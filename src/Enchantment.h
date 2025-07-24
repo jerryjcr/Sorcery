@@ -18,8 +18,8 @@ class Enchantment : public Minion {
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
-                          TriggerType type = TriggerType::None) override;
+                              Player& otherPlayer,
+                              TriggerType type = TriggerType::None) override;
   virtual CardType getType() const override;
   virtual bool requiresTarget() const override;
   virtual bool canTarget(CardType targetType) const override;
@@ -37,6 +37,10 @@ class Enchantment : public Minion {
   // enchanted minion, so we output the minion name and cost
   virtual int getCost() const override;
   virtual const std::string& getName() const override;
+  const std::string& getEnchantName() const;
+
+  virtual const std::vector<std::string> getDescription() const;
+  virtual const std::vector<std::string> getEnchantDescription() const = 0;
 };
 
 #endif

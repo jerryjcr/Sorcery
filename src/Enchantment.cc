@@ -159,3 +159,15 @@ const std::string& Enchantment::getName() const {
   }
   return parent->getName();
 }
+
+const std::string& Enchantment::getEnchantName() const {
+  return name;
+}
+
+const std::vector<std::string> Enchantment::getDescription() const {
+  if (parent.get() == nullptr) {
+    return getEnchantDescription();
+  } else {
+    return parent->getDescription();
+  }
+}
