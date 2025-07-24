@@ -197,12 +197,11 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
   boardIndex--;
   targetIndex--;
 
-  if (isTargetRitual && !targetPlayer.ritual) {
-    std::cout << "Target ritual does not exist." << std::endl;
-    return;
-  }
-
   if (isTargetRitual) {
+    if (!targetPlayer.ritual) {
+      std::cout << "Target ritual does not exist." << std::endl;
+      return;
+    }
     if (board[boardIndex]->useCardAbility(targetPlayer, *targetPlayer.ritual)) {
       magic -= board[boardIndex]->getAbilityCost();
     }
