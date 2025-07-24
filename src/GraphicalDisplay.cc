@@ -46,6 +46,14 @@ GraphicalDisplay::GraphicalDisplay()
       renderer(nullptr, SDL_DestroyRenderer),
       backgroundTexture(nullptr, SDL_DestroyTexture) {}
 
+GraphicalDisplay::~GraphicalDisplay() {
+  cardTextures.clear();  // forces destruction while SDL is still alive
+  backgroundTexture.reset();
+  renderer.reset();
+  window.reset();
+  SDL_Quit();
+}
+
 bool GraphicalDisplay::createWindow(const std::string& title, int width,
                                     int height) {
   window.reset(SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
@@ -71,7 +79,6 @@ bool GraphicalDisplay::createRenderer() {
     return false;
   }
 
-  std::cerr << "Renderer created successfully" << renderer.get() << std::endl;
   return true;
 }
 

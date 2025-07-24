@@ -21,8 +21,8 @@ const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
 const std::string kDefaultDeck = "src/assets/text/default.txt";
 const std::string kBackgroundPath = "src/assets/img/background.png";
-const std::vector<std::string> kCardPaths = {"src/assets/img/Master Summoner.png",
-                                             "src/assets/img/Earth Elemental.png"};
+const std::vector<std::string> kCardPaths = {
+    "src/assets/img/Master Summoner.png", "src/assets/img/Earth Elemental.png"};
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -146,7 +146,10 @@ int main(int argc, char* argv[]) {
   Player* activePlayer = &p1;
   Player* opponentPlayer = &p2;
   bool p1Turn = true;
-  while (true) {
+
+  bool quit = false;
+
+  while (!quit) {
     // start of turn
     std::cout << "Player ";
     p1Turn ? std::cout << "1 : " : std::cout << "2 : ";
@@ -165,23 +168,23 @@ int main(int argc, char* argv[]) {
                                  TriggerType::OpponentStartOfTurn);
 
     // "action phase"
-    while (true) {
+    while (!quit) {
       // checking if someone won the game
       if (p1.getLife() < 1 && p2.getLife() < 1) {
         printBoard(*activePlayer, *opponentPlayer);
         std::cout << "Both players have fallen!" << std::endl;
         std::cout << "The game ends in a draw." << std::endl;
-        return 0;
+        quit = true;
       } else if (p1.getLife() < 1) {
         printBoard(*activePlayer, *opponentPlayer);
         std::cout << p1.getName() << " has fallen in combat!" << std::endl;
         std::cout << p2.getName() << " wins!" << std::endl;
-        return 0;
+        quit = true;
       } else if (p2.getLife() < 1) {
         printBoard(*activePlayer, *opponentPlayer);
         std::cout << p2.getName() << " has fallen in combat!" << std::endl;
         std::cout << p1.getName() << " wins!" << std::endl;
-        return 0;
+        quit = true;
       }
 
       // checking if anyone died
@@ -189,7 +192,9 @@ int main(int argc, char* argv[]) {
       opponentPlayer->checkForDeaths(*activePlayer);
 
       // update screen
-      display->update();
+      if (graphicsMode) {
+        display->update();
+      }
 
       // taking input either from file or stdin
       std::string cmd;
@@ -212,7 +217,7 @@ int main(int argc, char* argv[]) {
         break;
 
       } else if (cmd == "quit") {
-        return 0;
+        quit = true;
 
       } else if (cmd == "draw" && testingMode) {
         activePlayer->drawCard();
@@ -295,7 +300,8 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "inspect") {
         int boardInd;
         if (currline >> boardInd && currline.peek() == EOF) {
-          if (activePlayer->getBoard().size() >= boardInd) { // add error checking here
+          if (activePlayer->getBoard().size() >=
+              boardInd) {  // add error checking here
             inspectCard(*activePlayer->getBoard()[boardInd - 1]);
           } else {
             std::cerr << "Invalid input: given index is out of bounds."
@@ -321,4 +327,5 @@ int main(int argc, char* argv[]) {
   }
 
   SDL_Quit();
+  return 0;
 }
