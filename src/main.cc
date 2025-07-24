@@ -295,7 +295,7 @@ int main(int argc, char* argv[]) {
       } else if (cmd == "inspect") {
         int boardInd;
         if (currline >> boardInd && currline.peek() == EOF) {
-          if (activePlayer->getBoard().size() > boardInd) {
+          if (activePlayer->getBoard().size() >= boardInd) { // add error checking here
             inspectCard(*activePlayer->getBoard()[boardInd - 1]);
           } else {
             std::cerr << "Invalid input: given index is out of bounds."
