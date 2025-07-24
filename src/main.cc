@@ -10,16 +10,19 @@
 
 #include "Card.h"
 #include "Database.h"
+#include "GraphicalDisplay.h"
 #include "Minion.h"
 #include "Player.h"
 #include "Ritual.h"
 #include "TextUI.h"
-#include "GraphicalDisplay.h"
 
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
 const std::string kDefaultDeck = "assets/text/default.txt";
+const std::string kBackgroundPath = "assets/img/background.png";
+const std::vector<std::string> kCardPaths = {"assets/img/Master Summoner.png",
+                                             "assets/img/Earth Elemental.png"};
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -79,7 +82,9 @@ int main(int argc, char* argv[]) {
     }
 
     display = std::make_unique<GraphicalDisplay>();
-    if (!display->window->is)
+    display->createWindow("Sorcery", 1280, 960);
+    display->createRenderer();
+    display->loadTextures(kBackgroundPath, kCardPaths);
   }
 
   std::ifstream deckfile1{decklist1};

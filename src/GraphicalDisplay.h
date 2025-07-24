@@ -19,6 +19,14 @@ class GraphicalDisplay {
   texturePtr backgroundTexture;
   std::vector<texturePtr> cardTextures;
 
+  void clear();
+
+  void drawBackground();
+
+  void drawCard(size_t index, int x, int y, int w, int h) {
+    if (index)
+  }
+
  public:
   GraphicalDisplay();
 
@@ -26,9 +34,7 @@ class GraphicalDisplay {
 
   bool createRenderer();
 
-  bool loadBackgroundTexture(const std::string& filePath);
-
-  bool loadCardTextures(const std::vector<std::string>& filePaths);
+  bool loadTextures(const std::string& backgroundPath, const std::vector<std::string>& cardPaths);
 
   bool isInitialized() const;
 };

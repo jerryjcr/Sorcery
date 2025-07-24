@@ -35,29 +35,34 @@ bool GraphicalDisplay::createRenderer() {
   return true;
 }
 
-bool GraphicalDisplay::loadBackgroundTexture(const std::string& filePath) {
+bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
+                                    const std::vector<std::string>& cardPaths) {
   if (!renderer) {
     std::cerr << "Error: Cannot load texture without a renderer." << std::endl;
     return false;
   }
 
-  std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> surface(
-      IMG_Load(filePath.c_str()), SDL_FreeSurface);
+  std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> backgroundSurface(
+      IMG_Load(backgroundPath.c_str()), SDL_FreeSurface);
 
-  if (!surface) {
+  if (!backgroundSurface) {
     std::cerr << "Error: " << SDL_GetError() << std::endl;
     return false;
   }
-}
 
-bool GraphicalDisplay::loadCardTextures(
-    const std::vector<std::string>& filePaths) {
-  if (!renderer) {
-    std::cerr << "Error: Cannot load texture without a renderer." << std::endl;
+  SDL_Texture* rawTexture =
+      SDL_CreateTextureFromSurface(renderer.get(), backgroundSurface.get());
+
+  if (!rawTexture) {
+    std::cerr << "Error: " << SDL_GetError() << std::endl;
     return false;
   }
 
-  for (const auto& path : filePaths) {
+  texturePtr texture(rawTexture, SDL_DestroyTexture);
+
+  backgroundTexture = std::move(texture);
+
+  for (const auto& path : cardPaths) {
     std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> surface(
         IMG_Load(path.c_str()), SDL_FreeSurface);
 
@@ -65,7 +70,21 @@ bool GraphicalDisplay::loadCardTextures(
       std::cerr << "Error: " << SDL_GetError() << std::endl;
       return false;
     }
+
+    SDL_Texture* rawTexture =
+        SDL_CreateTextureFromSurface(renderer.get(), surface.get());
+
+    if (!rawTexture) {
+      std::cerr << "Error: " << SDL_GetError() << std::endl;
+      return false;
+    }
+
+    texturePtr texture(rawTexture, SDL_DestroyTexture);
+
+    cardTextures.emplace_back(std::move(texture));
   }
+
+  return true;
 }
 
 bool GraphicalDisplay::isInitialized() const { return window != nullptr; }
