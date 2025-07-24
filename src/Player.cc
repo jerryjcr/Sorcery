@@ -1,7 +1,10 @@
 #include "Player.h"
 
+#include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -38,6 +41,11 @@ Player::Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck)
       life{kInitialLife},
       magic{kInitialMagic},
       deck{std::move(deck)} {}
+
+void Player::shuffleDeck() {
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::shuffle(deck.begin(), deck.end(), std::default_random_engine(seed));
+}
 
 void Player::playCard(int handIndex, Player& inactivePlayer) {
   if (!boundIndex(handIndex, 0, static_cast<int>(hand.size()) - 1, "Hand"))
