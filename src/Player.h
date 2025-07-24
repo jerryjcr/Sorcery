@@ -49,6 +49,7 @@ class Player : public Subject {
   void resetBoardActions();
   void checkForDeaths(Player& opponent);
   //triggers all triggered abilities on the player's board
+  void triggerBoard(Player& opponent, Minion& targetCard, TriggerType type);
   void triggerBoard(Player& opponent, TriggerType type);
 
   // useful methods for abilities to use

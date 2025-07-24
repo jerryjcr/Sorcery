@@ -20,9 +20,8 @@ Disenchant
 RaiseDead
 Blizzard
 
-
-BoneGolem
-FireElemental
-PotionSeller
+NovicePyromancer
+ApprenticeSummoner
+MasterSummoner
 EarthElemental
 AirElemental

@@ -27,6 +27,19 @@ bool Ritual::useCardAbility(Player& activePlayer, Player& inactivePlayer,
   return false;
 }
 
+bool Ritual::useCardAbility(Player& targetPlayer, Card& targetCard,
+                              TriggerType type) {
+  if (charges < chargeCost) {
+    // no message if you don't have enough charges, since it's triggered
+    return false;
+  }
+  if (Card::useCardAbility(targetPlayer, targetCard, type)) {
+    adjustCharges(-chargeCost);
+    return true;
+  }
+  return false;
+}
+
 int Ritual::getCharges() const { return charges; }
 
 void Ritual::adjustCharges(int amount) { charges += amount; }

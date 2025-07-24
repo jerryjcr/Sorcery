@@ -64,6 +64,8 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
     }
     std::unique_ptr<Minion> minion(dynamic_cast<Minion*>(card.release()));
     board.push_back(std::move(minion));
+    triggerBoard(inactivePlayer, *board.back(), TriggerType::MyMinionEnters);
+    inactivePlayer.triggerBoard(*this, *board.back(), TriggerType::OpponentMinionEnters);
   } else if (card->getType() == CardType::Spell) {
     std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
     // call the version of the method with no target
@@ -234,20 +236,44 @@ void Player::resetBoardActions() {
 void Player::checkForDeaths(Player& opponent) {
   for (int i = 0; i < static_cast<int>(board.size()); i++) {
     if (board[i]->getDefence() <= 0) {
-      triggerBoard(opponent,TriggerType::MyMinionLeaves);
-      opponent.triggerBoard(*this,TriggerType::OpponentMinionLeaves);
+      triggerBoard(opponent, *board[i], TriggerType::MyMinionLeaves);
+      opponent.triggerBoard(*this, *board[i], TriggerType::OpponentMinionLeaves);
       killMinion(i + 1);
       i--;  // Adjust index after removal
     }
   }
 }
 
-void Player::triggerBoard(Player& opponent, TriggerType type) {
-  for (auto& minion : getBoard()) {
-    minion->useCardAbility(*this, opponent, type);
+void Player::triggerBoard(Player& opponent, Minion& targetCard, TriggerType type) {
+  if (type==TriggerType::MyMinionEnters||type==TriggerType::MyMinionLeaves) {
+    for (auto& minion : getBoard()) {
+      minion->useCardAbility(*this, opponent, type);
+      minion->useCardAbility(*this, targetCard, type);
+    }
+    if (getRitual()) {
+      getRitual()->useCardAbility(*this, opponent, type);
+      getRitual()->useCardAbility(*this, targetCard, type);
+    }
   }
-  if (getRitual()) {
-    getRitual()->useCardAbility(*this, opponent, type);
+  else if (type==TriggerType::OpponentMinionEnters||type==TriggerType::OpponentMinionLeaves){
+    for (auto& minion : getBoard()) {
+      minion->useCardAbility(*this, opponent, type);
+      minion->useCardAbility(opponent, targetCard, type);
+    }
+    if (getRitual()) {
+      getRitual()->useCardAbility(*this, opponent, type);
+      getRitual()->useCardAbility(opponent, targetCard, type);
+    }
+  }
+}
+void Player::triggerBoard(Player& opponent, TriggerType type) {
+  if (type==TriggerType::MyEndOfTurn||type==TriggerType::OpponentEndOfTurn||type==TriggerType::MyStartOfTurn||type==TriggerType::OpponentStartOfTurn) {
+    for (auto& minion : getBoard()) {
+      minion->useCardAbility(*this, opponent, type);
+    }
+    if (getRitual()) {
+      getRitual()->useCardAbility(*this, opponent, type);
+    }
   }
 }
 
