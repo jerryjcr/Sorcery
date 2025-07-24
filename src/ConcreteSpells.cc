@@ -31,7 +31,7 @@ const std::vector<std::string> Disenchant::getDescription() const {
 }
 
 RaiseDead::RaiseDead()
-    : Spell{"RaiseDead", 1, std::make_unique<RaiseDeadAbility>(0)} {}
+    : Spell{"Raise Dead", 1, std::make_unique<RaiseDeadAbility>(0)} {}
 
 const std::vector<std::string> RaiseDead::getDescription() const {
   return std::vector<std::string>{" Resurrect the top minion in",
