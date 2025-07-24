@@ -4,8 +4,15 @@
 #include <SDL2/SDL_image.h>
 
 void GraphicalDisplay::clear() {
-  if (!renderer) {
-    std::cerr << "Error: Cannot clear without a renderer." << std::endl;
+  std::cerr << "called update()" << std::endl;
+  // if (!renderer) {
+  //   std::cerr << "Error: Cannot clear without a renderer." << std::endl;
+  //   return;
+  // }
+  std::cerr << "Renderer unique_ptr address: " << &renderer << std::endl;
+  std::cerr << "renderer.get(): " << renderer.get() << std::endl;
+  if (renderer.get() == nullptr) {
+    std::cerr << "Renderer pointer is null!" << std::endl;
     return;
   }
   SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 255);
@@ -70,6 +77,8 @@ bool GraphicalDisplay::createRenderer() {
     std::cerr << "Error: " << SDL_GetError() << std::endl;
     return false;
   }
+
+  std::cerr << "Renderer created successfully" << renderer.get() << std::endl;
   return true;
 }
 
@@ -126,8 +135,11 @@ bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
 }
 
 void GraphicalDisplay::update() {
+  std::cerr << "clearing" << std::endl;
   clear();
+  std::cerr << "cleared. drawing background" << std::endl;
   drawBackground();
+  std::cerr << "drew background." << std::endl;
 
   int x = 50;
   int y = 50;
@@ -135,10 +147,13 @@ void GraphicalDisplay::update() {
   int cardHeight = 150;
   int spacing = 10;
 
+  std::cerr << "drawing cards" << std::endl;
   for (size_t i = 0; i < cardTextures.size(); i++) {
     drawCard(i, x, y, cardWidth, cardHeight);
     x += cardWidth + spacing;
   }
 
+  std::cerr << "drew cards. presenting" << std::endl;
   present();
+  std::cerr << "presented" << std::endl;
 }
