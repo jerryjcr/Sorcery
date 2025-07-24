@@ -103,7 +103,7 @@ std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
   return block;
 }
 
-std::vector<std::string> visualizeCard(Card& c) {
+std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
   std::vector<std::string> block;
 
   CardType type = c.getType();
@@ -237,13 +237,17 @@ std::vector<std::string> visualizeCard(Card& c) {
   return block;
 }
 
-void printRow(std::vector<std::vector<std::string>>& row) {
+void printRow(std::vector<std::vector<std::string>>& row, bool isBoard = true) {
   for (int i = 0; i < kHeight; i++) {
-    std::cout << "|";
+    if (isBoard) {
+      std::cout << "|";
+    }
     for (int j = 0; j < kBoardWidth; j++) {
       std::cout << row[j][i];
     }
-    std::cout << "|" << std::endl;
+    if (isBoard) {
+      std::cout << "|" << std::endl;
+    }
   }
 }
 
@@ -351,6 +355,30 @@ void printBoard(Player& active, Player& opponent) {
 }
 
 void inspectCard(Minion& m) {
-  std::vector<std::vector<std::string>> currRow{visualizeCard(m)};
-  printRow(currRow);
+  std::vector<std::vector<std::string>> currRow{
+      visualizeCard(m), kBlankBlock, kBlankBlock, kBlankBlock, kBlankBlock};
+  printRow(currRow, false);
+
+  if (m.getType() == CardType::Enchantment) {
+    Enchantment* e = static_cast<Enchantment*>(&m);
+    currRow.clear();
+
+    std::vector<Enchantment&> enchantList;
+    while (e->getType() == CardType::Enchantment) {
+      enchantList.emplace_back(*e);
+    }
+
+    while (!enchantList.empty()) {
+      currRow.clear();
+      for (int i = 0; i < kBoardWidth; i++) {
+        if (enchantList.empty()) {
+          currRow.emplace_back(kBlankBlock);
+        } else {
+          currRow.emplace_back(visualizeCard(enchantList[0], true));
+          enchantList.erase(enchantList.begin());
+        }
+      }
+      printRow(currRow, false);
+    }
+  }
 }

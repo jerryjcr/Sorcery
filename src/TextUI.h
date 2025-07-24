@@ -16,5 +16,6 @@
 void printHand(Player& p1);
 void printBoard(Player& active, Player& opponent);
 void printSorcery();
+void inspectCard(Minion& m);
 
 #endif
