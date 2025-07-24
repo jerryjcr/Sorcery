@@ -15,7 +15,7 @@
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
-const std::string kDefaultDeck = "default.txt";
+const std::string kDefaultDeck = "assets/text/default.txt";
 
 // triggers all minion on p's board and p's ritual if they exist with the
 // specified trigger type
@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
       currline >> cmd;
 
       if (cmd == "help") {
-        std::fstream help("help.txt");
+        std::fstream help("assets/text/help.txt");
         std::string helpLine;
         while (std::getline(help, helpLine)) {
           std::cout << helpLine << std::endl;
