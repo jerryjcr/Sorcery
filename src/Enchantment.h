@@ -11,7 +11,7 @@ class Enchantment : public Minion {
   Enchantment(const std::string& name, int cost);
   Enchantment(const std::string& name, int cost,
               std::unique_ptr<Minion> parent);
-  std::unique_ptr<Minion>& getParent();
+  const std::unique_ptr<Minion>& getParent() const;
   void setParent(std::unique_ptr<Minion> parent);
   virtual ~Enchantment() = 0;
 
