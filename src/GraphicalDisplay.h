@@ -21,11 +21,13 @@ class GraphicalDisplay {
 
   void clear();
 
-  void drawBackground();
+  void drawBackground(int width, int height);
 
-  void drawCard(size_t index, int x, int y, int w, int h) {
-    if (index)
-  }
+  void drawCard(size_t index, int x, int y, int w, int h);
+
+  void present();
+
+  void update();
 
  public:
   GraphicalDisplay();
