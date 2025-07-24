@@ -36,7 +36,7 @@ bool Ability::useAbility(Player& targetPlayer, Card& targetCard,
     std::cerr << "Error: Cannot target this card, or this ability may not "
                  "target a card."
               << std::endl;
-  } else if (!this->canTarget(targetCard.getType())) {
+  } else if (this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Function was not overridden correctly." << std::endl;
   }
   return false;
