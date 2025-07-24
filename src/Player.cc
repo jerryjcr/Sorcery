@@ -285,6 +285,8 @@ void Player::killMinion(int boardIndex) {
 
   graveyard.push_back(std::move(board[boardIndex]));
   board.erase(board.begin() + boardIndex);
+
+  // triggerBoard()
 }
 
 void Player::killRitual() {
@@ -305,6 +307,8 @@ void Player::returnMinionToHand(int boardIndex) {
     std::cout << "Hand is full. Cannot return card to hand." << std::endl;
     return;
   }
+
+  // triggerBoard
 
   hand.push_back(std::move(board[boardIndex]));
   board.erase(board.begin() + boardIndex);
