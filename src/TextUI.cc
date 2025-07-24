@@ -190,7 +190,7 @@ std::vector<std::string> visualizeCard(Card& c, bool isInspect = false) {
   if (type == CardType::Enchantment) {
     // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
     Enchantment* p = dynamic_cast<Enchantment*>(&c);
-    if (p->getParent() != nullptr && isInspect) {
+    if (p->getParent() != nullptr && !isInspect) {
       // line 8
       block.emplace_back("|------                   ------|");
       // line 9
