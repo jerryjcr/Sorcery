@@ -25,6 +25,11 @@ void printSorcery() {
   }
 }
 
+std::string abilityCostBox(const Minion& m) {
+  return std::string(" ") + std::to_string(m.getAbilityCost()) +
+         std::string("   |");
+}
+
 std::vector<std::string> visualizePlayer(const Player& p, bool isActive) {
   std::vector<std::string> block;
   // line 0
@@ -118,9 +123,9 @@ std::vector<std::string> visualizeCard(Card& c) {
   std::string typeName;
   if (type == CardType::Enchantment) {
     typeName = "Enchantment";
-    Enchantment *p=dynamic_cast<Enchantment*>(&c);
-    if (p->getParent()!=nullptr){
-      typeName = "Minion";
+    Enchantment* p = dynamic_cast<Enchantment*>(&c);
+    if (p->getParent() != nullptr) {
+      typeName = "Enchanted Minion";
     }
   } else if (type == CardType::Minion) {
     typeName = "Minion";
@@ -135,26 +140,45 @@ std::vector<std::string> visualizeCard(Card& c) {
   block.back() += typeName + " |";
   // line 4
   block.emplace_back(kHorizontalBar);
-  // line 5
-  block.emplace_back("|");
-  block.back() += c.getDescription()[0];
-  block.back().resize(kWidth - 1, ' ');
-  block.back() += "|";
-  // line 6
-  block.emplace_back("|");
-  block.back() += c.getDescription()[1];
-  block.back().resize(kWidth - 1, ' ');
-  block.back() += "|";
-  // line 7
-  block.emplace_back("|");
-  block.back() += c.getDescription()[2];
-  block.back().resize(kWidth - 1, ' ');
-  block.back() += "|";
+
+  // line 5, 6, 7 (descriptions)
+  // for minions with abilities there is a box with a number which could be
+  // changed dynamically
+
+  if (c.getName() == std::string("Novice Pyromancer") ||
+      c.getName() == std::string("Apprentice Summoner") ||
+      c.getName() == std::string("Master Summoner")) {
+    block.emplace_back("|");
+    block.back() += (abilityCostBox(*static_cast<Minion*>(&c)));
+    block.back() += c.getDescription()[0];
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
+
+    block.emplace_back("|");
+    block.back() += ("------");
+    block.back() += c.getDescription()[1];
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
+
+    block.emplace_back("|");
+    block.back() += ("      ");
+    block.back() += c.getDescription()[2];
+    block.back().resize(kWidth - 1, ' ');
+    block.back() += "|";
+  } else {
+    for (int i = 0; i < 3; i++) {
+      block.emplace_back("|");
+      block.back() += c.getDescription()[i];
+      block.back().resize(kWidth - 1, ' ');
+      block.back() += "|";
+    }
+  }
+
   // line 8 & 9
   if (type == CardType::Enchantment) {
     // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
-    Enchantment *p=dynamic_cast<Enchantment*>(&c);
-    if (p->getParent()!=nullptr){
+    Enchantment* p = dynamic_cast<Enchantment*>(&c);
+    if (p->getParent() != nullptr) {
       // line 8
       block.emplace_back("|------                   ------|");
       // line 9
@@ -168,8 +192,7 @@ std::vector<std::string> visualizeCard(Card& c) {
       block.back().resize(kWidth - 1, ' ');
       block.back() += "|";
 
-    }
-    else {
+    } else {
       block.emplace_back("|");
       block.back() += static_cast<const Enchantment&>(c).getDescription()[3];
       block.back().resize(kWidth - 1, ' ');
@@ -325,4 +348,9 @@ void printBoard(Player& active, Player& opponent) {
   currRow.clear();
 
   std::cout << "-" << theLine << "-" << std::endl;
+}
+
+void inspectCard(Minion& m) {
+  std::vector<std::vector<std::string>> currRow{visualizeCard(m)};
+  printRow(currRow);
 }
