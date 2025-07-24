@@ -82,16 +82,17 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
   hand.erase(hand.begin() + handIndex);
 }
 
-void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
+void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
+                      bool isTargetRitual) {
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
-  if (!boundIndex(targetIndex, 1,
-                  static_cast<int>(targetPlayer.board.size()) + 1, "Target"))
+  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
+                  "Target"))
     return;
 
   handIndex--;
   targetIndex--;
 
-  if (targetIndex == 5 && !targetPlayer.ritual) {
+  if (isTargetRitual && !targetPlayer.ritual) {
     std::cout << "Target ritual does not exist." << std::endl;
     return;
   }
@@ -103,7 +104,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Spell) {
     std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
-    if (targetIndex == 5) {
+    if (isTargetRitual) {
       spell->useCardAbility(targetPlayer, *ritual);
     } else {
       spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex]);
@@ -111,7 +112,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex) {
   } else if (card->getType() == CardType::Enchantment) {
     std::unique_ptr<Enchantment> enchantment(
         dynamic_cast<Enchantment*>(card.release()));
-    if (targetIndex == 5) {
+    if (isTargetRitual) {
       std::cout << "Cannot play an enchantment on a ritual." << std::endl;
     } else {
       std::unique_ptr<Minion> targetMinion =
@@ -185,25 +186,31 @@ void Player::use(int boardIndex, Player& inactivePlayer) {
   }
 }
 
-void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
+void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
+                 bool isTargetRitual) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
-  if (!boundIndex(targetIndex, 1,
-                  static_cast<int>(targetPlayer.board.size()) + 1, "Target"))
+  if (!boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
+                  "Target"))
     return;
 
   boardIndex--;
   targetIndex--;
 
-  if (targetIndex == 5 && !targetPlayer.ritual) {
+  if (isTargetRitual && !targetPlayer.ritual) {
     std::cout << "Target ritual does not exist." << std::endl;
     return;
   }
 
-  Card& targetCard = *targetPlayer.board[targetIndex];
-
-  if (board[boardIndex]->useCardAbility(targetPlayer, targetCard)) {
-    magic -= board[boardIndex]->getAbilityCost();
+  if (isTargetRitual) {
+    if (board[boardIndex]->useCardAbility(targetPlayer, *targetPlayer.ritual)) {
+      magic -= board[boardIndex]->getAbilityCost();
+    }
+  } else {
+    if (board[boardIndex]->useCardAbility(targetPlayer,
+                                          *targetPlayer.board[targetIndex])) {
+      magic -= board[boardIndex]->getAbilityCost();
+    }
   }
 }
 
