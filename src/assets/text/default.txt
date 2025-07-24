@@ -21,8 +21,8 @@ RaiseDead
 Blizzard
 
 
-DarkRitual
-AuraOfPower
-Standstill
+Blizzard
+BoneGolem
+BoneGolem
 ApprenticeSummoner
 AirElemental

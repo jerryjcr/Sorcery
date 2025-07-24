@@ -173,8 +173,8 @@ int main(int argc, char* argv[]) {
       }
 
       // checking if anyone died
-      p1.checkForDeaths(p2);
-      p2.checkForDeaths(p1);
+      activePlayer->checkForDeaths(*opponentPlayer);
+      opponentPlayer->checkForDeaths(*activePlayer);
 
       // taking input either from file or stdin
       std::string cmd;
