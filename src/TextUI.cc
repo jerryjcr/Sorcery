@@ -360,22 +360,21 @@ void inspectCard(Minion& m) {
   printRow(currRow, false);
 
   if (m.getType() == CardType::Enchantment) {
-    Enchantment* e = static_cast<Enchantment*>(&m);
+    Enchantment* e = dynamic_cast<Enchantment*>(&m);
     currRow.clear();
 
-    std::vector<Enchantment&> enchantList;
-    while (e->getType() == CardType::Enchantment) {
-      enchantList.emplace_back(*e);
-    }
-
-    while (!enchantList.empty()) {
-      currRow.clear();
+    while (true) {
       for (int i = 0; i < kBoardWidth; i++) {
-        if (enchantList.empty()) {
-          currRow.emplace_back(kBlankBlock);
+        if (e != nullptr) {
+          currRow.emplace_back(visualizeCard(*e, true));
         } else {
-          currRow.emplace_back(visualizeCard(enchantList[0], true));
-          enchantList.erase(enchantList.begin());
+          currRow.emplace_back(kBlankBlock);
+        }
+
+        if (e->getParent()->getType() == CardType::Enchantment) {
+          e = dynamic_cast<Enchantment*>(e->getParent().get());
+        } else {
+          e = nullptr;
         }
       }
       printRow(currRow, false);
