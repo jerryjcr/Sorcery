@@ -200,10 +200,10 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
     return;
   }
 
-  Card& targetCard = *targetPlayer.board[targetIndex - 1];
+  Card& targetCard = *targetPlayer.board[targetIndex];
 
-  if (board[boardIndex - 1]->useCardAbility(targetPlayer, targetCard)) {
-    magic -= board[boardIndex - 1]->getAbilityCost();
+  if (board[boardIndex]->useCardAbility(targetPlayer, targetCard)) {
+    magic -= board[boardIndex]->getAbilityCost();
   }
 }
 
