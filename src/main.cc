@@ -214,11 +214,11 @@ int main(int argc, char* argv[]) {
         if (currline >> myMinion) {
           // player checks if myMinion is out of range
           if (currline >> target && currline.peek() == EOF) {
-            activePlayer->attackMinion(myMinion - 1, *opponentPlayer,
-                                       target - 1);
+            activePlayer->attackMinion(myMinion, *opponentPlayer,
+                                       target);
           } else if (currline.eof()) {
             // attacking the other player
-            activePlayer->attackPlayer(myMinion - 1, *opponentPlayer);
+            activePlayer->attackPlayer(myMinion, *opponentPlayer);
           } else {
             std::cerr << "Invalid input: Wrong arguments." << std::endl;
           }
@@ -249,15 +249,15 @@ int main(int argc, char* argv[]) {
                 // are, perhaps send a message reminding them?
                 if (targetPlayer == 1) {
                   if (cmd == "play") {
-                    activePlayer->playCard(myCard - 1, p1, targetInd);
+                    activePlayer->playCard(myCard, p1, targetInd);
                   } else {
-                    activePlayer->use(myCard - 1, p1, targetInd);
+                    activePlayer->use(myCard, p1, targetInd);
                   }
                 } else {  // must be targeting player 2
                   if (cmd == "play")
-                    activePlayer->playCard(myCard - 1, p2, targetInd);
+                    activePlayer->playCard(myCard, p2, targetInd);
                   else
-                    activePlayer->use(myCard - 1, p2, targetInd);
+                    activePlayer->use(myCard, p2, targetInd);
                 }
               }
             } else {
@@ -265,9 +265,9 @@ int main(int argc, char* argv[]) {
             }
           } else if (currline.eof()) {
             if (cmd == "play") {
-              activePlayer->playCard(myCard - 1, *opponentPlayer);
+              activePlayer->playCard(myCard, *opponentPlayer);
             } else {
-              activePlayer->use(myCard - 1, *opponentPlayer);
+              activePlayer->use(myCard, *opponentPlayer);
             }
           } else {
             std::cerr << "Invalid input: Expected an integer." << std::endl;
