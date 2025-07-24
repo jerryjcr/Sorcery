@@ -232,9 +232,9 @@ void Player::resetBoardActions() {
 }
 
 void Player::checkForDeaths() {
-  for (int i = 1; i <= static_cast<int>(board.size()); i++) {
+  for (int i = 0; i < static_cast<int>(board.size()); i++) {
     if (board[i]->getDefence() <= 0) {
-      killMinion(i);
+      killMinion(i + 1);
       i--;  // Adjust index after removal
     }
   }
