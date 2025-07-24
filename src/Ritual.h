@@ -20,7 +20,8 @@ class Ritual : public Card {
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                              TriggerType type = TriggerType::None) override;
+                          Player& otherPlayer,
+                          TriggerType type = TriggerType::None) override;
 
   void adjustCharges(int amount);
   int getCharges() const;

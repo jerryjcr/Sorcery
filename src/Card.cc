@@ -19,9 +19,10 @@ bool Card::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 bool Card::useCardAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type) {
   if (!ability) return false;
-  return ability->useAbility(targetPlayer, targetCard, type);
+  return ability->useAbility(targetPlayer, targetCard, otherPlayer, type);
 }
 
 const std::string& Card::getName() const { return name; }

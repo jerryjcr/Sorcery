@@ -7,6 +7,7 @@ class BanishAbility : public Ability {
  public:
   BanishAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -14,6 +15,7 @@ class UnsummonAbility : public Ability {
  public:
   UnsummonAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -28,6 +30,7 @@ class DisenchantAbility : public Ability {
  public:
   DisenchantAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -51,6 +54,7 @@ class BoneGolemAbility : public Ability {
  public:
   BoneGolemAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -59,6 +63,7 @@ class FireElementalAbility : public Ability {
  public:
   FireElementalAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -75,6 +80,7 @@ class NovicePyromancerAbility : public Ability {
  public:
   NovicePyromancerAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -107,6 +113,7 @@ class AuraOfPowerAbility : public Ability {
  public:
   AuraOfPowerAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 
@@ -115,6 +122,7 @@ class StandstillAbility : public Ability {
  public:
   StandstillAbility(int cost);
   virtual bool useAbility(Player& targetPlayer, Card& targetCard,
+                          Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 };
 

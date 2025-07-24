@@ -100,7 +100,8 @@ bool Silence::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 bool Silence::useCardAbility(Player& targetPlayer, Card& targetCard,
-                             TriggerType type) {
+                          Player& otherPlayer,
+                          TriggerType type) {
   std::cout
       << "This minion is enchanted with Silence, and cannot play abilities."
       << std::endl;

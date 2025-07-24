@@ -37,7 +37,8 @@ bool Enchantment::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 bool Enchantment::useCardAbility(Player& targetPlayer, Card& targetCard,
-                              TriggerType type) {
+                          Player& otherPlayer,
+                          TriggerType type) {
   if (parent.get()==nullptr){
     return false;
   }
@@ -46,7 +47,7 @@ bool Enchantment::useCardAbility(Player& targetPlayer, Card& targetCard,
       std::cout << "Minion does not have enough actions." << std::endl;
       return false;
     }
-    if (parent->Card::useCardAbility(targetPlayer, targetCard, type)) {
+    if (parent->Card::useCardAbility(targetPlayer, targetCard, otherPlayer, type)) {
       if (type == TriggerType::None) adjustActions(-1);
       return true;
     }

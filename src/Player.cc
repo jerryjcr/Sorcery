@@ -85,7 +85,7 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
 }
 
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
-                      bool isTargetRitual) {
+                      Player& otherPlayer, bool isTargetRitual) {
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
   if (!isTargetRitual &&
       !boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
@@ -108,9 +108,9 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
   if (card->getType() == CardType::Spell) {
     std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
     if (isTargetRitual) {
-      spell->useCardAbility(targetPlayer, *ritual);
+      spell->useCardAbility(targetPlayer, *ritual, otherPlayer);
     } else {
-      spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex]);
+      spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex], otherPlayer);
     }
   } else if (card->getType() == CardType::Enchantment) {
     std::unique_ptr<Enchantment> enchantment(
@@ -192,7 +192,7 @@ void Player::use(int boardIndex, Player& inactivePlayer) {
 }
 
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
-                 bool isTargetRitual) {
+                 Player& otherPlayer, bool isTargetRitual) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
   if (!isTargetRitual &&
@@ -211,12 +211,12 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
       std::cout << "Target ritual does not exist." << std::endl;
       return;
     }
-    if (board[boardIndex]->useCardAbility(targetPlayer, *targetPlayer.ritual)) {
+    if (board[boardIndex]->useCardAbility(targetPlayer, *targetPlayer.ritual, otherPlayer)) {
       magic -= board[boardIndex]->getAbilityCost();
     }
   } else {
     if (board[boardIndex]->useCardAbility(targetPlayer,
-                                          *targetPlayer.board[targetIndex])) {
+                                          *targetPlayer.board[targetIndex], otherPlayer)) {
       magic -= board[boardIndex]->getAbilityCost();
     }
   }
@@ -248,21 +248,21 @@ void Player::triggerBoard(Player& opponent, Minion& targetCard, TriggerType type
   if (type==TriggerType::MyMinionEnters||type==TriggerType::MyMinionLeaves) {
     for (auto& minion : getBoard()) {
       minion->useCardAbility(*this, opponent, type);
-      minion->useCardAbility(*this, targetCard, type);
+      minion->useCardAbility(*this, targetCard, opponent, type);
     }
     if (getRitual()) {
       getRitual()->useCardAbility(*this, opponent, type);
-      getRitual()->useCardAbility(*this, targetCard, type);
+      getRitual()->useCardAbility(*this, targetCard, opponent, type);
     }
   }
   else if (type==TriggerType::OpponentMinionEnters||type==TriggerType::OpponentMinionLeaves){
     for (auto& minion : getBoard()) {
       minion->useCardAbility(*this, opponent, type);
-      minion->useCardAbility(opponent, targetCard, type);
+      minion->useCardAbility(opponent, targetCard, opponent, type);
     }
     if (getRitual()) {
       getRitual()->useCardAbility(*this, opponent, type);
-      getRitual()->useCardAbility(opponent, targetCard, type);
+      getRitual()->useCardAbility(opponent, targetCard, opponent, type);
     }
   }
 }

@@ -30,7 +30,8 @@ bool Ability::useAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 bool Ability::useAbility(Player& targetPlayer, Card& targetCard,
-                         TriggerType type) {
+                          Player& otherPlayer,
+                          TriggerType type) {
   if (!this->canTarget(targetCard.getType())&&type==TriggerType::None) {
     std::cerr << "Error: Cannot target this card, or this ability may not "
                  "target a card."
