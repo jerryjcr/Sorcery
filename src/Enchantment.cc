@@ -1,5 +1,8 @@
 #include "Enchantment.h"
 
+Enchantment::Enchantment(const std::string& name, int cost)
+    : Minion{name, cost, 420, 420}, parent{nullptr} {}
+
 Enchantment::Enchantment(const std::string& name, int cost,
                          std::unique_ptr<Minion> parent)
     : Minion{name, cost, 6969, 6969}, parent{std::move(parent)} {}

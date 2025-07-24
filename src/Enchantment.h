@@ -8,6 +8,7 @@ class Enchantment : public Minion {
   std::unique_ptr<Minion> parent;
 
  public:
+  Enchantment(const std::string& name, int cost);
   Enchantment(const std::string& name, int cost,
               std::unique_ptr<Minion> parent);
   std::unique_ptr<Minion>& getParent();

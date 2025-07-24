@@ -22,6 +22,7 @@ class Ritual : public Card {
 
   void adjustCharges(int amount);
   int getCharges() const;
+  virtual const std::vector<std::string> getDescription() const override = 0;
 };
 
 #endif

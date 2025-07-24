@@ -8,10 +8,15 @@
 #include "Minion.h"
 #include "Player.h"
 
+std::string abilityCostBox(const Minion& m) {
+  return std::string(" ") + std::to_string(m.getAbilityCost()) +
+         std::string("   |");
+}
+
 DefaultMinion::DefaultMinion() : Minion{"Default", 1, 1, 1} {}
 
 const std::vector<std::string> DefaultMinion::getDescription() const {
-  return std::vector<std::string>{"This is the default minion", "", ""};
+  return std::vector<std::string>{" This is the default minion", "", ""};
 }
 
 AirElemental::AirElemental() : Minion{"Air Elemental", 0, 1, 1} {}
@@ -48,8 +53,8 @@ bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 }
 
 const std::vector<std::string> BoneGolem::getDescription() const {
-  return std::vector<std::string>{"Gain +1/+1 whenever a minion",
-                                  "leaves play.", ""};
+  return std::vector<std::string>{" Gain +1/+1 whenever a minion",
+                                  " leaves play.", ""};
 }
 
 FireElemental::FireElemental()
@@ -57,8 +62,8 @@ FireElemental::FireElemental()
              std::make_unique<FireElementalAbility>(0)} {}
 
 const std::vector<std::string> FireElemental::getDescription() const {
-  return std::vector<std::string>{"Whenever an opponent's minion",
-                                  "enters play, deal 1 damage to", "it."};
+  return std::vector<std::string>{" Whenever an opponent's minion",
+                                  " enters play, deal 1 damage to", "it."};
 }
 
 PotionSeller::PotionSeller()
@@ -66,8 +71,8 @@ PotionSeller::PotionSeller()
              std::make_unique<PotionSellerAbility>(0)} {}
 
 const std::vector<std::string> PotionSeller::getDescription() const {
-  return std::vector<std::string>{"At the end of your turn, all",
-                                  "your minions gain +0/+1.", ""};
+  return std::vector<std::string>{" At the end of your turn, all",
+                                  " your minions gain +0/+1.", ""};
 }
 
 NovicePyromancer::NovicePyromancer()
@@ -75,7 +80,9 @@ NovicePyromancer::NovicePyromancer()
              std::make_unique<NovicePyromancerAbility>(1)} {}
 
 const std::vector<std::string> NovicePyromancer::getDescription() const {
-  return std::vector<std::string>{"Deal 1 damage to target", "minion.", ""};
+  return std::vector<std::string>{
+      abilityCostBox(*this) + std::string(" Deal 1 damage to target"),
+      "------ minion.", ""};
 }
 
 ApprenticeSummoner::ApprenticeSummoner()
@@ -83,7 +90,9 @@ ApprenticeSummoner::ApprenticeSummoner()
              std::make_unique<ApprenticeSummonerAbility>(1)} {}
 
 const std::vector<std::string> ApprenticeSummoner::getDescription() const {
-  return std::vector<std::string>{"Summon a 1/1 air", "elemental.", ""};
+  return std::vector<std::string>{
+      abilityCostBox(*this) + std::string(" Summon a 1/1 air"),
+      "------ elemental.", ""};
 }
 
 MasterSummoner::MasterSummoner()
@@ -91,6 +100,7 @@ MasterSummoner::MasterSummoner()
              std::make_unique<MasterSummonerAbility>(2)} {}
 
 const std::vector<std::string> MasterSummoner::getDescription() const {
-  return std::vector<std::string>{"Summon up to three 1/1", "air elementals.",
-                                  ""};
+  return std::vector<std::string>{
+      abilityCostBox(*this) + std::string(" Summon up to three 1/1"),
+      "------ air elementals.", ""};
 }

@@ -14,6 +14,7 @@
 
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
+const int kStartingHandSize = 5;
 const std::string kDefaultDeck = "default.txt";
 
 // triggers all minion on p's board and p's ritual if they exist with the
@@ -121,6 +122,12 @@ int main(int argc, char* argv[]) {
 
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
+
+  // drawing starting hands
+  for (int i = 0; i < kStartingHandSize; i++) {
+    p1.drawCard();
+    p2.drawCard();
+  }
 
   Player* activePlayer = &p1;
   Player* opponentPlayer = &p2;

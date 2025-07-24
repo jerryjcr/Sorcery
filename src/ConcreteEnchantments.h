@@ -5,6 +5,7 @@
 
 class GiantStrength : public Enchantment {
  public:
+  GiantStrength();
   GiantStrength(std::unique_ptr<Minion> parent);
   ~GiantStrength() = default;
   virtual const std::vector<std::string> getDescription() const override;
@@ -14,6 +15,7 @@ class GiantStrength : public Enchantment {
 
 class Enrage : public Enchantment {
  public:
+  Enrage();
   Enrage(std::unique_ptr<Minion> parent);
   ~Enrage() = default;
   virtual const std::vector<std::string> getDescription() const override;
@@ -23,6 +25,7 @@ class Enrage : public Enchantment {
 
 class Haste : public Enchantment {
  public:
+  Haste();
   Haste(std::unique_ptr<Minion> parent);
   ~Haste() = default;
   virtual const std::vector<std::string> getDescription() const override;
@@ -31,6 +34,7 @@ class Haste : public Enchantment {
 
 class MagicFatigue : public Enchantment {
  public:
+  MagicFatigue();
   MagicFatigue(std::unique_ptr<Minion> parent);
   ~MagicFatigue() = default;
   virtual const std::vector<std::string> getDescription() const override;
@@ -39,6 +43,7 @@ class MagicFatigue : public Enchantment {
 
 class Silence : public Enchantment {
  public:
+  Silence();
   Silence(std::unique_ptr<Minion> parent);
   ~Silence() = default;
   virtual const std::vector<std::string> getDescription() const override;

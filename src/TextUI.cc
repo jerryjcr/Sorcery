@@ -132,17 +132,17 @@ std::vector<std::string> visualizeCard(const Card& c) {
   // line 4
   block.emplace_back(kHorizontalBar);
   // line 5
-  block.emplace_back("| ");
+  block.emplace_back("|");
   block.back() += c.getDescription()[0];
   block.back().resize(kWidth - 1, ' ');
   block.back() += "|";
   // line 6
-  block.emplace_back("| ");
+  block.emplace_back("|");
   block.back() += c.getDescription()[1];
   block.back().resize(kWidth - 1, ' ');
   block.back() += "|";
   // line 7
-  block.emplace_back("| ");
+  block.emplace_back("|");
   block.back() += c.getDescription()[2];
   block.back().resize(kWidth - 1, ' ');
   block.back() += "|";
@@ -163,12 +163,12 @@ std::vector<std::string> visualizeCard(const Card& c) {
   } else if (type == CardType::Enchantment) {
     // IMPORTANT NOTE: Enchantments have 5 like descriptions not 3 like the rest
 
-    block.emplace_back("| ");
+    block.emplace_back("|");
     block.back() += static_cast<const Enchantment&>(c).getDescription()[3];
     block.back().resize(kWidth - 1, ' ');
     block.back() += "|";
     // line 9
-    block.emplace_back("| ");
+    block.emplace_back("|");
     block.back() += static_cast<const Enchantment&>(c).getDescription()[4];
     block.back().resize(kWidth - 1, ' ');
     block.back() += "|";
