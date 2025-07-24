@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
     deck2.emplace_back(std::move(newCard));
   }
 
-  // when we add -init, this will have to change, amoung other things
+  // intializing decks
   std::string name1, name2;
   while (true) {
     if (!std::getline(fileIn, name1)) {
@@ -122,6 +122,9 @@ int main(int argc, char* argv[]) {
 
   Player p1{name1, std::move(deck1)};
   Player p2{name2, std::move(deck2)};
+
+  p1.shuffleDeck();
+  p2.shuffleDeck();
 
   // drawing starting hands
   for (int i = 0; i < kStartingHandSize; i++) {
@@ -261,7 +264,11 @@ int main(int argc, char* argv[]) {
               std::cerr << "Invalid input: Expected an integer." << std::endl;
             }
           } else if (currline.eof()) {
-            activePlayer->playCard(myCard - 1, *opponentPlayer);
+            if (cmd == "play") {
+              activePlayer->playCard(myCard - 1, *opponentPlayer);
+            } else {
+              activePlayer->use(myCard - 1, *opponentPlayer);
+            }
           } else {
             std::cerr << "Invalid input: Expected an integer." << std::endl;
           }

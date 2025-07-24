@@ -174,7 +174,7 @@ void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
 }
 
 void Player::use(int boardIndex, Player& inactivePlayer) {
-  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
+  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()) , "Board"))
     return;
 
   if (board[boardIndex]->useCardAbility(*this, inactivePlayer)) {
@@ -183,20 +183,20 @@ void Player::use(int boardIndex, Player& inactivePlayer) {
 }
 
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex) {
-  if (!boundIndex(boardIndex, 0, static_cast<int>(board.size()) - 1, "Board"))
+  if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
   if (!boundIndex(targetIndex, 0,
-                  static_cast<int>(targetPlayer.board.size()) - 1, "Target"))
+                  static_cast<int>(targetPlayer.board.size()), "Target"))
     return;
   if (targetIndex == 0 && !targetPlayer.ritual) {
     std::cout << "Target ritual does not exist." << std::endl;
     return;
   }
 
-  Card& targetCard = *targetPlayer.board[targetIndex];
+  Card& targetCard = *targetPlayer.board[targetIndex - 1];
 
-  if (board[boardIndex]->useCardAbility(targetPlayer, targetCard)) {
-    magic -= board[boardIndex]->getAbilityCost();
+  if (board[boardIndex - 1]->useCardAbility(targetPlayer, targetCard)) {
+    magic -= board[boardIndex - 1]->getAbilityCost();
   }
 }
 
