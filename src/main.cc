@@ -279,7 +279,16 @@ int main(int argc, char* argv[]) {
           std::cerr << "Invalid input: No card index given." << std::endl;
         }
       } else if (cmd == "inspect") {
-        // todo
+        int boardInd;
+        if (currline >> boardInd && currline.peek() == EOF) {
+          if (activePlayer->getBoard().size() > boardInd) {
+            inspectCard(*activePlayer->getBoard()[boardInd - 1]);
+          } else {
+            std::cerr << "Invalid input: given index is out of bounds." << std::endl;
+          }
+        } else {
+          std::cerr << "Invalid input: Expected a single integer" << std::endl;
+        }
       } else if (cmd == "hand") {
         printHand(*activePlayer);
       } else if (cmd == "board") {
