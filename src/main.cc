@@ -241,8 +241,8 @@ int main(int argc, char* argv[]) {
                           << std::endl;
               } else {
                 int targetInd;
-                // we all agree that 0 is how you target a ritual
-                targetCard == 'r' ? targetInd = 0
+                // we all agree that 6 is how you target a ritual
+                targetCard == 'r' ? targetInd = 6
                                   : targetInd = targetCard - '0';
 
                 // this is weird since the players may forget who player 1 and 2
