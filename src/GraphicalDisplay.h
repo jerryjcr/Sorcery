@@ -6,7 +6,10 @@
 
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 #include <vector>
+
+#include "Player.h"
 
 class GraphicalDisplay {
   using windowPtr = std::unique_ptr<SDL_Window, void (*)(SDL_Window*)>;
@@ -19,26 +22,28 @@ class GraphicalDisplay {
   texturePtr backgroundTexture;
   std::vector<texturePtr> cardTextures;
 
+  std::unordered_map<std::string, size_t> cardNameToIndex;
+
+  void initializeMap();
+
   void clear();
 
   void drawBackground();
 
-  void drawCard(size_t index, int x, int y, int w, int h);
+  void drawCard(const std::string& name, int x, int y, int w, int h);
 
   void present();
 
  public:
   GraphicalDisplay();
 
-  ~GraphicalDisplay();
-
-  bool createWindow(const std::string& title, int width, int height);
+  bool createWindow();
 
   bool createRenderer();
 
-  bool loadTextures(const std::string& backgroundPath, const std::vector<std::string>& cardPaths);
+  bool loadTextures();
 
-  void update();
+  void update(Player& activePlayer, Player& inactivePlayer);
 };
 
 #endif

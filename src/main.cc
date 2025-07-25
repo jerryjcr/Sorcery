@@ -20,9 +20,7 @@ const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
 const std::string kDefaultDeck = "src/assets/text/default.txt";
-const std::string kBackgroundPath = "src/assets/img/background.png";
-const std::vector<std::string> kCardPaths = {
-    "src/assets/img/Master Summoner.png", "src/assets/img/Earth Elemental.png"};
+
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -85,9 +83,9 @@ int main(int argc, char* argv[]) {
       }
 
       display = std::make_unique<GraphicalDisplay>();
-      display->createWindow("Sorcery", 1280, 960);
+      display->createWindow();
       display->createRenderer();
-      display->loadTextures(kBackgroundPath, kCardPaths);
+      display->loadTextures();
     }
     std::ifstream deckfile1{decklist1};
     std::ifstream deckfile2{decklist2};
@@ -197,7 +195,7 @@ int main(int argc, char* argv[]) {
 
         // update screen
         if (graphicsMode) {
-          display->update();
+          display->update(*activePlayer, *opponentPlayer);
         }
 
         // taking input either from file or stdin
