@@ -19,9 +19,13 @@ class Ritual : public Card {
 
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
+  virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
+                          Player& activePlayer, Player& otherPlayer,
+                          TriggerType type = TriggerType::None) override;
 
   void adjustCharges(int amount);
   int getCharges() const;
+  virtual const std::vector<std::string> getDescription() const override = 0;
 };
 
 #endif

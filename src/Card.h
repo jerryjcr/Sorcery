@@ -8,8 +8,6 @@
 
 class Player;
 
-
-
 class Card {
  protected:
   std::string name;
@@ -27,11 +25,12 @@ class Card {
                               TriggerType type = TriggerType::None);
   // uses an ability with a target
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                              TriggerType type = TriggerType::None);
+                          Player& activePlayer, Player& otherPlayer,
+                          TriggerType type = TriggerType::None);
 
-  const std::string& getName() const;
-  int getCost() const;
-  CardType getType() const;
+  virtual const std::string& getName() const;
+  virtual int getCost() const;
+  virtual CardType getType() const;
   virtual const std::vector<std::string> getDescription() const = 0;
 };
 

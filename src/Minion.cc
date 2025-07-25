@@ -16,35 +16,46 @@ Minion::Minion(const std::string& name, int cost, int attack, int defence,
 Minion::~Minion() {}
 
 void Minion::attackMinion(Minion& targetMinion) {
-  targetMinion.adjustDefence(-attack);
-  adjustDefence(-targetMinion.attack);
+  if (getActions() <= 0) {
+    std::cout << "Minion does not have enough actions." << std::endl;
+    return;
+  }
+  targetMinion.adjustDefence(-getAttack());
+  adjustDefence(-targetMinion.getAttack());
+  adjustActions(-1);
 }
 
 void Minion::attackPlayer(Player& targetPlayer) {
-  targetPlayer.adjustLife(-attack);
+  if (getActions() <= 0) {
+    std::cout << "Minion does not have enough actions." << std::endl;
+    return;
+  }
+  targetPlayer.adjustLife(-getAttack());
+  adjustActions(-1);
 }
 
 bool Minion::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                             TriggerType type) {
-  if (actions != 0) {
-    std::cerr << "Minion does not have enough actions." << std::endl;
+  if (getActions() <= 0 && type == TriggerType::None) {
+    std::cout << "Minion does not have enough actions." << std::endl;
     return false;
   }
   if (Card::useCardAbility(activePlayer, inactivePlayer, type)) {
-    actions--;
+    if (type == TriggerType::None) adjustActions(-1);
     return true;
   }
   return false;
 }
 
 bool Minion::useCardAbility(Player& targetPlayer, Card& targetCard,
-                            TriggerType type) {
-  if (actions != 0) {
-    std::cerr << "Minion does not have enough actions." << std::endl;
+                          Player& activePlayer, Player& otherPlayer,
+                          TriggerType type) {
+  if (getActions() <= 0 && type == TriggerType::None) {
+    std::cout << "Minion does not have enough actions." << std::endl;
     return false;
   }
-  if (Card::useCardAbility(targetPlayer, targetCard, type)) {
-    actions--;
+  if (Card::useCardAbility(targetPlayer, targetCard, activePlayer, otherPlayer, type)) {
+    if (type == TriggerType::None) adjustActions(-1);
     return true;
   }
   return false;
@@ -64,7 +75,12 @@ int Minion::getDefence() const { return defence; }
 
 int Minion::getActions() const { return actions; }
 
-int Minion::getAbilityCost() const { return ability->getAbilityCost(); }
+int Minion::getAbilityCost() const { 
+  if (!ability) return 0;
+  return ability->getAbilityCost(); 
+}
+
+void Minion::adjustActions(int amount) { actions += amount; }
 
 void Minion::adjustAttack(int amount) { attack += amount; }
 

@@ -5,13 +5,13 @@
 #include <string>
 #include <vector>
 
-#include "Subject.h"
+#include "Ability.h"
 
 class Card;
 class Minion;
 class Ritual;
 
-class Player : public Subject {
+class Player {
   std::string name;
   int life;
   int magic;
@@ -30,16 +30,26 @@ class Player : public Subject {
  public:
   Player(const std::string& name, std::vector<std::unique_ptr<Card>> deck);
 
+  void shuffleDeck();
+
   // player actions
-  void playCard(int handIndex, Player& inactivePlayer);
-  // target index is 0 for ritual, 1-5 for minions
-  void playCard(int handIndex, Player& targetPlayer, int targetIndex);
+  void playCard(int handIndex, Player& inactivePlayer, bool testMode);
+  // target index is 1-5 for minions, 6 for ritual
+  void playCard(int handIndex, Player& targetPlayer, int targetIndex,
+                Player& activePlayer, Player& otherPlayer, bool testMode, bool isTargetRitual = false);
   void drawCard();
   void discard(int handIndex);
   void attackMinion(int boardIndex, Player& targetPlayer, int targetIndex);
   void attackPlayer(int boardIndex, Player& targetPlayer);
-  void use(int boardIndex, Player& inactivePlayer);
-  void use(int boardIndex, Player& targetPlayer, int targetIndex);
+  void use(int boardIndex, Player& inactivePlayer, bool testMode);
+  void use(int boardIndex, Player& targetPlayer, int targetIndex, 
+           Player& activePlayer, Player& otherPlayer, bool testMode, bool isTargetRitual = false);
+
+  void resetBoardActions();
+  void checkForDeaths(Player& opponent);
+  //triggers all triggered abilities on the player's board
+  void triggerBoard(Player& opponent, Minion& targetCard, TriggerType type);
+  void triggerBoard(Player& opponent, TriggerType type);
 
   // useful methods for abilities to use
   void killMinion(int boardIndex);
