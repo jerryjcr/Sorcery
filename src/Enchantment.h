@@ -18,8 +18,8 @@ class Enchantment : public Minion {
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                              Player& otherPlayer,
-                              TriggerType type = TriggerType::None) override;
+                          Player& activePlayer, Player& otherPlayer,
+                          TriggerType type = TriggerType::None) override;
   virtual CardType getType() const override;
   virtual bool requiresTarget() const override;
   virtual bool canTarget(CardType targetType) const override;

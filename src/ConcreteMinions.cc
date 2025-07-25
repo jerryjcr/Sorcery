@@ -30,7 +30,7 @@ BoneGolem::BoneGolem()
     : Minion{"Bone Golem", 2, 1, 3, std::make_unique<BoneGolemAbility>(0)} {}
 
 bool BoneGolem::useCardAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (type==TriggerType::None){
     std::cerr << "Error: Cannot target this card, or this ability may not "
@@ -52,7 +52,7 @@ bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
     }
   }
   if (found) {
-    return ability->useAbility(activePlayer, *v[i], inactivePlayer, type);
+    return ability->useAbility(activePlayer, *v[i], activePlayer, inactivePlayer, type);
   }
   std::vector<std::unique_ptr<Minion>>& k = inactivePlayer.getBoard();
   i = 0;
@@ -63,7 +63,7 @@ bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
     }
   }
   if (found) {
-    return ability->useAbility(inactivePlayer, *k[i], inactivePlayer, type);
+    return ability->useAbility(inactivePlayer, *k[i], activePlayer, inactivePlayer, type);
   }
   return false;
 }

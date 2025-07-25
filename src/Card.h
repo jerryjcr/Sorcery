@@ -25,7 +25,7 @@ class Card {
                               TriggerType type = TriggerType::None);
   // uses an ability with a target
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type = TriggerType::None);
 
   virtual const std::string& getName() const;

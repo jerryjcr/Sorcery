@@ -16,7 +16,7 @@ BanishAbility::BanishAbility(int cost)
               std::vector<CardType>{CardType::Minion, CardType::Enchantment,
                                     CardType::Ritual}} {}
 bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -43,7 +43,7 @@ UnsummonAbility::UnsummonAbility(int cost)
     : Ability{cost,
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -85,7 +85,7 @@ bool RechargeAbility::useAbility(Player& activePlayer, Player& inactivePlayer,
 DisenchantAbility::DisenchantAbility(int cost)
     : Ability{cost, std::vector<CardType>{CardType::Enchantment}} {}
 bool DisenchantAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -147,7 +147,7 @@ BoneGolemAbility::BoneGolemAbility(int cost)
     : Ability{cost,
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool BoneGolemAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -167,7 +167,7 @@ FireElementalAbility::FireElementalAbility(int cost)
     : Ability{cost,
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool FireElementalAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -199,7 +199,7 @@ NovicePyromancerAbility::NovicePyromancerAbility(int cost)
     : Ability{cost,
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool NovicePyromancerAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -272,7 +272,7 @@ AuraOfPowerAbility::AuraOfPowerAbility(int cost)
     : Ability{cost,
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool AuraOfPowerAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;
@@ -291,7 +291,7 @@ StandstillAbility::StandstillAbility(int cost)
     : Ability{cost,
               std::vector<CardType>{CardType::Minion, CardType::Enchantment}} {}
 bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
   if (!this->canTarget(targetCard.getType())) {
     std::cerr << "Error: Cannot target card of this type." << std::endl;

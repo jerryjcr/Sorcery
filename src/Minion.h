@@ -26,7 +26,7 @@ class Minion : public Card {
   virtual bool useCardAbility(Player& activePlayer, Player& inactivePlayer,
                               TriggerType type = TriggerType::None) override;
   virtual bool useCardAbility(Player& targetPlayer, Card& targetCard,
-                          Player& otherPlayer,
+                          Player& activePlayer, Player& otherPlayer,
                           TriggerType type = TriggerType::None) override;
 
   virtual bool requiresTarget() const;
