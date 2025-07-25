@@ -30,6 +30,14 @@ bool BanishAbility::useAbility(Player& targetPlayer, Card& targetCard,
     for (; i < static_cast<int>(v.size()); ++i) {
       if (v[i].get() == &targetCard) break;
     }
+    if (&targetPlayer==&activePlayer){
+      activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
+      otherPlayer.triggerBoard(activePlayer,*v[i],TriggerType::OpponentMinionLeaves);
+    }
+    else if (&targetPlayer==&otherPlayer) {
+      activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::OpponentMinionLeaves);
+      otherPlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
+    }
     targetPlayer.killMinion(i+1);
     return true;
   } else if (type == TriggerType::None) {
@@ -58,6 +66,14 @@ bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard,
     int i = 0;
     for (; i < static_cast<int>(v.size()); ++i) {
       if (v[i].get() == &targetCard) break;
+    }
+    if (&targetPlayer==&activePlayer){
+      activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
+      otherPlayer.triggerBoard(activePlayer,*v[i],TriggerType::OpponentMinionLeaves);
+    }
+    else if (&targetPlayer==&otherPlayer) {
+      activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::OpponentMinionLeaves);
+      otherPlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
     }
     targetPlayer.returnMinionToHand(i+1);
     return true;
@@ -223,6 +239,8 @@ bool ApprenticeSummonerAbility::useAbility(Player& activePlayer,
     if (static_cast<int>(v.size()) < 5) {
       std::unique_ptr<Minion> card = std::make_unique<AirElemental>();
       v.push_back(std::move(card));
+      activePlayer.triggerBoard(inactivePlayer,*v.back(),TriggerType::MyMinionEnters);
+      inactivePlayer.triggerBoard(activePlayer,*v.back(),TriggerType::OpponentMinionEnters);
       return true;
     } else {
       std::cerr << "Error: Cannot use summoner ability when board is full."
@@ -245,6 +263,8 @@ bool MasterSummonerAbility::useAbility(Player& activePlayer,
         if (static_cast<int>(v.size()) < 5) {
           std::unique_ptr<Minion> card = std::make_unique<AirElemental>();
           v.push_back(std::move(card));
+          activePlayer.triggerBoard(inactivePlayer,*v.back(),TriggerType::MyMinionEnters);
+          inactivePlayer.triggerBoard(activePlayer,*v.back(),TriggerType::OpponentMinionEnters);
         }
       }
       return true;
@@ -303,6 +323,14 @@ bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard,
     int i = 0;
     for (; i < static_cast<int>(v.size()); ++i) {
       if (v[i].get() == &targetCard) break;
+    }
+    if (&targetPlayer==&activePlayer){
+      activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
+      otherPlayer.triggerBoard(activePlayer,*v[i],TriggerType::OpponentMinionLeaves);
+    }
+    else if (&targetPlayer==&otherPlayer) {
+      activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::OpponentMinionLeaves);
+      otherPlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
     }
     targetPlayer.killMinion(i+1);
     return true;
