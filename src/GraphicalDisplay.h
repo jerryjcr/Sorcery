@@ -39,7 +39,7 @@ class GraphicalDisplay {
   void drawCard(Card& card, int x, int y);
 
   void drawText(const std::string& message, int x, int y, int fontSize,
-                bool isBlack = true);
+                SDL_Color color = {255, 255, 255, 255});
 
   void present();
 

@@ -54,8 +54,15 @@ const int kAbilityYOffset = 190;
 const int kFontSize = 12;
 const int kAbilityFontSize = 10;
 
-const SDL_Color kBlack = {0, 0, 0, 255};
+const int kInactiveYOffset = 8;
+const int kActiveYOffset = 882;
+const int kLifeXOffset = 700;
+const int kPlayerNameXOffset = 780;
+const int kMagicXOffset = 890;
+
 const SDL_Color kWhite = {255, 255, 255, 255};
+const SDL_Color kRed = {255, 0, 0, 255};
+const SDL_Color kBlue = {0, 0, 255, 255};
 
 std::vector<std::string> makeCardPaths(const std::vector<std::string>& names) {
   std::vector<std::string> paths;
@@ -146,18 +153,12 @@ void GraphicalDisplay::drawCard(Card& card, int x, int y) {
 }
 
 void GraphicalDisplay::drawText(const std::string& message, int x, int y,
-                                int fontSize, bool isBlack) {
+                                int fontSize, SDL_Color color) {
   if (!font) {
     std::cerr << "Error: " << TTF_GetError() << std::endl;
     return;
   }
 
-  SDL_Color color;
-  if (isBlack) {
-    color = kBlack;
-  } else {
-    color = kWhite;
-  }
   std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> textSurface(
       TTF_RenderText_Blended(font.get(), message.c_str(), color),
       SDL_FreeSurface);
@@ -323,7 +324,12 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
     x += kCardWidth + kWidthPadding;
   }
 
-  drawText(activePlayer.getName(), 700, 880, kFontSize, false);
+  drawText(activePlayer.getName(), kPlayerNameXOffset, kActiveYOffset, kFontSize, kWhite);
+  drawText(std::to_string(activePlayer.getLife()), kLifeXOffset, kActiveYOffset, kFontSize, kRed);
+  drawText(std::to_string(activePlayer.getMagic()), kMagicXOffset, kActiveYOffset, kFontSize, kBlue);
+  drawText(inactivePlayer.getName(), kPlayerNameXOffset, kInactiveYOffset, kFontSize, kWhite);
+  drawText(std::to_string(inactivePlayer.getLife()), kLifeXOffset, kInactiveYOffset, kFontSize, kRed);
+  drawText(std::to_string(inactivePlayer.getMagic()), kMagicXOffset, kInactiveYOffset, kFontSize, kBlue);
 
   present();
 }
