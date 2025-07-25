@@ -48,6 +48,7 @@ void Player::shuffleDeck() {
 }
 
 void Player::playCard(int handIndex, Player& inactivePlayer) {
+  bool status=true;
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
 
   handIndex--;
@@ -67,9 +68,9 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
     triggerBoard(inactivePlayer, *board.back(), TriggerType::MyMinionEnters);
     inactivePlayer.triggerBoard(*this, *board.back(), TriggerType::OpponentMinionEnters);
   } else if (card->getType() == CardType::Spell) {
-    std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
+    Spell* spell(dynamic_cast<Spell*>(card.get()));
     // call the version of the method with no target
-    spell->useCardAbility(*this, inactivePlayer);
+    status=spell->useCardAbility(*this, inactivePlayer);
   } else if (card->getType() == CardType::Ritual) {
     std::unique_ptr<Ritual> newRitual(static_cast<Ritual*>(card.release()));
     ritual = std::move(newRitual);
@@ -79,13 +80,15 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
               << std::endl;
     return;
   }
-
-  magic -= cost;
-  hand.erase(hand.begin() + handIndex);
+  if (status){
+    magic -= cost;
+    hand.erase(hand.begin() + handIndex);
+  }
 }
 
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
                       Player& activePlayer, Player& otherPlayer, bool isTargetRitual) {
+  bool status=true;
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
   if (!isTargetRitual &&
       !boundIndex(targetIndex, 1, static_cast<int>(targetPlayer.board.size()),
@@ -106,11 +109,11 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
 
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Spell) {
-    std::unique_ptr<Spell> spell(dynamic_cast<Spell*>(card.release()));
+    Spell* spell(dynamic_cast<Spell*>(card.get()));
     if (isTargetRitual) {
-      spell->useCardAbility(targetPlayer, *ritual, activePlayer, otherPlayer);
+      status=spell->useCardAbility(targetPlayer, *ritual, activePlayer, otherPlayer);
     } else {
-      spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex], activePlayer, otherPlayer);
+      status=spell->useCardAbility(targetPlayer, *targetPlayer.board[targetIndex], activePlayer, otherPlayer);
     }
   } else if (card->getType() == CardType::Enchantment) {
     std::unique_ptr<Enchantment> enchantment(
@@ -130,9 +133,10 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
               << std::endl;
     return;
   }
-
-  magic -= cost;
-  hand.erase(hand.begin() + handIndex);
+  if (status){
+    magic -= cost;
+    hand.erase(hand.begin() + handIndex);
+  }
 }
 
 void Player::drawCard() {
