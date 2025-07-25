@@ -28,11 +28,11 @@ const std::string kImageDirectory = "src/assets/img/";
 
 const std::string kTitle = "Sorcery";
 
-const int kLogicalWidth = 1280;
-const int kLogicalHeight = 720;
+const int kLogicalWidth = 1600;
+const int kLogicalHeight = 900;
 
-const int kWindowWidth = 1280;
-const int kWindowHeight = 720;
+const int kWindowWidth = 1600;
+const int kWindowHeight = 900;
 
 std::vector<std::string> makeCardPaths(const std::vector<std::string>& names) {
   std::vector<std::string> paths;
@@ -185,14 +185,14 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   clear();
   drawBackground();
 
-  int x = 50;
-  int y = 50;
+  int x = 5;
+  int y = 5;
   int cardWidth = 180;
   int cardHeight = 252;
   int spacing = 5;
 
-  for (size_t i = 0; i < activePlayer.getBoard().size(); i++) {
-    drawCard(activePlayer.getBoard()[i]->getName(), x, y, cardWidth,
+  for (size_t i = 0; i < 7; i++) {
+    drawCard("Apprentice Summoner", x, y, cardWidth,
              cardHeight);
     x += cardWidth + spacing;
   }
