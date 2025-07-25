@@ -336,11 +336,6 @@ void Player::returnMinionToHand(int boardIndex) {
 }
 
 void Player::reviveMinion() {
-  if (hand.size() >= kMaxHandSize) {
-    std::cout << "Board is full. Cannot revive minion." << std::endl;
-    return;
-  }
-
   hand.push_back(std::move(graveyard.back()));
   graveyard.pop_back();
 }
