@@ -210,6 +210,13 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
     x += kCardWidth + kWidthPadding;
   }
 
+  x += kCardWidth + kRitualGraveyardPadding;
+
+  if (!inactivePlayer.getGraveyard().empty()) {
+    drawCard(inactivePlayer.getGraveyard().back()->getName(), x, y, kCardWidth,
+             kCardHeight);
+  }
+
   x = kLogicalWidth / 2 - 3.5 * kCardWidth - 2 * kWidthPadding -
       kRitualGraveyardPadding;
   y += kCardHeight + kBoardHeightPadding;
@@ -224,6 +231,13 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   for (auto& minion : activePlayer.getBoard()) {
     drawCard(minion->getName(), x, y, kCardWidth, kCardHeight);
     x += kCardWidth + kWidthPadding;
+  }
+
+  x += kCardWidth + kRitualGraveyardPadding;
+
+  if (!activePlayer.getGraveyard().empty()) {
+    drawCard(activePlayer.getGraveyard().back()->getName(), x, y, kCardWidth,
+             kCardHeight);
   }
 
   x = kLogicalWidth / 2 - 2.5 * kCardWidth - 2 * kWidthPadding;
