@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
     }
 
     // drawing starting hands
-    for (int i = 0; i < kStartingHandSize; i++) {
+    for (int i = 0; i < kStartingHandSize-1; i++) {
       p1.drawCard();
       p2.drawCard();
     }

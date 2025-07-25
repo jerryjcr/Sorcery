@@ -6,7 +6,7 @@ PotionSeller
 NovicePyromancer
 ApprenticeSummoner
 MasterSummoner
-DarkRitual
+
 AuraOfPower
 Standstill
 GiantStrength
@@ -19,6 +19,9 @@ Recharge
 Disenchant
 RaiseDead
 Blizzard
-
-
+GiantStrength
+Enrage
+BoneGolem
 ApprenticeSummoner
+DarkRitual
+Banish
