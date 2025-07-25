@@ -20,7 +20,8 @@
 const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
-const std::string kDefaultDeck = "src/assets/text/default.txt";
+const std::string kDeckDirectory = "src/assets/decks/";
+const std::string kDefaultDeck = kDeckDirectory + "default.deck";
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -42,7 +43,7 @@ int main(int argc, char* argv[]) {
         decklist1 = kDefaultDeck;
       } else {
         i++;
-        decklist1 = argv[i];
+        decklist1 = kDeckDirectory + argv[i];
       }
     } else if (cmd == "-deck2") {
       if (i + 1 >= argc) {
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
         decklist2 = kDefaultDeck;
       } else {
         i++;
-        decklist2 = argv[i];
+        decklist2 = kDeckDirectory + argv[i];
       }
     } else if (cmd == "-init") {
       if (i + 1 >= argc) {
@@ -138,13 +139,13 @@ int main(int argc, char* argv[]) {
     Player p1{name1, std::move(deck1)};
     Player p2{name2, std::move(deck2)};
 
-    if (!testingMode){
+    if (!testingMode) {
       p1.shuffleDeck();
       p2.shuffleDeck();
     }
 
     // drawing starting hands
-    for (int i = 0; i < kStartingHandSize-1; i++) {
+    for (int i = 0; i < kStartingHandSize - 1; i++) {
       p1.drawCard();
       p2.drawCard();
     }
@@ -288,7 +289,7 @@ int main(int argc, char* argv[]) {
                     if (cmd == "play")
                       activePlayer->playCard(myCard, p2, targetInd,
                                              *activePlayer, *opponentPlayer,
-                                              testingMode, isRitual);
+                                             testingMode, isRitual);
                     else
                       activePlayer->use(myCard, p2, targetInd, *activePlayer,
                                         *opponentPlayer, testingMode, isRitual);
