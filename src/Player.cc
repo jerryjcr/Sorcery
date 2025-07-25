@@ -165,7 +165,7 @@ void Player::drawCard() {
 void Player::discard(int handIndex) {
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
 
-  hand.erase(hand.begin() + handIndex);
+  hand.erase(hand.begin() + handIndex-1);
 }
 
 void Player::attackMinion(int boardIndex, Player& targetPlayer,
