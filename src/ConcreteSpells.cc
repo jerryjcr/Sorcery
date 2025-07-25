@@ -40,7 +40,7 @@ const std::vector<std::string> RaiseDead::getDescription() const {
 }
 
 Blizzard::Blizzard()
-    : Spell{"Blizzard", 1, std::make_unique<BlizzardAbility>(0)} {}
+    : Spell{"Blizzard", 3, std::make_unique<BlizzardAbility>(0)} {}
 
 const std::vector<std::string> Blizzard::getDescription() const {
   return std::vector<std::string>{" Deal 2 damage to all minions",
