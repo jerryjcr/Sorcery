@@ -2,10 +2,12 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <string>
 #include <vector>
 
+#include "Enchantment.h"
 #include "Minion.h"
 #include "Player.h"
 #include "Ritual.h"
@@ -42,6 +44,11 @@ const int kWidthPadding = 10;
 const int kBoardHeightPadding = 30;
 const int kHandHeightPadding = 50;
 const int kRitualGraveyardPadding = 50;
+
+const int kFontSize = 12;
+
+const SDL_Color kBlack = {0, 0, 0, 255};
+const SDL_Color kWhite = {255, 255, 255, 255};
 
 std::vector<std::string> makeCardPaths(const std::vector<std::string>& names) {
   std::vector<std::string> paths;
@@ -80,8 +87,9 @@ void GraphicalDisplay::drawBackground() {
   SDL_RenderCopy(renderer.get(), backgroundTexture.get(), nullptr, &destRect);
 }
 
-void GraphicalDisplay::drawCard(const std::string& name, int x, int y, int w,
-                                int h) {
+void GraphicalDisplay::drawCard(Card& card, int x, int y) {
+  std::string name = card.getName();
+
   auto it = cardNameToIndex.find(name);
 
   if (it == cardNameToIndex.end()) {
@@ -97,9 +105,63 @@ void GraphicalDisplay::drawCard(const std::string& name, int x, int y, int w,
     return;
   }
 
-  SDL_Rect destRect(x, y, w, h);
+  SDL_Rect destRect(x, y, kCardWidth, kCardHeight);
 
   SDL_RenderCopy(renderer.get(), cardTextures[index].get(), nullptr, &destRect);
+
+  if (card.getType() == CardType::Enchantment) {
+    Enchantment* enchantment(dynamic_cast<Enchantment*>(&card));
+    if (enchantment->getParent() != nullptr) {
+      drawText(std::to_string(static_cast<Minion&>(card).getAttack()) + "/" +
+                   std::to_string(static_cast<Minion&>(card).getDefence()),
+               x + 144, y + 227, 12);
+      if ((card.getName() == std::string("Novice Pyromancer") ||
+           card.getName() == std::string("Apprentice Summoner") ||
+           card.getName() == std::string("Master Summoner"))) {
+        drawText(std::to_string(static_cast<Minion&>(card).getAbilityCost()),
+                 x + 30, y + 110, 12);
+      }
+    }
+  } else if (card.getType() == CardType::Minion) {
+    Minion* minion(dynamic_cast<Minion*>(&card));
+    drawText(std::to_string(static_cast<Minion&>(card).getAttack()) + "/" +
+                 std::to_string(static_cast<Minion&>(card).getDefence()),
+             x + 147, y + 227, 12);
+    if ((card.getName() == std::string("Novice Pyromancer") ||
+         card.getName() == std::string("Apprentice Summoner") ||
+         card.getName() == std::string("Master Summoner"))) {
+      drawText(std::to_string(static_cast<Minion&>(card).getAbilityCost()),
+               x + 17, y + 190, 10);
+    }
+  }
+}
+
+void GraphicalDisplay::drawText(const std::string& message, int x, int y,
+                                int fontSize) {
+  if (!font) {
+    std::cerr << "Error: " << TTF_GetError() << std::endl;
+    return;
+  }
+
+  std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> textSurface(
+      TTF_RenderText_Blended(font.get(), message.c_str(), kBlack),
+      SDL_FreeSurface);
+  if (!textSurface) {
+    std::cerr << "Error rendering text surface: " << TTF_GetError()
+              << std::endl;
+    return;
+  }
+
+  texturePtr textTexture(
+      SDL_CreateTextureFromSurface(renderer.get(), textSurface.get()),
+      SDL_DestroyTexture);
+  if (!textTexture) {
+    std::cerr << "Error creating text texture: " << SDL_GetError() << std::endl;
+    return;
+  }
+
+  SDL_Rect dstRect = {x, y, textSurface->w, textSurface->h};
+  SDL_RenderCopy(renderer.get(), textTexture.get(), nullptr, &dstRect);
 }
 
 void GraphicalDisplay::present() { SDL_RenderPresent(renderer.get()); }
@@ -107,7 +169,9 @@ void GraphicalDisplay::present() { SDL_RenderPresent(renderer.get()); }
 GraphicalDisplay::GraphicalDisplay()
     : window(nullptr, SDL_DestroyWindow),
       renderer(nullptr, SDL_DestroyRenderer),
-      backgroundTexture(nullptr, SDL_DestroyTexture) {
+      backgroundTexture(nullptr, SDL_DestroyTexture),
+      font(TTF_OpenFont("src/assets/fonts/Beleren2016-Bold.ttf", kFontSize),
+           TTF_CloseFont) {
   initializeMap();
 }
 
@@ -153,15 +217,9 @@ bool GraphicalDisplay::loadTextures() {
     return false;
   }
 
-  SDL_Texture* rawTexture =
-      SDL_CreateTextureFromSurface(renderer.get(), backgroundSurface.get());
-
-  if (!rawTexture) {
-    std::cerr << "Error: " << SDL_GetError() << std::endl;
-    return false;
-  }
-
-  texturePtr texture(rawTexture, SDL_DestroyTexture);
+  texturePtr texture(
+      SDL_CreateTextureFromSurface(renderer.get(), backgroundSurface.get()),
+      SDL_DestroyTexture);
 
   backgroundTexture = std::move(texture);
 
@@ -174,15 +232,9 @@ bool GraphicalDisplay::loadTextures() {
       return false;
     }
 
-    SDL_Texture* rawTexture =
-        SDL_CreateTextureFromSurface(renderer.get(), surface.get());
-
-    if (!rawTexture) {
-      std::cerr << "Error: " << SDL_GetError() << std::endl;
-      return false;
-    }
-
-    texturePtr texture(rawTexture, SDL_DestroyTexture);
+    texturePtr texture(
+        SDL_CreateTextureFromSurface(renderer.get(), surface.get()),
+        SDL_DestroyTexture);
 
     cardTextures.emplace_back(std::move(texture));
   }
@@ -199,16 +251,15 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   int y = kBoardHeightPadding;
 
   if (inactivePlayer.getRitual()) {
-    drawCard(inactivePlayer.getRitual()->getName(), x, y, kCardWidth,
-             kCardHeight);
+    drawCard(*inactivePlayer.getRitual(), x, y);
   }
 
   x += kCardWidth + kRitualGraveyardPadding;
 
   for (int i = 0; i < 5; i++) {
+    std::unique_ptr<Minion>& minion = inactivePlayer.getBoard()[i];
     if (i < inactivePlayer.getBoard().size()) {
-      drawCard(inactivePlayer.getBoard()[i]->getName(), x, y, kCardWidth,
-               kCardHeight);
+      drawCard(*minion, x, y);
     }
     if (i != 4) {
       x += kCardWidth + kWidthPadding;
@@ -218,8 +269,8 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   x += kCardWidth + kRitualGraveyardPadding;
 
   if (!inactivePlayer.getGraveyard().empty()) {
-    drawCard(inactivePlayer.getGraveyard().back()->getName(), x, y, kCardWidth,
-             kCardHeight);
+    std::unique_ptr<Minion>& minion = inactivePlayer.getGraveyard().back();
+    drawCard(*minion, x, y);
   }
 
   x = kLogicalWidth / 2 - 3.5 * kCardWidth - 2 * kWidthPadding -
@@ -227,16 +278,15 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   y += kCardHeight + kBoardHeightPadding;
 
   if (activePlayer.getRitual()) {
-    drawCard(activePlayer.getRitual()->getName(), x, y, kCardWidth,
-             kCardHeight);
+    drawCard(*activePlayer.getRitual(), x, y);
   }
 
   x += kCardWidth + kRitualGraveyardPadding;
 
   for (int i = 0; i < 5; i++) {
+    std::unique_ptr<Minion>& minion = activePlayer.getBoard()[i];
     if (i < activePlayer.getBoard().size()) {
-      drawCard(activePlayer.getBoard()[i]->getName(), x, y, kCardWidth,
-               kCardHeight);
+      drawCard(*minion, x, y);
     }
     if (i != 4) {
       x += kCardWidth + kWidthPadding;
@@ -246,15 +296,15 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   x += kCardWidth + kRitualGraveyardPadding;
 
   if (!activePlayer.getGraveyard().empty()) {
-    drawCard(activePlayer.getGraveyard().back()->getName(), x, y, kCardWidth,
-             kCardHeight);
+    std::unique_ptr<Minion>& minion = activePlayer.getGraveyard().back();
+    drawCard(*minion, x, y);
   }
 
   x = kLogicalWidth / 2 - 2.5 * kCardWidth - 2 * kWidthPadding;
   y += kCardHeight + kHandHeightPadding;
 
-  for (auto& minion : activePlayer.getHand()) {
-    drawCard(minion->getName(), x, y, kCardWidth, kCardHeight);
+  for (auto& card : activePlayer.getHand()) {
+    drawCard(*card, x, y);
     x += kCardWidth + kWidthPadding;
   }
 

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <fstream>
 #include <iostream>
@@ -20,7 +21,6 @@ const int kStartOfTurnMagic = 1;
 const int kMaxNameLength = 28;
 const int kStartingHandSize = 5;
 const std::string kDefaultDeck = "src/assets/text/default.txt";
-
 
 int main(int argc, char* argv[]) {
   // processing command line args
@@ -79,6 +79,10 @@ int main(int argc, char* argv[]) {
     if (graphicsMode) {
       if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "Error: " << SDL_GetError() << std::endl;
+        return 1;
+      }
+      if (TTF_Init() != 0) {
+        std::cerr << "Error: " << TTF_GetError() << std::endl;
         return 1;
       }
 

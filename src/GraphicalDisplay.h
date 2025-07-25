@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <iostream>
 #include <memory>
@@ -24,13 +25,20 @@ class GraphicalDisplay {
 
   std::unordered_map<std::string, size_t> cardNameToIndex;
 
+  using fontPtr = std::unique_ptr<TTF_Font, void (*)(TTF_Font* font)>;
+  fontPtr font;
+
   void initializeMap();
+
+  void initializeFont();
 
   void clear();
 
   void drawBackground();
 
-  void drawCard(const std::string& name, int x, int y, int w, int h);
+  void drawCard(Card& card, int x, int y);
+
+  void drawText(const std::string& message, int x, int y, int fontSize);
 
   void present();
 
