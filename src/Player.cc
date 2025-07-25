@@ -282,11 +282,19 @@ void Player::killMinion(int boardIndex) {
     return;
 
   boardIndex--;
+  if (board[boardIndex]->getType()==CardType::Minion) {
+    graveyard.push_back(std::move(board[boardIndex]));
+    board.erase(board.begin() + boardIndex);
+  }
+  else if (board[boardIndex]->getType()==CardType::Enchantment) {
+    Enchantment* e=dynamic_cast<Enchantment*>(board[boardIndex].get());
+    while (e->getParent()->getType()==CardType::Enchantment){
+      e=dynamic_cast<Enchantment*>(e->getParent().get());
+    }
+    graveyard.push_back(std::move(e->getParent()));
+    board.erase(board.begin() + boardIndex);
+  }
 
-  graveyard.push_back(std::move(board[boardIndex]));
-  board.erase(board.begin() + boardIndex);
-
-  // triggerBoard()
 }
 
 void Player::killRitual() {
@@ -308,19 +316,28 @@ void Player::returnMinionToHand(int boardIndex) {
     return;
   }
 
-  // triggerBoard
+  if (board[boardIndex]->getType()==CardType::Minion) {
+    hand.push_back(std::move(board[boardIndex]));
+    board.erase(board.begin() + boardIndex);
+  }
+  else if (board[boardIndex]->getType()==CardType::Enchantment) {
+    Enchantment* e=dynamic_cast<Enchantment*>(board[boardIndex].get());
+    while (e->getParent()->getType()==CardType::Enchantment){
+      e=dynamic_cast<Enchantment*>(e->getParent().get());
+    }
+    hand.push_back(std::move(e->getParent()));
+    board.erase(board.begin() + boardIndex);
+  }
 
-  hand.push_back(std::move(board[boardIndex]));
-  board.erase(board.begin() + boardIndex);
 }
 
 void Player::reviveMinion() {
-  if (board.size() >= 5) {
+  if (hand.size() >= 5) {
     std::cout << "Board is full. Cannot revive minion." << std::endl;
     return;
   }
 
-  board.push_back(std::move(graveyard.back()));
+  hand.push_back(std::move(graveyard.back()));
   graveyard.pop_back();
 }
 
