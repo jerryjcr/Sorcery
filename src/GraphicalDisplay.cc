@@ -47,11 +47,11 @@ GraphicalDisplay::GraphicalDisplay()
       backgroundTexture(nullptr, SDL_DestroyTexture) {}
 
 GraphicalDisplay::~GraphicalDisplay() {
-  cardTextures.clear();  // forces destruction while SDL is still alive
-  backgroundTexture.reset();
-  renderer.reset();
-  window.reset();
-  SDL_Quit();
+  // cardTextures.clear();  // forces destruction while SDL is still alive
+  // backgroundTexture.reset();
+  // renderer.reset();
+  // window.reset();
+  // SDL_Quit();
 }
 
 bool GraphicalDisplay::createWindow(const std::string& title, int width,

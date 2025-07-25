@@ -58,7 +58,7 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
 
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Minion) {
-    if (board.size() >= 5) {
+    if (board.size() >= kMaxHandSize) {
       std::cout << "Board is full. Cannot play minion." << std::endl;
       return;
     }
@@ -332,7 +332,7 @@ void Player::returnMinionToHand(int boardIndex) {
 }
 
 void Player::reviveMinion() {
-  if (hand.size() >= 5) {
+  if (hand.size() >= kMaxHandSize) {
     std::cout << "Board is full. Cannot revive minion." << std::endl;
     return;
   }
