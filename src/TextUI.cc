@@ -379,9 +379,9 @@ void inspectCard(Minion& m) {
 
   if (m.getType() == CardType::Enchantment) {
     Enchantment* e = dynamic_cast<Enchantment*>(&m);
-    currRow.clear();
 
     while (e != nullptr) {
+      currRow.clear();
       for (int i = 0; i < kBoardWidth; i++) {
         if (e != nullptr) {
           currRow.emplace_back(visualizeCard(*e, true));
