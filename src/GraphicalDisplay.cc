@@ -3,6 +3,46 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <string>
+#include <vector>
+
+#include "Minion.h"
+#include "Player.h"
+
+const std::string kBackgroundPath = "src/assets/img/background.png";
+
+const std::vector<std::string> kCardNames = {
+    "Air Elemental",   "Apprentice Summoner",
+    "Aura of Power",   "Banish",
+    "Blizzard",        "Bone Golem",
+    "Dark Ritual",     "Disenchant",
+    "Earth Elemental", "Enrage",
+    "Fire Elemental",  "Giant Strength",
+    "Haste",           "Magic Fatigue",
+    "Master Summoner", "Novice Pyromancer",
+    "Potion Seller",   "Raise Dead",
+    "Recharge",        "Silence",
+    "Standstill",      "Unsummon"};
+
+const std::string kImageDirectory = "src/assets/img/";
+
+std::vector<std::string> makeCardPaths(const std::vector<std::string>& names) {
+  std::vector<std::string> paths;
+  for (const auto& name : names) {
+    std::string path = kImageDirectory + name + ".png";
+    paths.push_back(path);
+  }
+  return paths;
+}
+
+const std::vector<std::string> kCardPaths = makeCardPaths(kCardNames);
+
+void GraphicalDisplay::initializeMap() {
+  for (size_t i = 0; i < kCardNames.size(); i++) {
+    cardNameToIndex[kCardNames[i]] = i;
+  }
+}
+
 void GraphicalDisplay::clear() {
   if (!renderer) {
     std::cerr << "Error: Cannot clear without a renderer." << std::endl;
@@ -23,11 +63,17 @@ void GraphicalDisplay::drawBackground() {
   SDL_RenderCopy(renderer.get(), backgroundTexture.get(), nullptr, &destRect);
 }
 
-void GraphicalDisplay::drawCard(size_t index, int x, int y, int w, int h) {
-  if (index >= cardTextures.size()) {
-    std::cerr << "Error: Card index out of bounds." << std::endl;
+void GraphicalDisplay::drawCard(const std::string& name, int x, int y, int w,
+                                int h) {
+  auto it = cardNameToIndex.find(name);
+
+  if (it == cardNameToIndex.end()) {
+    std::cerr << "Error: Could not find card with name " << name << "."
+              << std::endl;
     return;
   }
+
+  size_t index = it->second;
 
   if (!cardTextures[index]) {
     std::cerr << "Error: Null card texture." << std::endl;
@@ -44,14 +90,8 @@ void GraphicalDisplay::present() { SDL_RenderPresent(renderer.get()); }
 GraphicalDisplay::GraphicalDisplay()
     : window(nullptr, SDL_DestroyWindow),
       renderer(nullptr, SDL_DestroyRenderer),
-      backgroundTexture(nullptr, SDL_DestroyTexture) {}
-
-GraphicalDisplay::~GraphicalDisplay() {
-  // cardTextures.clear();  // forces destruction while SDL is still alive
-  // backgroundTexture.reset();
-  // renderer.reset();
-  // window.reset();
-  // SDL_Quit();
+      backgroundTexture(nullptr, SDL_DestroyTexture) {
+  initializeMap();
 }
 
 bool GraphicalDisplay::createWindow(const std::string& title, int width,
@@ -82,15 +122,14 @@ bool GraphicalDisplay::createRenderer() {
   return true;
 }
 
-bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
-                                    const std::vector<std::string>& cardPaths) {
+bool GraphicalDisplay::loadTextures() {
   if (!renderer) {
     std::cerr << "Error: Cannot load texture without a renderer." << std::endl;
     return false;
   }
 
   std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> backgroundSurface(
-      IMG_Load(backgroundPath.c_str()), SDL_FreeSurface);
+      IMG_Load(kBackgroundPath.c_str()), SDL_FreeSurface);
 
   if (!backgroundSurface) {
     std::cerr << "Error: " << SDL_GetError() << std::endl;
@@ -109,7 +148,7 @@ bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
 
   backgroundTexture = std::move(texture);
 
-  for (const auto& path : cardPaths) {
+  for (const auto& path : kCardPaths) {
     std::unique_ptr<SDL_Surface, void (*)(SDL_Surface*)> surface(
         IMG_Load(path.c_str()), SDL_FreeSurface);
 
@@ -134,18 +173,19 @@ bool GraphicalDisplay::loadTextures(const std::string& backgroundPath,
   return true;
 }
 
-void GraphicalDisplay::update() {
+void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   clear();
   drawBackground();
 
   int x = 50;
   int y = 50;
-  int cardWidth = 100;
-  int cardHeight = 150;
-  int spacing = 10;
+  int cardWidth = 200;
+  int cardHeight = 300;
+  int spacing = 30;
 
-  for (size_t i = 0; i < cardTextures.size(); i++) {
-    drawCard(i, x, y, cardWidth, cardHeight);
+  for (size_t i = 0; i < activePlayer.getBoard().size(); i++) {
+    drawCard(activePlayer.getBoard()[i]->getName(), x, y, cardWidth,
+             cardHeight);
     x += cardWidth + spacing;
   }
 
