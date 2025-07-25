@@ -21,8 +21,8 @@ RaiseDead
 Blizzard
 
 
-Silence
-Haste
+Disenchant
+PotionSeller
+Enrage
 BoneGolem
-ApprenticeSummoner
 AirElemental

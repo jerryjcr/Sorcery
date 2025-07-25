@@ -251,21 +251,17 @@ void Player::checkForDeaths(Player& opponent) {
 void Player::triggerBoard(Player& opponent, Minion& targetCard, TriggerType type) {
   if (type==TriggerType::MyMinionEnters||type==TriggerType::MyMinionLeaves) {
     for (auto& minion : getBoard()) {
-      minion->useCardAbility(*this, opponent, type);
       minion->useCardAbility(*this, targetCard, *this, opponent, type);
     }
     if (getRitual()) {
-      getRitual()->useCardAbility(*this, opponent, type);
       getRitual()->useCardAbility(*this, targetCard, *this, opponent, type);
     }
   }
   else if (type==TriggerType::OpponentMinionEnters||type==TriggerType::OpponentMinionLeaves){
     for (auto& minion : getBoard()) {
-      minion->useCardAbility(*this, opponent, type);
       minion->useCardAbility(opponent, targetCard, *this, opponent, type);
     }
     if (getRitual()) {
-      getRitual()->useCardAbility(*this, opponent, type);
       getRitual()->useCardAbility(opponent, targetCard, *this, opponent, type);
     }
   }

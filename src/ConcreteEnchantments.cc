@@ -16,19 +16,37 @@ int GiantStrength::getAttack() const { return parent->getAttack() + 2; }
 
 int GiantStrength::getDefence() const { return parent->getDefence() + 2; }
 
-Enrage::Enrage() : Enchantment{"Enrage", 2} {}
+Enrage::Enrage() : Enchantment{"Enrage", 2}, attackRemainder{0}, damageRemainder{0} {}
 
 Enrage::Enrage(std::unique_ptr<Minion> parent)
-    : Enchantment{"Enrage", 2, std::move(parent)} {}
+    : Enchantment{"Enrage", 2, std::move(parent)}, attackRemainder{0}, damageRemainder{0} {}
 
 const std::vector<std::string> Enrage::getEnchantDescription() const {
   return std::vector<std::string>{"", "", "", "------                   ------",
                                   " *2  |                   | *2"};
 }
 
-int Enrage::getAttack() const { return parent->getAttack() * 2; }
+int Enrage::getAttack() const { return (parent->getAttack() * 2)+attackRemainder; }
 
-int Enrage::getDefence() const { return parent->getDefence() * 2; }
+int Enrage::getDefence() const { return ((parent->getDefence() * 2)+damageRemainder); }
+
+void Enrage::adjustDefence(int amount) {
+  parent->adjustDefence(amount/2);
+  damageRemainder+=amount%2;
+  if (damageRemainder==2){
+    parent->adjustDefence(1);
+    damageRemainder=0;
+  }
+}
+
+void Enrage::adjustAttack(int amount) {
+  parent->adjustAttack(amount/2);
+  attackRemainder+=amount%2;
+  if (attackRemainder==2){
+    parent->adjustAttack(1);
+    attackRemainder=0;
+  }
+}
 
 Haste::Haste() : Enchantment{"Haste", 1} {}
 

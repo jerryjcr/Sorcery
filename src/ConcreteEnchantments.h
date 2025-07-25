@@ -14,6 +14,8 @@ class GiantStrength : public Enchantment {
 };
 
 class Enrage : public Enchantment {
+  int damageRemainder;
+  int attackRemainder;
  public:
   Enrage();
   Enrage(std::unique_ptr<Minion> parent);
@@ -21,6 +23,8 @@ class Enrage : public Enchantment {
   virtual const std::vector<std::string> getEnchantDescription() const override;
   virtual int getAttack() const override;
   virtual int getDefence() const override;
+  virtual void adjustDefence(int amount) override;
+  virtual void adjustAttack(int amount) override;
 };
 
 class Haste : public Enchantment {

@@ -5,6 +5,7 @@
 
 #include "Card.h"
 #include "ConcreteAbilities.h"
+#include "Enchantment.h"
 #include "Minion.h"
 #include "Player.h"
 
@@ -32,12 +33,7 @@ BoneGolem::BoneGolem()
 bool BoneGolem::useCardAbility(Player& targetPlayer, Card& targetCard,
                           Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
-  if (type==TriggerType::None){
-    std::cerr << "Error: Cannot target this card, or this ability may not "
-                "target a card."
-              << std::endl;
-  }
-  return false;
+  return useCardAbility(activePlayer,otherPlayer,type);
 }
 
 bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
@@ -46,9 +42,21 @@ bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
   bool found = false;
   int i = 0;
   for (; i < static_cast<int>(v.size()); ++i) {
-    if (v[i].get() == this) {
-      found = true;
-      break;
+    if (v[i]->getType()==CardType::Minion){
+      if (v[i].get() == this) {
+        found = true;
+        break;
+      }
+    }
+    else if (v[i]->getType()==CardType::Enchantment){
+      Enchantment* e=dynamic_cast<Enchantment*>(v[i].get());
+      while (e->getParent()->getType()==CardType::Enchantment){
+        e=dynamic_cast<Enchantment*>(e->getParent().get());
+      }
+      if (e->getParent().get() == this) {
+        found = true;
+        break;
+      }
     }
   }
   if (found) {
@@ -57,9 +65,21 @@ bool BoneGolem::useCardAbility(Player& activePlayer, Player& inactivePlayer,
   std::vector<std::unique_ptr<Minion>>& k = inactivePlayer.getBoard();
   i = 0;
   for (; i < static_cast<int>(k.size()); ++i) {
-    if (k[i].get() == this) {
-      found = true;
-      break;
+    if (k[i]->getType()==CardType::Minion){
+      if (k[i].get() == this) {
+        found = true;
+        break;
+      }
+    }
+    else if (k[i]->getType()==CardType::Enchantment){
+      Enchantment* e=dynamic_cast<Enchantment*>(k[i].get());
+      while (e->getParent()->getType()==CardType::Enchantment){
+        e=dynamic_cast<Enchantment*>(e->getParent().get());
+      }
+      if (e->getParent().get() == this) {
+        found = true;
+        break;
+      }
     }
   }
   if (found) {
