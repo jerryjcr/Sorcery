@@ -68,7 +68,7 @@ const std::vector<std::string> Silence::getEnchantDescription() const {
 
 bool Silence::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                              TriggerType type) {
-  std::cout
+  if (type==TriggerType::None) std::cout
       << "This minion is enchanted with Silence, and cannot play abilities."
       << std::endl;
   return false;
@@ -77,7 +77,7 @@ bool Silence::useCardAbility(Player& activePlayer, Player& inactivePlayer,
 bool Silence::useCardAbility(Player& targetPlayer, Card& targetCard,
                           Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
-  std::cout
+  if (type==TriggerType::None) std::cout
       << "This minion is enchanted with Silence, and cannot play abilities."
       << std::endl;
   return false;

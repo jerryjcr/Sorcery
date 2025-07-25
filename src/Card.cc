@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <iostream>
 
 #include "Ability.h"
 #include "Player.h"
@@ -14,14 +15,20 @@ Card::~Card() {}
 
 bool Card::useCardAbility(Player& activePlayer, Player& inactivePlayer,
                           TriggerType type) {
-  if (!ability) return false;
+  if (!ability) {
+    if (type==TriggerType::None) std::cerr<<"Minion has no ability"<<std::endl;
+    return false;
+  }
   return ability->useAbility(activePlayer, inactivePlayer, type);
 }
 
 bool Card::useCardAbility(Player& targetPlayer, Card& targetCard,
                           Player& activePlayer, Player& otherPlayer,
                           TriggerType type) {
-  if (!ability) return false;
+  if (!ability) {
+     if (type==TriggerType::None) std::cerr<<"Minion has no ability"<<std::endl;
+    return false;
+  }
   return ability->useAbility(targetPlayer, targetCard, activePlayer, otherPlayer, type);
 }
 

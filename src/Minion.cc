@@ -75,7 +75,10 @@ int Minion::getDefence() const { return defence; }
 
 int Minion::getActions() const { return actions; }
 
-int Minion::getAbilityCost() const { return ability->getAbilityCost(); }
+int Minion::getAbilityCost() const { 
+  if (!ability) return 0;
+  return ability->getAbilityCost(); 
+}
 
 void Minion::adjustActions(int amount) { actions += amount; }
 
