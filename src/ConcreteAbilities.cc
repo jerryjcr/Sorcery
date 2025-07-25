@@ -318,7 +318,7 @@ bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard,
     return false;
   }
   if (type == TriggerType::MyMinionEnters ||
-      type == TriggerType::MyMinionLeaves) {
+      type == TriggerType::OpponentMinionEnters) {
     std::vector<std::unique_ptr<Minion>>& v = targetPlayer.getBoard();
     int i = 0;
     for (; i < static_cast<int>(v.size()); ++i) {

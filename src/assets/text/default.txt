@@ -21,7 +21,7 @@ RaiseDead
 Blizzard
 
 
-FireElemental
+Standstill
 Haste
 BoneGolem
 ApprenticeSummoner
