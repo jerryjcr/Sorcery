@@ -311,11 +311,6 @@ void Player::returnMinionToHand(int boardIndex) {
 
   boardIndex--;
 
-  if (hand.size() >= kMaxHandSize) {
-    std::cout << "Hand is full. Cannot return card to hand." << std::endl;
-    return;
-  }
-
   if (board[boardIndex]->getType()==CardType::Minion) {
     hand.push_back(std::move(board[boardIndex]));
     board.erase(board.begin() + boardIndex);

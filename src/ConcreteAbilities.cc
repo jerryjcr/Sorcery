@@ -58,7 +58,7 @@ bool UnsummonAbility::useAbility(Player& targetPlayer, Card& targetCard,
     return false;
   }
   if (type == TriggerType::None) {
-    if (targetPlayer.getHand().size() >= 5) {
+    if (targetPlayer.getHand().size() >= 5&& &targetPlayer==&otherPlayer) {
       std::cerr << "Error: Cannot play Unsummon if hand is full." << std::endl;
       return false;
     }

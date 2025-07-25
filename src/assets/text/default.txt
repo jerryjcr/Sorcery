@@ -22,7 +22,7 @@ Blizzard
 
 
 Disenchant
-PotionSeller
-Enrage
+RaiseDead
+Unsummon
 BoneGolem
 AirElemental
