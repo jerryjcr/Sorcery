@@ -12,7 +12,7 @@ const std::vector<std::string> DarkRitual::getDescription() const {
 }
 
 AuraOfPower::AuraOfPower()
-    : Ritual{"Aura Of Power", 1, 4, 1,
+    : Ritual{"Aura of Power", 1, 4, 1,
              std::make_unique<AuraOfPowerAbility>(0)} {}
 const std::vector<std::string> AuraOfPower::getDescription() const {
   return std::vector<std::string>{" 1   | Whenever a minion enters",
