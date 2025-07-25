@@ -8,6 +8,7 @@
 
 #include "Minion.h"
 #include "Player.h"
+#include "Ritual.h"
 
 const std::string kBackgroundPath = "src/assets/img/background.png";
 
@@ -33,6 +34,14 @@ const int kLogicalHeight = 900;
 
 const int kWindowWidth = 1600;
 const int kWindowHeight = 900;
+
+const int kCardWidth = 180;
+const int kCardHeight = 252;
+
+const int kWidthPadding = 10;
+const int kBoardHeightPadding = 30;
+const int kHandHeightPadding = 50;
+const int kRitualGraveyardPadding = 50;
 
 std::vector<std::string> makeCardPaths(const std::vector<std::string>& names) {
   std::vector<std::string> paths;
@@ -185,17 +194,43 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
   clear();
   drawBackground();
 
-  int x = 5;
-  int y = 5;
-  int cardWidth = 180;
-  int cardHeight = 252;
-  int spacing = 5;
+  int x = kLogicalWidth / 2 - 3.5 * kCardWidth - 2 * kWidthPadding -
+          kRitualGraveyardPadding;
+  int y = kBoardHeightPadding;
 
-  for (size_t i = 0; i < 7; i++) {
-    drawCard("Apprentice Summoner", x, y, cardWidth,
-             cardHeight);
-    x += cardWidth + spacing;
+  if (inactivePlayer.getRitual()) {
+    drawCard(inactivePlayer.getRitual()->getName(), x, y, kCardWidth,
+             kCardHeight);
   }
 
-  present();
+  x += kCardWidth + kRitualGraveyardPadding;
+
+  for (auto& minion : inactivePlayer.getBoard()) {
+    drawCard(minion->getName(), x, y, kCardWidth, kCardHeight);
+    x += kCardWidth + kWidthPadding;
+  }
+
+  x = kLogicalWidth / 2 - 3.5 * kCardWidth - 2 * kWidthPadding -
+      kRitualGraveyardPadding;
+  y += kCardHeight + kBoardHeightPadding;
+
+  if (activePlayer.getRitual()) {
+    drawCard(activePlayer.getRitual()->getName(), x, y, kCardWidth,
+             kCardHeight);
+  }
+
+  x += kCardWidth + kRitualGraveyardPadding;
+
+  for (auto& minion : activePlayer.getBoard()) {
+    drawCard(minion->getName(), x, y, kCardWidth, kCardHeight);
+    x += kCardWidth + kWidthPadding;
+  }
+
+  x = kLogicalWidth / 2 - 2.5 * kCardWidth - 2 * kWidthPadding;
+  y += kCardHeight + kHandHeightPadding;
+
+  for (auto& minion : activePlayer.getHand()) {
+    drawCard(minion->getName(), x, y, kCardWidth, kCardHeight);
+    x += kCardWidth + kWidthPadding;
+  }
 }
