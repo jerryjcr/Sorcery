@@ -233,4 +233,6 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
     drawCard(minion->getName(), x, y, kCardWidth, kCardHeight);
     x += kCardWidth + kWidthPadding;
   }
+
+  present();
 }
