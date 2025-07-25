@@ -239,8 +239,9 @@ bool ApprenticeSummonerAbility::useAbility(Player& activePlayer,
     if (static_cast<int>(v.size()) < 5) {
       std::unique_ptr<Minion> card = std::make_unique<AirElemental>();
       v.push_back(std::move(card));
-      activePlayer.triggerBoard(inactivePlayer,*v.back(),TriggerType::MyMinionEnters);
-      inactivePlayer.triggerBoard(activePlayer,*v.back(),TriggerType::OpponentMinionEnters);
+      Minion& target=*v.back();
+      activePlayer.triggerBoard(inactivePlayer,target,TriggerType::MyMinionEnters);
+      inactivePlayer.triggerBoard(activePlayer,target,TriggerType::OpponentMinionEnters);
       return true;
     } else {
       std::cerr << "Error: Cannot use summoner ability when board is full."
@@ -263,8 +264,9 @@ bool MasterSummonerAbility::useAbility(Player& activePlayer,
         if (static_cast<int>(v.size()) < 5) {
           std::unique_ptr<Minion> card = std::make_unique<AirElemental>();
           v.push_back(std::move(card));
-          activePlayer.triggerBoard(inactivePlayer,*v.back(),TriggerType::MyMinionEnters);
-          inactivePlayer.triggerBoard(activePlayer,*v.back(),TriggerType::OpponentMinionEnters);
+          Minion& target=*v.back();
+        activePlayer.triggerBoard(inactivePlayer,target,TriggerType::MyMinionEnters);
+        inactivePlayer.triggerBoard(activePlayer,target,TriggerType::OpponentMinionEnters);
         }
       }
       return true;
@@ -321,9 +323,14 @@ bool StandstillAbility::useAbility(Player& targetPlayer, Card& targetCard,
       type == TriggerType::OpponentMinionEnters) {
     std::vector<std::unique_ptr<Minion>>& v = targetPlayer.getBoard();
     int i = 0;
+    bool found=false;
     for (; i < static_cast<int>(v.size()); ++i) {
-      if (v[i].get() == &targetCard) break;
+      if (v[i].get() == &targetCard) {
+        found=true;
+        break;
+      }
     }
+    if (!found) return false;
     if (&targetPlayer==&activePlayer){
       activePlayer.triggerBoard(otherPlayer,*v[i],TriggerType::MyMinionLeaves);
       otherPlayer.triggerBoard(activePlayer,*v[i],TriggerType::OpponentMinionLeaves);

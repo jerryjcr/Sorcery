@@ -65,8 +65,11 @@ void Player::playCard(int handIndex, Player& inactivePlayer, bool testMode) {
     }
     std::unique_ptr<Minion> minion(dynamic_cast<Minion*>(card.release()));
     board.push_back(std::move(minion));
-    triggerBoard(inactivePlayer, *board.back(), TriggerType::MyMinionEnters);
-    inactivePlayer.triggerBoard(*this, *board.back(), TriggerType::OpponentMinionEnters);
+    Minion& target=*board.back();
+    triggerBoard(inactivePlayer, target, TriggerType::MyMinionEnters);
+
+    inactivePlayer.triggerBoard(*this, target, TriggerType::OpponentMinionEnters);
+
   } else if (card->getType() == CardType::Spell) {
     Spell* spell(dynamic_cast<Spell*>(card.get()));
     // call the version of the method with no target
