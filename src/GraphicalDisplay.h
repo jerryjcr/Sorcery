@@ -37,7 +37,7 @@ class GraphicalDisplay {
  public:
   GraphicalDisplay();
 
-  bool createWindow(const std::string& title, int width, int height);
+  bool createWindow();
 
   bool createRenderer();
 

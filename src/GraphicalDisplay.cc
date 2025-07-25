@@ -26,6 +26,14 @@ const std::vector<std::string> kCardNames = {
 
 const std::string kImageDirectory = "src/assets/img/";
 
+const std::string kTitle = "Sorcery";
+
+const int kLogicalWidth = 1280;
+const int kLogicalHeight = 720;
+
+const int kWindowWidth = 1280;
+const int kWindowHeight = 720;
+
 std::vector<std::string> makeCardPaths(const std::vector<std::string>& names) {
   std::vector<std::string> paths;
   for (const auto& name : names) {
@@ -58,7 +66,7 @@ void GraphicalDisplay::drawBackground() {
     return;
   }
 
-  SDL_Rect destRect(0, 0, 1280, 960);
+  SDL_Rect destRect(0, 0, kLogicalWidth, kLogicalHeight);
 
   SDL_RenderCopy(renderer.get(), backgroundTexture.get(), nullptr, &destRect);
 }
@@ -94,11 +102,10 @@ GraphicalDisplay::GraphicalDisplay()
   initializeMap();
 }
 
-bool GraphicalDisplay::createWindow(const std::string& title, int width,
-                                    int height) {
-  window.reset(SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                                SDL_WINDOWPOS_CENTERED, width, height,
-                                SDL_WINDOW_SHOWN));
+bool GraphicalDisplay::createWindow() {
+  window.reset(SDL_CreateWindow(kTitle.c_str(), SDL_WINDOWPOS_CENTERED,
+                                SDL_WINDOWPOS_CENTERED, kWindowWidth,
+                                kWindowHeight, SDL_WINDOW_SHOWN));
   if (!window) {
     std::cerr << "Error: " << SDL_GetError() << std::endl;
     return false;
@@ -118,6 +125,7 @@ bool GraphicalDisplay::createRenderer() {
     std::cerr << "Error: " << SDL_GetError() << std::endl;
     return false;
   }
+  SDL_RenderSetLogicalSize(renderer.get(), kLogicalWidth, kLogicalHeight);
 
   return true;
 }
@@ -179,9 +187,9 @@ void GraphicalDisplay::update(Player& activePlayer, Player& inactivePlayer) {
 
   int x = 50;
   int y = 50;
-  int cardWidth = 200;
-  int cardHeight = 300;
-  int spacing = 30;
+  int cardWidth = 180;
+  int cardHeight = 252;
+  int spacing = 5;
 
   for (size_t i = 0; i < activePlayer.getBoard().size(); i++) {
     drawCard(activePlayer.getBoard()[i]->getName(), x, y, cardWidth,

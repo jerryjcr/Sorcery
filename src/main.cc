@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
       }
 
       display = std::make_unique<GraphicalDisplay>();
-      display->createWindow("Sorcery", 1280, 960);
+      display->createWindow();
       display->createRenderer();
       display->loadTextures();
     }
