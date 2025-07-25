@@ -21,8 +21,4 @@ RaiseDead
 Blizzard
 
 
-Disenchant
-RaiseDead
-Unsummon
-BoneGolem
-AirElemental
+ApprenticeSummoner

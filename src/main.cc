@@ -138,10 +138,10 @@ int main(int argc, char* argv[]) {
     Player p1{name1, std::move(deck1)};
     Player p2{name2, std::move(deck2)};
 
-    /*
-    p1.shuffleDeck();
-    p2.shuffleDeck();
-    */
+    if (!testingMode){
+      p1.shuffleDeck();
+      p2.shuffleDeck();
+    }
 
     // drawing starting hands
     for (int i = 0; i < kStartingHandSize; i++) {
@@ -279,19 +279,19 @@ int main(int argc, char* argv[]) {
                     if (cmd == "play") {
                       activePlayer->playCard(myCard, p1, targetInd,
                                              *activePlayer, *opponentPlayer,
-                                             isRitual);
+                                             testingMode, isRitual);
                     } else {
                       activePlayer->use(myCard, p1, targetInd, *activePlayer,
-                                        *opponentPlayer, isRitual);
+                                        *opponentPlayer, testingMode, isRitual);
                     }
                   } else {  // must be targeting player 2
                     if (cmd == "play")
                       activePlayer->playCard(myCard, p2, targetInd,
                                              *activePlayer, *opponentPlayer,
-                                             isRitual);
+                                              testingMode, isRitual);
                     else
                       activePlayer->use(myCard, p2, targetInd, *activePlayer,
-                                        *opponentPlayer, isRitual);
+                                        *opponentPlayer, testingMode, isRitual);
                   }
                 }
               } else {
@@ -299,9 +299,9 @@ int main(int argc, char* argv[]) {
               }
             } else if (currline.eof()) {
               if (cmd == "play") {
-                activePlayer->playCard(myCard, *opponentPlayer);
+                activePlayer->playCard(myCard, *opponentPlayer, testingMode);
               } else {
-                activePlayer->use(myCard, *opponentPlayer);
+                activePlayer->use(myCard, *opponentPlayer, testingMode);
               }
             } else {
               std::cerr << "Invalid input: Expected an integer." << std::endl;

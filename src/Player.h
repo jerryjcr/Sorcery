@@ -34,17 +34,17 @@ class Player : public Subject {
   void shuffleDeck();
 
   // player actions
-  void playCard(int handIndex, Player& inactivePlayer);
+  void playCard(int handIndex, Player& inactivePlayer, bool testMode);
   // target index is 1-5 for minions, 6 for ritual
   void playCard(int handIndex, Player& targetPlayer, int targetIndex,
-                Player& activePlayer, Player& otherPlayer, bool isTargetRitual = false);
+                Player& activePlayer, Player& otherPlayer, bool testMode, bool isTargetRitual = false);
   void drawCard();
   void discard(int handIndex);
   void attackMinion(int boardIndex, Player& targetPlayer, int targetIndex);
   void attackPlayer(int boardIndex, Player& targetPlayer);
-  void use(int boardIndex, Player& inactivePlayer);
+  void use(int boardIndex, Player& inactivePlayer, bool testMode);
   void use(int boardIndex, Player& targetPlayer, int targetIndex, 
-           Player& activePlayer, Player& otherPlayer, bool isTargetRitual = false);
+           Player& activePlayer, Player& otherPlayer, bool testMode, bool isTargetRitual = false);
 
   void resetBoardActions();
   void checkForDeaths(Player& opponent);

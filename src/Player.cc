@@ -47,7 +47,7 @@ void Player::shuffleDeck() {
   std::shuffle(deck.begin(), deck.end(), std::default_random_engine(seed));
 }
 
-void Player::playCard(int handIndex, Player& inactivePlayer) {
+void Player::playCard(int handIndex, Player& inactivePlayer, bool testMode) {
   bool status=true;
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
 
@@ -55,7 +55,7 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
 
   std::unique_ptr<Card>& card = hand[handIndex];
   int cost = card->getCost();
-  if (!canAfford(cost)) return;
+  if (!canAfford(cost)&&!testMode) return;
 
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Minion) {
@@ -82,12 +82,15 @@ void Player::playCard(int handIndex, Player& inactivePlayer) {
   }
   if (status){
     magic -= cost;
+    if (magic<0){
+      magic=0;
+    }
     hand.erase(hand.begin() + handIndex);
   }
 }
 
 void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
-                      Player& activePlayer, Player& otherPlayer, bool isTargetRitual) {
+                      Player& activePlayer, Player& otherPlayer, bool testMode, bool isTargetRitual) {
   bool status=true;
   if (!boundIndex(handIndex, 1, static_cast<int>(hand.size()), "Hand")) return;
   if (!isTargetRitual &&
@@ -105,7 +108,7 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
 
   std::unique_ptr<Card>& card = hand[handIndex];
   int cost = card->getCost();
-  if (!canAfford(cost)) return;
+  if (!canAfford(cost)&&!testMode) return;
 
   // detect the type of card by casting to the appropriate pointer
   if (card->getType() == CardType::Spell) {
@@ -135,6 +138,9 @@ void Player::playCard(int handIndex, Player& targetPlayer, int targetIndex,
   }
   if (status){
     magic -= cost;
+    if (magic<0){
+      magic=0;
+    }
     hand.erase(hand.begin() + handIndex);
   }
 }
@@ -182,21 +188,24 @@ void Player::attackPlayer(int boardIndex, Player& targetPlayer) {
   board[boardIndex]->attackPlayer(targetPlayer);
 }
 
-void Player::use(int boardIndex, Player& inactivePlayer) {
+void Player::use(int boardIndex, Player& inactivePlayer, bool testMode) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
 
   boardIndex--;
 
-  if (!canAfford(board[boardIndex]->getAbilityCost())) return;
+  if (!canAfford(board[boardIndex]->getAbilityCost())&&!testMode) return;
 
   if (board[boardIndex]->useCardAbility(*this, inactivePlayer)) {
     magic -= board[boardIndex]->getAbilityCost();
+    if (magic<0){
+      magic=0;
+    }
   }
 }
 
 void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
-                 Player& activePlayer, Player& otherPlayer, bool isTargetRitual) {
+                 Player& activePlayer, Player& otherPlayer, bool testMode, bool isTargetRitual) {
   if (!boundIndex(boardIndex, 1, static_cast<int>(board.size()), "Board"))
     return;
   if (!isTargetRitual &&
@@ -208,7 +217,7 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
   boardIndex--;
   targetIndex--;
 
-  if (!canAfford(board[boardIndex]->getAbilityCost())) return;
+  if (!canAfford(board[boardIndex]->getAbilityCost())&&!testMode) return;
 
   if (isTargetRitual) {
     if (!targetPlayer.ritual) {
@@ -217,11 +226,17 @@ void Player::use(int boardIndex, Player& targetPlayer, int targetIndex,
     }
     if (board[boardIndex]->useCardAbility(targetPlayer, *targetPlayer.ritual, activePlayer, otherPlayer)) {
       magic -= board[boardIndex]->getAbilityCost();
+      if (magic<0){
+        magic=0;
+      }
     }
   } else {
     if (board[boardIndex]->useCardAbility(targetPlayer,
                                           *targetPlayer.board[targetIndex], activePlayer, otherPlayer)) {
       magic -= board[boardIndex]->getAbilityCost();
+      if (magic<0){
+        magic=0;
+      }
     }
   }
 }
