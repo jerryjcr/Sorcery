@@ -5,14 +5,13 @@
 #include <string>
 #include <vector>
 
-#include "Subject.h"
 #include "Ability.h"
 
 class Card;
 class Minion;
 class Ritual;
 
-class Player : public Subject {
+class Player {
   std::string name;
   int life;
   int magic;
